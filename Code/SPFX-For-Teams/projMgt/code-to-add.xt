@@ -1,0 +1,60 @@
+import * as microsoftTeams from '@microsoft/teams-js';
+
+private _teamsContext: microsoftTeams.Context;
+
+protected onInit(): Promise<any> {
+    let retVal: Promise<any> = Promise.resolve();
+    if (this.context.microsoftTeams) {
+      retVal = new Promise((resolve, reject) => {
+        this.context.microsoftTeams.getContext(context => {
+          this._teamsContext = context;
+          resolve();
+        });
+      });
+    }
+    return retVal;
+  }
+
+  description: string;
+  title: string;
+
+
+  public render(): void {
+    let title: string = "";
+
+    if (this._teamsContext) {
+      // This is a Teams Web Part
+      title = "Welcome to the " + this._teamsContext.teamName + " Team!";
+      
+    }
+    else
+    {
+      // This is a SP Web Part
+      title = "Welcome to the " + this.context.pageContext.web.title + " Site!";
+    }
+    const element: React.ReactElement<IHelloWorldProps > = React.createElement(
+      HelloWorld,
+      {
+        description: this.properties.description,
+        title: title
+      }
+    );
+
+    ReactDom.render(element, this.domElement);
+  }
+
+  return (
+      <div className={ styles.helloWorld }>
+        <div className={ styles.container }>
+          <div className={ styles.row }>
+            <div className={ styles.column }>
+              <span className={ styles.title }>{escape(this.props.title)}</span>
+              <p className={ styles.description }>{escape(this.props.description)}</p>
+              <a href="https://aka.ms/spfx" className={ styles.button }>
+                <span className={ styles.label }>Learn more</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
