@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+    <CustomAction
+        Title="FlowNavigationDemo"
+        Location="ClientSideExtension.ApplicationCustomizer"
+        ClientSideComponentId="17b735b1-84ba-457c-a5b4-041d7ea1b9a9"
+        ClientSideComponentProperties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
+    </CustomAction>
+</Elements>
