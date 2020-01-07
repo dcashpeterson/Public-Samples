@@ -1,24 +1,19 @@
 // SPFx imports
 import { override } from '@microsoft/decorators';
-import { Log } from '@microsoft/sp-core-library';
 import {
-  BaseApplicationCustomizer, PlaceholderContent, PlaceholderName, ApplicationCustomizerContext
+  BaseApplicationCustomizer, PlaceholderName, ApplicationCustomizerContext
 } from '@microsoft/sp-application-base';
-import { Dialog } from '@microsoft/sp-dialog';
-import { escape } from '@microsoft/sp-lodash-subset';
 
 import HeaderFooterDataService from './common/services/HeaderFooterDataService';
 import IHeaderFooterData from './common/model/IHeaderFooterData';
-import ComponentManager from './common/components/ComponentManager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as strings from 'FlowNavigationDemoApplicationCustomizerStrings';
 import { sp } from "@pnp/sp";
-import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
+import { Logger, LogLevel } from "@pnp/logging";
 import { Header } from './common/components/Header';
 
 const LOG_SOURCE: string = 'FlowNavigationDemoApplicationCustomizer';
-
 
 export interface IFlowNavigationDemoApplicationCustomizerProperties {
   Top: string;
@@ -28,6 +23,7 @@ export interface IFlowNavigationDemoApplicationCustomizerProperties {
 export default class FlowNavigationDemoApplicationCustomizer
   extends BaseApplicationCustomizer<IFlowNavigationDemoApplicationCustomizerProperties> {
 
+  //Set up private variables to use later
   private topElementId: string = "FlowNavigationDemoApplicationCustomizerHeader";
   private bottomElementId: string = "FlowNavigationDemoApplicationCustomizerFooter";
   private className = "FlowNavigationDemoApplicationContainer";
@@ -36,11 +32,15 @@ export default class FlowNavigationDemoApplicationCustomizer
 
   @override
   public onInit(): Promise<void> {
+    //Set up SPFX for use later
     sp.setup({
       spfxContext: this.context
     });
+
+    //Call the Service that gets the data from the JSON file
     HeaderFooterDataService.get(this.navUrl)
       .then((data: IHeaderFooterData) => {
+        //Set the data to the navigationData object
         this.navigationData = data;
       });
     this.render();
@@ -49,6 +49,7 @@ export default class FlowNavigationDemoApplicationCustomizer
 
   @override
   public onDispose(): Promise<void> {
+    //Deal with the partial page reload issue
     this.context.application.navigatedEvent.remove(this, this.navigationEventHandler);
 
     (window as any).isNavigatedEventSubscribed = false;
@@ -57,6 +58,7 @@ export default class FlowNavigationDemoApplicationCustomizer
   }
 
   private navigationEventHandler(): void {
+    //Deal with the partial page reload issue
     setTimeout(() => {
       try {
         if ((window as any).isNavigatedEventSubscribed && (window as any).currentPage !== window.location.href) {
@@ -69,10 +71,12 @@ export default class FlowNavigationDemoApplicationCustomizer
     }, 50);
   }
 
+  //Get the container of the extension by ID
   private getContainer(elementId: string): HTMLElement {
     return document.getElementById(elementId);
   }
 
+  //Delete the container of the extention by ID
   private deleteContainer(elementId: string) {
     let container = this.getContainer(elementId);
     Logger.write(`Deleting existing ${elementId} Container! [${strings.Title} - ${LOG_SOURCE}]`, LogLevel.Info);
@@ -116,6 +120,7 @@ export default class FlowNavigationDemoApplicationCustomizer
     }
   }
 
+  //Render compopnents
   private async renderContainer(context: ApplicationCustomizerContext): Promise<void> {
     try {
       let isInstalled = await this.isInstalled();

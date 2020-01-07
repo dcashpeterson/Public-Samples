@@ -2,26 +2,26 @@
   $topMenuLinkHeight: 30px;
   $subMenuLinkHeight: 20px;
   $showMenuLinkHeight: 30px;
-  $mobileBreakpoint: 480px;
+  $mobileBreakpoint: 760px;
 
   /* Fonts and Colors */
   $font-family: "Segoe UI Web (West European)",Segoe UI,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
 
-  $topMenuBackground: #757575;
-  $topMenuLinkBackground: #757575;
+  $topMenuBackground: #17717a;
+  $topMenuLinkBackground: #17717a;
   $topMenuLinkColor: white;
-  $topMenuLinkHoverBackground: #0078D7;
+  $topMenuLinkHoverBackground: #15676e;
   $topMenuLinkHoverColor: #2f3036;
 
   $subMenuLinkBackground: #f4f4f4;
   $subMenuLinkColor: black;
-  $subMenuLinkHoverBackground: #0078D7;
+  $subMenuLinkHoverBackground: #15676e;
   $subMenuLinkHoverColor: white;
 
   $showMenuLinkBackground: #757575;
   $showMenuLinkColor: white;
 
-  $bottomMenuBackground: #757575;
+  $bottomMenuBackground: #17717a;
   $bottomMenuColor: white;
   $bottomMenuTopBorder: black; 
 
@@ -34,9 +34,11 @@
 .topNav {
 
     display: flex;
-    padding-left: 20px;
     background-color: $topMenuBackground;
 
+    .closed,.open{
+            display: none;
+        }
     /*Strip the ul of padding and list styling*/
     ul {
         list-style-type:none;
@@ -105,7 +107,9 @@
         min-width: 100px;
         padding: 0 20px;
     }
-
+    .hidden{
+        box-shadow: 5px 5px gray;
+    }
     /*Display the dropdown on hover*/
     ul li a:hover + .hidden, .hidden:hover {
         display: block;
@@ -113,13 +117,14 @@
 
     /*Style 'show menu' label button and hide it by default*/
     .show-menu {
-        font-family: font-family;
+        font-family: $font-family;
         text-decoration: none;
         color: $showMenuLinkColor;
         background: $topMenuBackground;
         height: $showMenuLinkHeight;
         display: none;
         margin-bottom: 1px;
+        
         div .hamburger {
             div {
                 width: 20px;
@@ -134,6 +139,8 @@
             padding-top: $showMenuLinkHeight / 2 - 9;
             padding-left: 3px;
             padding-right: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
     }
 
@@ -151,7 +158,19 @@
     @media screen and (max-width : $mobileBreakpoint){
         display: block;
         padding-left: 0;
-
+        .closed,.open{
+            font-size: 10px;
+            padding-left: 2px;
+        }
+        .closed{
+            display: inline;
+        }
+        .open{
+            display: none;
+        }
+.hidden{
+        box-shadow: none;
+    }
         /*Make dropdown links appear inline*/
         ul {
             position: static;
@@ -173,6 +192,12 @@
         /*Display 'show menu' link*/
         .show-menu {
             display:block;
+        }
+        input[type=checkbox]:checked ~ .show-menu div.hamburger .open {
+            display: inline;
+        }
+        input[type=checkbox]:checked ~ .show-menu div.hamburger .closed {
+            display: none;
         }
     }
  }
