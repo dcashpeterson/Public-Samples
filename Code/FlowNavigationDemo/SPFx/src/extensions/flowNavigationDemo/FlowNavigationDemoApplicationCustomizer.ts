@@ -20,6 +20,11 @@ export interface IFlowNavigationDemoApplicationCustomizerProperties {
   Bottom: string;
 }
 
+
+///This code is adapted from the PnP SPFx Dev Extension Library
+///React Menu Footer Classic Modern
+///https://github.com/SharePoint/sp-dev-fx-extensions/tree/master/samples/react-menu-footer-classic-modern
+
 export default class FlowNavigationDemoApplicationCustomizer
   extends BaseApplicationCustomizer<IFlowNavigationDemoApplicationCustomizerProperties> {
 
@@ -85,6 +90,7 @@ export default class FlowNavigationDemoApplicationCustomizer
 
   private render(): void {
     let error = false;
+    //Check if you the placeholder is there. If not throw an error.
     try {
       if (this.context.placeholderProvider.tryCreateContent == undefined) {
         error = true;
@@ -93,6 +99,7 @@ export default class FlowNavigationDemoApplicationCustomizer
       error = true;
     }
 
+    //If there is a placeholder then register the Navigation Event to avoid multiple loading.
     if (error) {
       (window as any).currentPage = '';
       this.navigationEventHandler();
@@ -105,10 +112,12 @@ export default class FlowNavigationDemoApplicationCustomizer
     }
   }
 
+  //Check to see if the component is installed.
   private async isInstalled(): Promise<boolean> {
     try {
+      //Gets the component by Title. This is the title in the ClientSideInstance.xml file
       let response = await sp.web.userCustomActions.filter("Title eq 'FlowNavigationDemo'").get();
-      let x = await sp.web.userCustomActions.get();
+      //let x = await sp.web.userCustomActions.get();
       if (response != undefined && response.length > 0) {
         return true;
       }
@@ -123,11 +132,14 @@ export default class FlowNavigationDemoApplicationCustomizer
   //Render compopnents
   private async renderContainer(context: ApplicationCustomizerContext): Promise<void> {
     try {
+      //Check if the compoent is installed
       let isInstalled = await this.isInstalled();
       if (isInstalled) {
+        //Create a reference to the top placeholder
         let placeholder = context.placeholderProvider.tryCreateContent(PlaceholderName.Top, { onDispose: this.onDispose });
         if (placeholder != undefined) {
           Logger.write(`Rendering picker! [${strings.Title} - ${LOG_SOURCE}]`, LogLevel.Info);
+          //Check if the container exists if not create it
           let container = this.getContainer(this.topElementId);
           if (container == undefined) {
             container = document.createElement("DIV");
@@ -135,6 +147,7 @@ export default class FlowNavigationDemoApplicationCustomizer
             container.className = this.className;
             placeholder.domElement.appendChild(container);
           }
+          //Create Header Element and pass in header data
           let element = React.createElement(Header, { links: this.navigationData.headerLinks });
           let elements: any = [];
           elements.push(element);
@@ -145,10 +158,11 @@ export default class FlowNavigationDemoApplicationCustomizer
         }
 
         placeholder = undefined;
-
+        //Create a reference to the bottom placeholder
         placeholder = context.placeholderProvider.tryCreateContent(PlaceholderName.Bottom, { onDispose: this.onDispose });
         if (placeholder != undefined) {
           Logger.write(`Rendering picker! [${strings.Title} - ${LOG_SOURCE}]`, LogLevel.Info);
+          //Check if the container exists if not create it
           let container = this.getContainer(this.bottomElementId);
           if (container == undefined) {
             container = document.createElement("DIV");
@@ -156,6 +170,7 @@ export default class FlowNavigationDemoApplicationCustomizer
             container.className = this.className;
             placeholder.domElement.appendChild(container);
           }
+          //Create Header Element and pass in footer data
           let element = React.createElement(Header, { links: this.navigationData.footerLinks });
           let elements: any = [];
           elements.push(element);
@@ -165,6 +180,7 @@ export default class FlowNavigationDemoApplicationCustomizer
           Logger.write(`Bottom Placeholder not available! [${strings.Title} - ${LOG_SOURCE}]`, LogLevel.Error);
         }
       } else {
+        //if it already exists remove it
         this.deleteContainer(this.topElementId);
         this.deleteContainer(this.bottomElementId);
       }

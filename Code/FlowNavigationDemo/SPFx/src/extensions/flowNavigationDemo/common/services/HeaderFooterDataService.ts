@@ -1,5 +1,4 @@
 import IHeaderFooterData from '../model/IHeaderFooterData';
-import ILink from '../model/ILink';
 
 export default class HeaderFooterDataService {
 

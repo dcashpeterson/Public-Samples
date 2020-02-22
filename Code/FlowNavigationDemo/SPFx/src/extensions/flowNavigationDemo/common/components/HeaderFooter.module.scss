@@ -248,9 +248,9 @@
 
 :global{
     /*This hides the Microsoft Feedback and Mobile App line*/
+    /*This could break at any time so use it with caution*/
     div[class^="feedback"] {
         display: none;
-      }
+    }
 
-     
 }
