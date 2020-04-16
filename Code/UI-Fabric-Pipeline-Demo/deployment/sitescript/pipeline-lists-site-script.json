@@ -1,0 +1,181 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/sp/site-design-script-actions.schema.json",
+  "actions": [
+    {
+      "verb": "createSPList",
+      "listName": "Clients",
+      "templateType": 100,
+      "subactions": [
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{fa564e0f-0c70-4ab9-b863-0177e6ddd247}\" Type=\"Text\" Name=\"Title\" DisplayName=\"Company Name\" Required=\"TRUE\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"Title\" FromBaseType=\"TRUE\" CustomFormatter=\"\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" MaxLength=\"255\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field Type=\"Text\" DisplayName=\"Company Address\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" MaxLength=\"255\" ID=\"{867e0c0c-af90-4853-bd97-873055438ab0}\" StaticName=\"Company_x0020_Address\" Name=\"Company_x0020_Address\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{6ca7bd7f-b490-402e-af1b-2813cf087b1e}\" Name=\"WorkCity\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"WorkCity\" Group=\"Core Contact and Calendar Columns\" DisplayName=\"City\" Type=\"Text\" AllowDeletion=\"TRUE\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{ceac61d3-dda9-468b-b276-f4a6bb93f14f}\" Name=\"WorkState\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"WorkState\" Group=\"Core Contact and Calendar Columns\" DisplayName=\"State/Province\" Type=\"Text\" NumLines=\"2\" Sortable=\"TRUE\" AllowDeletion=\"TRUE\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{9a631556-3dac-49db-8d2f-fb033b0fdc24}\" Name=\"WorkZip\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"WorkZip\" Group=\"Core Contact and Calendar Columns\" DisplayName=\"ZIP/Postal Code\" Type=\"Text\" IMEMode=\"inactive\" AllowDeletion=\"TRUE\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{fd630629-c165-4513-b43c-fdb16b86a14d}\" Name=\"WorkPhone\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"WorkPhone\" Group=\"Core Contact and Calendar Columns\" DisplayName=\"Business Phone\" Type=\"Text\" IMEMode=\"inactive\" AllowDeletion=\"TRUE\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{bc91a437-52e7-49e1-8c4e-4698904b2b6d}\" ReadOnly=\"TRUE\" Type=\"Computed\" Name=\"LinkTitleNoMenu\" DisplayName=\"Company Name\" Dir=\"\" DisplayNameSrcField=\"Title\" AuthoringInfo=\"(linked to item)\" EnableLookup=\"TRUE\" ListItemMenuAllowed=\"Prohibited\" LinkToItemAllowed=\"Prohibited\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"LinkTitleNoMenu\" FromBaseType=\"TRUE\"><FieldRefs><FieldRef Name=\"Title\" /><FieldRef Name=\"LinkFilenameNoMenu\" /></FieldRefs><DisplayPattern><IfEqual><Expr1><LookupColumn Name=\"FSObjType\" /></Expr1><Expr2>1</Expr2><Then><Field Name=\"LinkFilenameNoMenu\" /></Then><Else><HTML><![CDATA[<a onfocus=\"OnLink(this)\" href=\"]]></HTML><URL /><HTML><![CDATA[\" onclick=\"EditLink2(this,]]></HTML><Counter Type=\"View\" /><HTML><![CDATA[);return false;\" target=\"_self\">]]></HTML><Column HTMLEncode=\"TRUE\" Name=\"Title\" Default=\"(no title)\" /><IfEqual><Expr1><GetVar Name=\"ShowAccessibleIcon\" /></Expr1><Expr2>1</Expr2><Then><HTML><![CDATA[<img src=\"/_layouts/15/images/blank.gif?rev=47\" class=\"ms-hidden\" border=\"0\" width=\"1\" height=\"1\" alt=\"Use SHIFT+ENTER to open the menu (new window).\"/>]]></HTML></Then></IfEqual><HTML><![CDATA[</a>]]></HTML><IfNew><HTML><![CDATA[<img src=\"/_layouts/1033/images/new.gif\" alt=\"]]></HTML><HTML>New</HTML><HTML><![CDATA[\" class=\"ms-newgif\" />]]></HTML></IfNew></Else></IfEqual></DisplayPattern></Field>"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{82642ec8-ef9b-478f-acf9-31f7d45fbc31}\" ReadOnly=\"TRUE\" Type=\"Computed\" Name=\"LinkTitle\" DisplayName=\"Company Name\" DisplayNameSrcField=\"Title\" ClassInfo=\"Menu\" AuthoringInfo=\"(linked to item with edit menu)\" ListItemMenuAllowed=\"Required\" LinkToItemAllowed=\"Prohibited\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"LinkTitle\" FromBaseType=\"TRUE\"><FieldRefs><FieldRef Name=\"Title\" /><FieldRef Name=\"LinkTitleNoMenu\" /><FieldRef Name=\"_EditMenuTableStart2\" /><FieldRef Name=\"_EditMenuTableEnd\" /></FieldRefs><DisplayPattern><FieldSwitch><Expr><GetVar Name=\"FreeForm\" /></Expr><Case Value=\"TRUE\"><Field Name=\"LinkTitleNoMenu\" /></Case><Default><HTML><![CDATA[<div class=\"ms-vb itx\" onmouseover=\"OnItem(this)\" CTXName=\"ctx]]></HTML><Field Name=\"_EditMenuTableStart2\" /><HTML><![CDATA[\">]]></HTML><Field Name=\"LinkTitleNoMenu\" /><HTML><![CDATA[</div>]]></HTML><HTML><![CDATA[<div class=\"s4-ctx\" onmouseover=\"OnChildItem(this.parentNode); return false;\">]]></HTML><HTML><![CDATA[<span>&nbsp;</span>]]></HTML><HTML><![CDATA[<a onfocus=\"OnChildItem(this.parentNode.parentNode); return false;\" onclick=\"PopMenuFromChevron(event); return false;\" href=\"javascript:;\" title=\"Open Menu\"></a>]]></HTML><HTML><![CDATA[<span>&nbsp;</span>]]></HTML><HTML><![CDATA[</div>]]></HTML></Default></FieldSwitch></DisplayPattern></Field>"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{5f190d91-3dbc-4489-9878-3c092caf35b6}\" Hidden=\"TRUE\" ReadOnly=\"TRUE\" Type=\"Computed\" Name=\"LinkTitle2\" DisplayName=\"Company Name\" DisplayNameSrcField=\"Title\" ClassInfo=\"Menu\" AuthoringInfo=\"(linked to item with edit menu) (old)\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"LinkTitle2\" FromBaseType=\"TRUE\"><FieldRefs><FieldRef Name=\"Title\" /><FieldRef Name=\"LinkTitleNoMenu\" /><FieldRef Name=\"_EditMenuTableStart\" /><FieldRef Name=\"_EditMenuTableEnd\" /></FieldRefs><DisplayPattern><FieldSwitch><Expr><GetVar Name=\"FreeForm\" /></Expr><Case Value=\"TRUE\"><Field Name=\"LinkTitleNoMenu\" /></Case><Default><Field Name=\"_EditMenuTableStart\" /><SetVar Name=\"ShowAccessibleIcon\" Value=\"1\" /><Field Name=\"LinkTitleNoMenu\" /><SetVar Name=\"ShowAccessibleIcon\" Value=\"0\" /><Field Name=\"_EditMenuTableEnd\" /></Default></FieldSwitch></DisplayPattern></Field>"
+        },
+        {
+          "verb": "addSPView",
+          "name": "All Items",
+          "viewFields": [
+            "LinkTitle",
+            "Company_x0020_Address",
+            "WorkCity",
+            "WorkState",
+            "WorkZip",
+            "WorkPhone"
+          ],
+          "query": "",
+          "rowLimit": 30,
+          "isPaged": true,
+          "makeDefault": true
+        }
+      ]
+    },
+    {
+      "verb": "createSPList",
+      "listName": "Projects",
+      "templateType": 100,
+      "subactions": [
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{fa564e0f-0c70-4ab9-b863-0177e6ddd247}\" Type=\"Text\" Name=\"Title\" DisplayName=\"Project Title\" Required=\"TRUE\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"Title\" FromBaseType=\"TRUE\" CustomFormatter=\"\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" MaxLength=\"255\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field Type=\"Note\" DisplayName=\"Project Description\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" NumLines=\"6\" RichText=\"FALSE\" Sortable=\"FALSE\" ID=\"{bf1b4129-71d3-4ce5-b622-10e57bb38c7c}\" StaticName=\"ProjectDescription\" Name=\"ProjectDescription\" CustomFormatter=\"\" RestrictedMode=\"TRUE\" RichTextMode=\"Compatible\" IsolateStyles=\"FALSE\" AppendOnly=\"FALSE\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field Type=\"Text\" DisplayName=\"Contact Name\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" MaxLength=\"255\" ID=\"{1ad7e76a-3fe1-49e0-ab8b-cae3e88e46c6}\" StaticName=\"ContactName\" Name=\"ContactName\" CustomFormatter=\"\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field Type=\"Text\" DisplayName=\"Contact Title\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" MaxLength=\"255\" ID=\"{566f57d8-e6f0-4807-983f-f73f149ea961}\" StaticName=\"ContactTitle\" Name=\"ContactTitle\" CustomFormatter=\"\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{fd630629-c165-4513-b43c-fdb16b86a14d}\" Name=\"WorkPhone\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"WorkPhone\" Group=\"Core Contact and Calendar Columns\" DisplayName=\"Business Phone\" Type=\"Text\" IMEMode=\"inactive\" AllowDeletion=\"TRUE\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field Type=\"DateTime\" DisplayName=\"Last Contact Date\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" Format=\"DateOnly\" FriendlyDisplayFormat=\"Disabled\" ID=\"{b26778a1-29c3-4983-a8bf-c7be54c5949d}\" StaticName=\"LastContactDate\" Name=\"LastContactDate\" CustomFormatter=\"\" CalType=\"0\" />"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field Type=\"DateTime\" DisplayName=\"Next Contact Date\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" Format=\"DateOnly\" FriendlyDisplayFormat=\"Disabled\" ID=\"{617c0c69-fbe9-47d9-b836-20f78a78fa40}\" StaticName=\"NextContactDate\" Name=\"NextContactDate\" CustomFormatter=\"\" CalType=\"0\"><DefaultFormula>=Today+7</DefaultFormula></Field>"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field Type=\"Choice\" DisplayName=\"Pipeline Status\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" Format=\"Dropdown\" FillInChoice=\"FALSE\" ID=\"{36eac2f3-18c4-40ad-8184-d9fdb7278799}\" StaticName=\"PipelineStatus\" Name=\"PipelineStatus\" CustomFormatter=\"\"><Default>1. Pending</Default><CHOICES><CHOICE>1. Pending</CHOICE><CHOICE>2. In Negotiation</CHOICE><CHOICE>3. Active</CHOICE><CHOICE>4. Not Dead Yet</CHOICE><CHOICE>5. Closed</CHOICE><CHOICE>6. Lost</CHOICE></CHOICES></Field>"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field Type=\"Text\" DisplayName=\"Refered By\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" MaxLength=\"255\" ID=\"{c98c0fca-1440-40c7-ac22-745c5fb08c5e}\" StaticName=\"ReferedBy\" Name=\"ReferedBy\" CustomFormatter=\"\" />"
+        },
+        {
+          "verb": "addSPLookupFieldXml",
+          "schemaXml": "<Field Type=\"Lookup\" DisplayName=\"Client\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" ShowField=\"Title\" UnlimitedLengthInDocumentLibrary=\"FALSE\" RelationshipDeleteBehavior=\"None\" ID=\"{844bfc8e-e873-483a-b5ec-7dbf42120e4a}\" StaticName=\"Client\" Name=\"Client\" />",
+          "targetListName": "Clients"
+        },
+        {
+          "verb": "addSPLookupFieldXml",
+          "schemaXml": "<Field Type=\"Lookup\" DisplayName=\"Client:Company Address\" ShowField=\"Company_x0020_Address\" FieldRef=\"844bfc8e-e873-483a-b5ec-7dbf42120e4a\" ReadOnly=\"TRUE\" UnlimitedLengthInDocumentLibrary=\"FALSE\" ID=\"{28b38a58-780b-4f08-8573-3a9fd63c7564}\" StaticName=\"Client_x003a_Company_x0020_Addre\" Name=\"Client_x003a_Company_x0020_Addre\" />",
+          "targetListName": "Clients"
+        },
+        {
+          "verb": "addSPLookupFieldXml",
+          "schemaXml": "<Field Type=\"Lookup\" DisplayName=\"Client:City\" ShowField=\"WorkCity\" FieldRef=\"844bfc8e-e873-483a-b5ec-7dbf42120e4a\" ReadOnly=\"TRUE\" UnlimitedLengthInDocumentLibrary=\"FALSE\" ID=\"{4eb5d217-b578-4b2a-af5b-ad981cd6b22f}\" StaticName=\"Client_x003a_City\" Name=\"Client_x003a_City\" />",
+          "targetListName": "Clients"
+        },
+        {
+          "verb": "addSPLookupFieldXml",
+          "schemaXml": "<Field Type=\"Lookup\" DisplayName=\"Client:State/Province\" ShowField=\"WorkState\" FieldRef=\"844bfc8e-e873-483a-b5ec-7dbf42120e4a\" ReadOnly=\"TRUE\" UnlimitedLengthInDocumentLibrary=\"FALSE\" ID=\"{e161c21e-aeed-4454-bd28-fe6cef538e4a}\" StaticName=\"Client_x003a_State_x002f_Provinc\" Name=\"Client_x003a_State_x002f_Provinc\" />",
+          "targetListName": "Clients"
+        },
+        {
+          "verb": "addSPLookupFieldXml",
+          "schemaXml": "<Field Type=\"Lookup\" DisplayName=\"Client:ZIP/Postal Code\" ShowField=\"WorkZip\" FieldRef=\"844bfc8e-e873-483a-b5ec-7dbf42120e4a\" ReadOnly=\"TRUE\" UnlimitedLengthInDocumentLibrary=\"FALSE\" ID=\"{4a88d53d-d222-407e-b44e-ba1d091f3fd0}\" StaticName=\"Client_x003a_ZIP_x002f_Postal_x0\" Name=\"Client_x003a_ZIP_x002f_Postal_x0\" />",
+          "targetListName": "Clients"
+        },
+        {
+          "verb": "addSPLookupFieldXml",
+          "schemaXml": "<Field Type=\"Lookup\" DisplayName=\"Client:Business Phone\" ShowField=\"WorkPhone\" FieldRef=\"844bfc8e-e873-483a-b5ec-7dbf42120e4a\" ReadOnly=\"TRUE\" UnlimitedLengthInDocumentLibrary=\"FALSE\" ID=\"{d4a21716-0ef8-495f-9323-40abbf5614b5}\" StaticName=\"Client_x003a_Business_x0020_Phon\" Name=\"Client_x003a_Business_x0020_Phon\" />",
+          "targetListName": "Clients"
+        },
+        {
+          "verb": "addSPLookupFieldXml",
+          "schemaXml": "<Field Type=\"Lookup\" DisplayName=\"Client:Company Name (linked to item)\" ShowField=\"LinkTitleNoMenu\" FieldRef=\"844bfc8e-e873-483a-b5ec-7dbf42120e4a\" ReadOnly=\"TRUE\" UnlimitedLengthInDocumentLibrary=\"FALSE\" ID=\"{1eac2b3e-e58e-4b2f-b8a3-b1742083aa8b}\" StaticName=\"Client_x003a_Company_x0020_Name_\" Name=\"Client_x003a_Company_x0020_Name_\" />",
+          "targetListName": "Clients"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{bc91a437-52e7-49e1-8c4e-4698904b2b6d}\" ReadOnly=\"TRUE\" Type=\"Computed\" Name=\"LinkTitleNoMenu\" DisplayName=\"Project Title\" Dir=\"\" DisplayNameSrcField=\"Title\" AuthoringInfo=\"(linked to item)\" EnableLookup=\"TRUE\" ListItemMenuAllowed=\"Prohibited\" LinkToItemAllowed=\"Prohibited\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"LinkTitleNoMenu\" FromBaseType=\"TRUE\"><FieldRefs><FieldRef Name=\"Title\" /><FieldRef Name=\"LinkFilenameNoMenu\" /></FieldRefs><DisplayPattern><IfEqual><Expr1><LookupColumn Name=\"FSObjType\" /></Expr1><Expr2>1</Expr2><Then><Field Name=\"LinkFilenameNoMenu\" /></Then><Else><HTML><![CDATA[<a onfocus=\"OnLink(this)\" href=\"]]></HTML><URL /><HTML><![CDATA[\" onclick=\"EditLink2(this,]]></HTML><Counter Type=\"View\" /><HTML><![CDATA[);return false;\" target=\"_self\">]]></HTML><Column HTMLEncode=\"TRUE\" Name=\"Title\" Default=\"(no title)\" /><IfEqual><Expr1><GetVar Name=\"ShowAccessibleIcon\" /></Expr1><Expr2>1</Expr2><Then><HTML><![CDATA[<img src=\"/_layouts/15/images/blank.gif?rev=47\" class=\"ms-hidden\" border=\"0\" width=\"1\" height=\"1\" alt=\"Use SHIFT+ENTER to open the menu (new window).\"/>]]></HTML></Then></IfEqual><HTML><![CDATA[</a>]]></HTML><IfNew><HTML><![CDATA[<img src=\"/_layouts/1033/images/new.gif\" alt=\"]]></HTML><HTML>New</HTML><HTML><![CDATA[\" class=\"ms-newgif\" />]]></HTML></IfNew></Else></IfEqual></DisplayPattern></Field>"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{82642ec8-ef9b-478f-acf9-31f7d45fbc31}\" ReadOnly=\"TRUE\" Type=\"Computed\" Name=\"LinkTitle\" DisplayName=\"Project Title\" DisplayNameSrcField=\"Title\" ClassInfo=\"Menu\" AuthoringInfo=\"(linked to item with edit menu)\" ListItemMenuAllowed=\"Required\" LinkToItemAllowed=\"Prohibited\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"LinkTitle\" FromBaseType=\"TRUE\"><FieldRefs><FieldRef Name=\"Title\" /><FieldRef Name=\"LinkTitleNoMenu\" /><FieldRef Name=\"_EditMenuTableStart2\" /><FieldRef Name=\"_EditMenuTableEnd\" /></FieldRefs><DisplayPattern><FieldSwitch><Expr><GetVar Name=\"FreeForm\" /></Expr><Case Value=\"TRUE\"><Field Name=\"LinkTitleNoMenu\" /></Case><Default><HTML><![CDATA[<div class=\"ms-vb itx\" onmouseover=\"OnItem(this)\" CTXName=\"ctx]]></HTML><Field Name=\"_EditMenuTableStart2\" /><HTML><![CDATA[\">]    ]></HTML><Field Name=\"LinkTitleNoMenu\" /><HTML><![CDATA[</div>]]></HTML><HTML><![CDATA[<div class=\"s4-ctx\" onmouseover=\"OnChildItem(this.parentNode); return false;\">]]></HTML><HTML><![CDATA[<span>&nbsp;</span>]]></HTML><HTML><![CDATA[<a onfocus=\"OnChildItem(this.parentNode.parentNode); return false;\" onclick=\"PopMenuFromChevron(event); return false;\" href=\"javascript:;\" title=\"Open Menu\"></a>]]></HTML><HTML><![CDATA[<span>&nbsp;</span>]]></HTML><HTML><![CDATA[</div>]]></HTML></Default></FieldSwitch></DisplayPattern></Field>"
+        },
+        {
+          "verb": "addSPFieldXml",
+          "schemaXml": "<Field ID=\"{5f190d91-3dbc-4489-9878-3c092caf35b6}\" Hidden=\"TRUE\" ReadOnly=\"TRUE\" Type=\"Computed\" Name=\"LinkTitle2\" DisplayName=\"Project Title\" DisplayNameSrcField=\"Title\" ClassInfo=\"Menu\" AuthoringInfo=\"(linked to item with edit menu) (old)\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"LinkTitle2\" FromBaseType=\"TRUE\"><FieldRefs><FieldRef Name=\"Title\" /><FieldRef Name=\"LinkTitleNoMenu\" /><FieldRef Name=\"_EditMenuTableStart\" /><FieldRef Name=\"_EditMenuTableEnd\" /></FieldRefs><DisplayPattern><FieldSwitch><Expr><GetVar Name=\"FreeForm\" /></Expr><Case Value=\"TRUE\"><Field Name=\"LinkTitleNoMenu\" /></Case><Default><Field Name=\"_EditMenuTableStart\" /><SetVar Name=\"ShowAccessibleIcon\" Value=\"1\" /><Field Name=\"LinkTitleNoMenu\" /><SetVar Name=\"ShowAccessibleIcon\" Value=\"0\" /><Field Name=\"_EditMenuTableEnd\" /></Default></FieldSwitch></DisplayPattern></Field>"
+        },
+        {
+          "verb": "addSPView",
+          "name": "All Items",
+          "viewFields": [
+            "LinkTitle",
+            "ContactName",
+            "ContactTitle",
+            "WorkPhone",
+            "EMail",
+            "ProjectDescription",
+            "LastContactDate",
+            "NextContactDate",
+            "PipelineStatus",
+            "ReferedBy",
+            "Client",
+            "Client_x003a_Company_x0020_Addre",
+            "Client_x003a_City",
+            "Client_x003a_State_x002f_Provinc",
+            "Client_x003a_ZIP_x002f_Postal_x0",
+            "Client_x003a_Business_x0020_Phon",
+            "Client_x003a_Company_x0020_Name_"
+          ],
+          "query": "<OrderBy><FieldRef Name=\"ID\" /></OrderBy><GroupBy><FieldRef Name=\"PipelineStatus\" Ascending=\"TRUE\" /></GroupBy>",
+          "rowLimit": 30,
+          "isPaged": true,
+          "makeDefault": true
+        }
+      ]
+    }
+  ]
+}

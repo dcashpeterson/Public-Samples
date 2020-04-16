@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "ui-fabric-react-hello-world-spfx-generator-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/uiFabricReactHelloWorldSpfxGenerator/UiFabricReactHelloWorldSpfxGeneratorWebPart.js",
+          "manifest": "./src/webparts/uiFabricReactHelloWorldSpfxGenerator/UiFabricReactHelloWorldSpfxGeneratorWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "UiFabricReactHelloWorldSpfxGeneratorWebPartStrings": "lib/webparts/uiFabricReactHelloWorldSpfxGenerator/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+  }
+}
