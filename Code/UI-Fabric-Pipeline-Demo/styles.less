@@ -1,0 +1,243 @@
+/*
+ * Define the widths: play around with these 
+ * to get a best fit.
+ */
+@index-width: 25px;
+@title-width: 220px;
+@comment-width: 120px;
+@module-width: 110px;
+@reporter-width: 85px;
+@status-width: 95px;
+@owner-width: 75px;
+@severity-width: 80px;
+@icon-width: 18px;
+@date-width: 110px;
+@margin-width: 30px;
+
+/*
+ * Basic styles, good for a large display. Everything fits in
+ * one row, no wrapping. All text based cells grow equally.
+ */
+// Main container - row container
+.table-row {
+  display: flex;          display: -webkit-flex;
+  flex-direction: row;    -webkit-flex-direction: row;
+  flex-wrap: no-wrap;     -webkit-flex-wrap: no-wrap;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+// Wrappers around cells and other wrappers
+.wrapper {
+  display: flex; display: -webkit-flex;
+  flex-direction: row; -webkit-flex-direction: row;
+}
+
+// leaf level containers (cells): common properties 
+.column {
+  flex-grow: 0; -webkit-flex-grow: 0;
+  flex-shrink: 0; -webkit-flex-shrink: 0;
+  vertical-align: top;
+}
+
+// leaf level containers: widths
+.index { width: @index-width; }
+.title { width: @title-width; }
+.module { width: @module-width; }
+.reporter { width: @reporter-width; }
+.status { width: @status-width; }
+.owner { width: @owner-width; }
+.severity { width: @severity-width; }
+.watch, .add-comment { width: @icon-width; }
+.date { width: @date-width; }
+
+// leaf level containers (cells): special properties 
+.index {
+  text-align: center;
+}
+
+.title {
+  font-weight: bold;
+  color: #337AB5;
+}
+
+.comment {
+  width: @comment-width;
+}
+
+// these are growable text containers, with ellipsis to show truncated text
+.title, .comment {
+  flex-grow: 1; -webkit-flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 4px;
+}
+
+.date {
+  width: @date-width;
+  text-align: right;
+  padding-right: 4px;
+}
+
+/* growable wrappers */
+.title-comment, .title-comment-module-reporter, .attributes {
+  flex-grow: 1; -webkit-flex-grow: 1;
+}
+
+/*
+ * Media queries: optimize for different screen widths.
+ */
+
+// Wrapper widths
+@title-comment-width: max(@title-width, @comment-width);
+@module-reporter-width: max(@module-width, @reporter-width);
+@status-owner-width: max(@status-width, @owner-width);
+@title-comment-module-reporter-width: max(@title-width, @comment-width,
+  (@module-width + @reporter-width) );
+@status-owner-severity-width: max(@status-width, @owner-width, 
+  @severity-width);
+@all-attributes-width: max(@title-width, @comment-width, 
+  (@module-width + @reporter-width), (@status-width + @owner-width));
+
+.horizontal() {
+  flex-direction: row;        -webkit-flex-direction: row;
+}
+
+.vertical() {
+  // Let the wrapper flex vertically, so we get 2 rows
+  flex-direction: column;     -webkit-flex-direction: column;
+  // can't have the children grow, since this now means vertical growth
+  div {
+    flex-grow: 0;  -webkit-flex-grow: 0;
+  }
+}
+
+.vertical-growing() {
+  .vertical();
+  > div {
+    // Let immediate child divs grow horizontally, 100% to fill the wrapper
+    width: 100%;
+  }
+}
+
+/*
+ * Media breaks.
+ */
+
+// First break: as many 2-row fields as possible. This will leave Severity
+// and Dates still horizontal, as they are odd numbered
+@media all and (max-width: (@margin-width * 2 + @index-width
+  + @title-width + @comment-width + @module-width + @reporter-width
+  + @status-width + @owner-width + @severity-width + @icon-width * 2
+  + @date-width * 3) ) {
+
+  .title-comment {
+    .vertical-growing();
+    width: @title-comment-width;
+  }
+  .module-reporter, .status-owner {
+    .vertical();
+  }
+}
+
+// Next: as many 3-rows as possible
+@media all and (max-width: (@margin-width * 2 + @index-width
+  + @title-comment-width + @module-reporter-width
+  + @status-owner-width  + @severity-width
+  + @icon-width * 2 + @date-width * 3) ) {
+
+  // Change module-report back to horizontal, keep it under title and comment
+  // So, we have 3 rows: title, comment, module-reporter
+  .module-reporter {
+    .horizontal();
+  }
+  .title-comment-module-reporter {
+    .vertical-growing();
+    width: @title-comment-module-reporter-width;
+  }
+
+  // Line up status, owner, severity into the next column
+  .status-owner-severity {
+    .vertical();
+  }
+  // Line up all icons in one column, even though there's only two of them
+  .icons {
+    .vertical();
+  }
+  // Line up all dates in one column
+  .dates {
+    .vertical();
+  }
+}
+
+// Last break: 4 columns: index, attributes, icons, dates
+@media all and (max-width: (@margin-width * 2 + @index-width
+  + @title-comment-module-reporter-width + @status-owner-severity-width
+  + @icon-width + @date-width) ) {
+
+  // looks better with a little padding on mobile devices
+  .table-row {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  // All attributes: title, comment, module-reporter, status-owner, severity
+  .attributes {
+    .vertical-growing();
+    width: @all-attributes-width;
+  }
+  .module-reporter, .status-owner {
+    .horizontal();
+  }
+}
+
+/*
+ * General good-look styles
+ */
+.table-row {
+  border-bottom: 1px solid #e0e0e0;
+  border-collapse: collapse;
+  padding-top: 2px;
+}
+
+.table-row.header {
+  background-color: #FFEEDB;
+  font-weight: bold;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.glyphicon {
+  color: #DDDDDD;
+}
+
+.header .glyphicon {
+  color: #333
+}
+
+.glyphicon-eye-open.active {
+  color: blue;
+}
+
+.glyphicon-comment.active {
+  color: #3EBB0D;
+}
+
+.glyphicon:hover {
+  color: #666;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.reporter {
+  color: #999999;
+}
+.comment {
+  font-style: italic;
+}
+
+.severity.high { color: red; }
+.severity.medium { color: blue; }
+.severity.low { color: green; }

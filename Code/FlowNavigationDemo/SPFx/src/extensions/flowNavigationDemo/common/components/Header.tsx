@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
+import { FontIcon } from 'office-ui-fabric-react/lib/Icon';
 import ILink from '../model/ILink';
 
 import styles from './HeaderFooter.module.scss';
@@ -19,12 +19,13 @@ export class Header extends React.Component<IHeaderProps, {}> {
     return (
       <div className={styles.topNav}>
         {/* Render hamburger menu */}
+        <input type="checkbox" id="show-menu" role="button" />
         <label htmlFor="show-menu" className={styles["show-menu"]}>
           <div className={styles["show-menu"]}><div className={styles.hamburger}>
-            <div></div><div></div><div></div>
+            Menu<FontIcon iconName="TriangleSolidDown12" className={styles.closed} /><FontIcon iconName="TriangleSolidUp12" className={styles.open} />
           </div></div>
         </label>
-        <input type="checkbox" id="show-menu" role="button" />
+
         {/* Render the main menu */}
         <ul>
           {this.props.links.map(l => (

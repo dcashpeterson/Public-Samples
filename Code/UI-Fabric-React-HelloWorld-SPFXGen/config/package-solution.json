@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "ui-fabric-react-hello-world-spfx-gen-client-side-solution",
+    "id": "7fe97028-4ee2-46bb-87fc-c16dcded52f4",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "isDomainIsolated": false
+  },
+  "paths": {
+    "zippedPackage": "solution/ui-fabric-react-hello-world-spfx-gen.sppkg"
+  }
+}

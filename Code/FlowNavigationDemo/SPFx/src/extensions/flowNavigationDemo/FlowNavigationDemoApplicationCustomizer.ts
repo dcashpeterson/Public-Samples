@@ -1,33 +1,34 @@
 // SPFx imports
 import { override } from '@microsoft/decorators';
-import { Log } from '@microsoft/sp-core-library';
 import {
-  BaseApplicationCustomizer, PlaceholderContent, PlaceholderName, ApplicationCustomizerContext
+  BaseApplicationCustomizer, PlaceholderName, ApplicationCustomizerContext
 } from '@microsoft/sp-application-base';
-import { Dialog } from '@microsoft/sp-dialog';
-import { escape } from '@microsoft/sp-lodash-subset';
 
 import HeaderFooterDataService from './common/services/HeaderFooterDataService';
 import IHeaderFooterData from './common/model/IHeaderFooterData';
-import ComponentManager from './common/components/ComponentManager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as strings from 'FlowNavigationDemoApplicationCustomizerStrings';
 import { sp } from "@pnp/sp";
-import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
+import { Logger, LogLevel } from "@pnp/logging";
 import { Header } from './common/components/Header';
 
 const LOG_SOURCE: string = 'FlowNavigationDemoApplicationCustomizer';
-
 
 export interface IFlowNavigationDemoApplicationCustomizerProperties {
   Top: string;
   Bottom: string;
 }
 
+
+///This code is adapted from the PnP SPFx Dev Extension Library
+///React Menu Footer Classic Modern
+///https://github.com/SharePoint/sp-dev-fx-extensions/tree/master/samples/react-menu-footer-classic-modern
+
 export default class FlowNavigationDemoApplicationCustomizer
   extends BaseApplicationCustomizer<IFlowNavigationDemoApplicationCustomizerProperties> {
 
+  //Set up private variables to use later
   private topElementId: string = "FlowNavigationDemoApplicationCustomizerHeader";
   private bottomElementId: string = "FlowNavigationDemoApplicationCustomizerFooter";
   private className = "FlowNavigationDemoApplicationContainer";
@@ -36,11 +37,15 @@ export default class FlowNavigationDemoApplicationCustomizer
 
   @override
   public onInit(): Promise<void> {
+    //Set up SPFX for use later
     sp.setup({
       spfxContext: this.context
     });
+
+    //Call the Service that gets the data from the JSON file
     HeaderFooterDataService.get(this.navUrl)
       .then((data: IHeaderFooterData) => {
+        //Set the data to the navigationData object
         this.navigationData = data;
       });
     this.render();
@@ -49,6 +54,7 @@ export default class FlowNavigationDemoApplicationCustomizer
 
   @override
   public onDispose(): Promise<void> {
+    //Deal with the partial page reload issue
     this.context.application.navigatedEvent.remove(this, this.navigationEventHandler);
 
     (window as any).isNavigatedEventSubscribed = false;
@@ -57,6 +63,7 @@ export default class FlowNavigationDemoApplicationCustomizer
   }
 
   private navigationEventHandler(): void {
+    //Deal with the partial page reload issue
     setTimeout(() => {
       try {
         if ((window as any).isNavigatedEventSubscribed && (window as any).currentPage !== window.location.href) {
@@ -69,10 +76,12 @@ export default class FlowNavigationDemoApplicationCustomizer
     }, 50);
   }
 
+  //Get the container of the extension by ID
   private getContainer(elementId: string): HTMLElement {
     return document.getElementById(elementId);
   }
 
+  //Delete the container of the extention by ID
   private deleteContainer(elementId: string) {
     let container = this.getContainer(elementId);
     Logger.write(`Deleting existing ${elementId} Container! [${strings.Title} - ${LOG_SOURCE}]`, LogLevel.Info);
@@ -81,6 +90,7 @@ export default class FlowNavigationDemoApplicationCustomizer
 
   private render(): void {
     let error = false;
+    //Check if you the placeholder is there. If not throw an error.
     try {
       if (this.context.placeholderProvider.tryCreateContent == undefined) {
         error = true;
@@ -89,6 +99,7 @@ export default class FlowNavigationDemoApplicationCustomizer
       error = true;
     }
 
+    //If there is a placeholder then register the Navigation Event to avoid multiple loading.
     if (error) {
       (window as any).currentPage = '';
       this.navigationEventHandler();
@@ -101,10 +112,12 @@ export default class FlowNavigationDemoApplicationCustomizer
     }
   }
 
+  //Check to see if the component is installed.
   private async isInstalled(): Promise<boolean> {
     try {
+      //Gets the component by Title. This is the title in the ClientSideInstance.xml file
       let response = await sp.web.userCustomActions.filter("Title eq 'FlowNavigationDemo'").get();
-      let x = await sp.web.userCustomActions.get();
+      //let x = await sp.web.userCustomActions.get();
       if (response != undefined && response.length > 0) {
         return true;
       }
@@ -116,13 +129,17 @@ export default class FlowNavigationDemoApplicationCustomizer
     }
   }
 
+  //Render compopnents
   private async renderContainer(context: ApplicationCustomizerContext): Promise<void> {
     try {
+      //Check if the compoent is installed
       let isInstalled = await this.isInstalled();
       if (isInstalled) {
+        //Create a reference to the top placeholder
         let placeholder = context.placeholderProvider.tryCreateContent(PlaceholderName.Top, { onDispose: this.onDispose });
         if (placeholder != undefined) {
           Logger.write(`Rendering picker! [${strings.Title} - ${LOG_SOURCE}]`, LogLevel.Info);
+          //Check if the container exists if not create it
           let container = this.getContainer(this.topElementId);
           if (container == undefined) {
             container = document.createElement("DIV");
@@ -130,6 +147,7 @@ export default class FlowNavigationDemoApplicationCustomizer
             container.className = this.className;
             placeholder.domElement.appendChild(container);
           }
+          //Create Header Element and pass in header data
           let element = React.createElement(Header, { links: this.navigationData.headerLinks });
           let elements: any = [];
           elements.push(element);
@@ -140,10 +158,11 @@ export default class FlowNavigationDemoApplicationCustomizer
         }
 
         placeholder = undefined;
-
+        //Create a reference to the bottom placeholder
         placeholder = context.placeholderProvider.tryCreateContent(PlaceholderName.Bottom, { onDispose: this.onDispose });
         if (placeholder != undefined) {
           Logger.write(`Rendering picker! [${strings.Title} - ${LOG_SOURCE}]`, LogLevel.Info);
+          //Check if the container exists if not create it
           let container = this.getContainer(this.bottomElementId);
           if (container == undefined) {
             container = document.createElement("DIV");
@@ -151,6 +170,7 @@ export default class FlowNavigationDemoApplicationCustomizer
             container.className = this.className;
             placeholder.domElement.appendChild(container);
           }
+          //Create Header Element and pass in footer data
           let element = React.createElement(Header, { links: this.navigationData.footerLinks });
           let elements: any = [];
           elements.push(element);
@@ -160,6 +180,7 @@ export default class FlowNavigationDemoApplicationCustomizer
           Logger.write(`Bottom Placeholder not available! [${strings.Title} - ${LOG_SOURCE}]`, LogLevel.Error);
         }
       } else {
+        //if it already exists remove it
         this.deleteContainer(this.topElementId);
         this.deleteContainer(this.bottomElementId);
       }

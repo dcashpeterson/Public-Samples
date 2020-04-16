@@ -1,0 +1,29 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/sp/site-design-script-actions.schema.json",
+  "actions": [
+    {
+      "verb": "createSPList",
+      "listName": "Site Pages",
+      "templateType": 119,
+      "subactions": [
+        {
+          "verb": "addSPView",
+          "name": "All Pages",
+          "viewFields": [
+            "DocIcon",
+            "LinkFilename",
+            "Editor",
+            "Modified",
+            "PromotedState",
+            "CheckoutUser",
+            "_UIVersionString"
+          ],
+          "query": "<OrderBy><FieldRef Name=\"Modified\" Ascending=\"FALSE\" /></OrderBy><GroupBy><FieldRef Name=\"PromotedState\" Ascending=\"TRUE\" /></GroupBy>",
+          "rowLimit": 30,
+          "isPaged": true,
+          "makeDefault": true
+        }
+      ]
+    }
+  ]
+}
