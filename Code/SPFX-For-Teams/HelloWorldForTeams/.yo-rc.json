@@ -3,10 +3,13 @@
     "framework": "react",
     "pnpFramework": "reactjs.plus",
     "pnp-libraries": [
-      "rush@3.3"
+      "@pnp/pnpjs",
+      "rush@3.7"
     ],
-    "pnp-ci": [],
-    "pnp-vetting": [],
+    "pnp-ci": "no-devops",
+    "pnp-vetting": [
+      "webpack-analyzer"
+    ],
     "spfxenv": "spo",
     "pnp-testing": []
   },
@@ -14,9 +17,9 @@
     "environment": "spo",
     "framework": "react",
     "isCreatingSolution": true,
-    "version": "1.8.2",
-    "libraryName": "teamsdemo-9",
-    "libraryId": "1677ecbb-e194-43a8-b558-d8a369c63d7b",
+    "version": "1.10.0",
+    "libraryName": "hello-world-for-teams",
+    "libraryId": "d48e6c3f-674d-4c96-a032-c3ffa490400b",
     "packageManager": "npm",
     "isDomainIsolated": false,
     "componentType": "webpart"
