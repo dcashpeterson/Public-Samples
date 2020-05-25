@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+    <ClientSideComponentInstance
+        Title="GlobalNavSpFx"
+        Location="ClientSideExtension.ApplicationCustomizer"
+        ComponentId="d6858fbd-e40e-4479-8c38-a455b096c1ec"
+        Properties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
+    </ClientSideComponentInstance>
+</Elements>

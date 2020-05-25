@@ -1,0 +1,90 @@
+{
+  "footerLinks":[{
+      "name":"Privacy Statement",
+      "url":"https://derekcp.sharepoint.com/sites/TheLanding",
+      "children":[]
+    },{
+      "name":"Ethics",
+      "url":"https://derekcp.sharepoint.com/sites/TheLanding",
+      "children":[]
+    }],
+  "headerLinks":[
+    {
+      "name":"Home",
+      "url":"https://derekcp.sharepoint.com/sites/TheLanding",
+      "children":[]
+    },
+    {
+      "name":"Who We Are",
+      "url":"https://derekcp.sharepoint.com/sites/TheLanding",
+      "children":[
+        {
+          "name":"Corporate Philosophy",
+          "url":"https://www.boston.com/"
+        },
+        {
+          "name":"Executive Team",
+          "url":"https://www.boston.com/"
+        },
+        {
+          "name":"Global Code of Conduct",
+          "url":"https://www.boston.com/"
+        },
+        {
+          "name":"Holiday Calendar",
+          "url":"https://www.boston.com/"
+        }
+      ]
+    },
+    {
+      "name":"Departments",
+      "url":"https://derekcp.sharepoint.com/sites/TheLanding",
+      "children":[
+        {
+          "name":"Human Resources",
+          "url":"https://www.boston.com/"
+        },
+        {
+          "name":"Finance",
+          "url":"https://www.boston.com/"
+        },
+        {
+          "name":"Corporate Communications",
+          "url":"https://www.boston.com/"
+        },
+        {
+          "name":"Research",
+          "url":"https://www.boston.com/"
+        }
+      ]
+    },
+    {
+      "name":"What's Happening",
+      "url":"https://www.boston.com/",
+      "children":[
+        {
+          "name":"Boston",
+          "url":"https://www.boston.com/"
+        },
+        {
+          "name":"New York",
+          "url":"https://www.boston.com/"
+        },
+        {
+          "name":"Chicago",
+          "url":"https://www.boston.com/"
+        }
+      ]
+    },
+    {
+      "name":"Find It",
+      "url":"https://derekcp.sharepoint.com/sites/TheLanding",
+      "children":[]
+    },
+    {
+      "name":"My SharePoint",
+      "url":"https://derekcp.sharepoint.com/_layouts/15/sharepoint.aspx",
+      "children":[]
+    }
+  ]
+}
