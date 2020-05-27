@@ -8,8 +8,8 @@
   ],
   "version": "4.43.0",
   "hash": "0a5cc8106c8111586d72",
-  "time": 3073,
-  "builtAt": 1590526762147,
+  "time": 586,
+  "builtAt": 1590596160892,
   "publicPath": "",
   "outputPath": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Classic/dist",
   "assetsByChunkName": {
@@ -99,9 +99,9 @@
           "chunks": [
             0
           ],
-          "issuer": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Header.js",
+          "issuer": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Footer.js",
           "issuerId": null,
-          "issuerName": "../Common/lib/component/Header.js",
+          "issuerName": "../Common/lib/component/Footer.js",
           "issuerPath": [
             {
               "id": 7,
@@ -115,8 +115,8 @@
             },
             {
               "id": null,
-              "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Header.js",
-              "name": "../Common/lib/component/Header.js"
+              "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Footer.js",
+              "name": "../Common/lib/component/Footer.js"
             }
           ],
           "failed": false,
@@ -1123,8 +1123,8 @@
             },
             {
               "id": null,
-              "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Header.js",
-              "name": "../Common/lib/component/Header.js"
+              "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Footer.js",
+              "name": "../Common/lib/component/Footer.js"
             },
             {
               "id": 0,
@@ -1588,8 +1588,8 @@
             },
             {
               "id": null,
-              "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Header.js",
-              "name": "../Common/lib/component/Header.js"
+              "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Footer.js",
+              "name": "../Common/lib/component/Footer.js"
             },
             {
               "id": 0,
@@ -2127,9 +2127,9 @@
       "chunks": [
         0
       ],
-      "issuer": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Header.js",
+      "issuer": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Footer.js",
       "issuerId": null,
-      "issuerName": "../Common/lib/component/Header.js",
+      "issuerName": "../Common/lib/component/Footer.js",
       "issuerPath": [
         {
           "id": 7,
@@ -2143,8 +2143,8 @@
         },
         {
           "id": null,
-          "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Header.js",
-          "name": "../Common/lib/component/Header.js"
+          "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Footer.js",
+          "name": "../Common/lib/component/Footer.js"
         }
       ],
       "failed": false,
@@ -3151,8 +3151,8 @@
         },
         {
           "id": null,
-          "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Header.js",
-          "name": "../Common/lib/component/Header.js"
+          "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Footer.js",
+          "name": "../Common/lib/component/Footer.js"
         },
         {
           "id": 0,
@@ -3616,8 +3616,8 @@
         },
         {
           "id": null,
-          "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Header.js",
-          "name": "../Common/lib/component/Header.js"
+          "identifier": "/Users/dcashpeterson/Documents/Projects/Public-Samples/Code/GlobalNavSPFx/Common/lib/component/Footer.js",
+          "name": "../Common/lib/component/Footer.js"
         },
         {
           "id": 0,

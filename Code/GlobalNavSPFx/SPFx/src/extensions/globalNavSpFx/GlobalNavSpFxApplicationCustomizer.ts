@@ -7,11 +7,11 @@ require('react');
 require('react-dom');
 require("@dcashpeterson/globalnavcommon");
 import { sp } from "@pnp/sp";
-import { Launcher, ILauncher, ILauncherProps, HeaderFooterDataService, IHeaderFooterData } from "@dcashpeterson/globalnavcommon";
+
 import * as strings from 'GlobalNavSpFxApplicationCustomizerStrings';
 import Header, { IHeaderProps } from '@dcashpeterson/globalnavcommon/lib/component/Header';
 import { IFooterProps, Footer } from '@dcashpeterson/globalnavcommon/lib/component/Footer';
-
+import { Launcher, ILauncher, ILauncherProps, HeaderFooterDataService, IHeaderFooterData } from "@dcashpeterson/globalnavcommon";
 const LOG_SOURCE: string = 'GlobalNavSpFxApplicationCustomizer';
 
 
