@@ -53,8 +53,6 @@ module.exports = {
     }]
   },
   externals: [
-    "@dcashpeterson/globalnavcommon",
-    "react",
-    "react-dom"
+
   ]
 };
