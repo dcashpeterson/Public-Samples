@@ -21,7 +21,7 @@
     "@types/webpack-env": ">=1.12.1 <1.14.0",
     "@types/es6-promise": "3.3.0",
     "style-loader": "~0.13.2",
-    "node-sass": "~4.7.2",
+    "node-sass": "~7.0.0",
     "sass-loader": "~4.1.1"
   }
 }
