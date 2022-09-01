@@ -7,7 +7,7 @@ Thank you for coming to my session on using Microsoft 365 Learning Pathways. I h
 - [Getting Started with Learning Pathways](https://docs.microsoft.com/en-us/office365/customlearning/)
 - [Microsoft 365 Lookbook](https://lookbook.Microsoft.com)
 - [Architectural Overview](https://www.youtube.com/watch?v=S-QFDNRZkGE)
-- [Ask Sympraxis](https://youtu.be/OG528easQK8)
+- [Ask Sympraxis - Microsoft 365 Learning Pathways](https://sympraxisconsulting.com/2020/08/26/microsoft-365-learning-pathways/)
 - [Creating Custom Content Packs](https://symp.info/M365LP-CustomContentPack)
 - [Twitter - @spdcp](https://www.twitter.com/spdcp)
 - [Twitter - @EEMancini](https://www.twitter.com/EEMancini)
