@@ -9,4 +9,5 @@ Thank you for coming to my session on using Microsoft 365 Learning Pathways. I h
 - [Architectural Overview](https://www.youtube.com/watch?v=S-QFDNRZkGE)
 - [Ask Sympraxis](https://youtu.be/OG528easQK8)
 - [Creating Custom Content Packs](https://symp.info/M365LP-CustomContentPack)
-- [Twitter](https://www.twitter.com/spdcp)
+- [Twitter - @spdcp](https://www.twitter.com/spdcp)
+- [Twitter - @EEMancini](https://www.twitter.com/EEMancini)
