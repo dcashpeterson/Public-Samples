@@ -1,0 +1,17 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.14.0",
+    "libraryName": "ace-demo",
+    "libraryId": "6ddfa6b5-7476-4c65-b466-4756c9f7e9dd",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "ace-demo",
+    "solutionShortDescription": "ace-demo description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "adaptiveCardExtension",
+    "aceTemplateType": "Image"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "intro-to-teams-dev-demo-1-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/introToTeamsDevDemo1/IntroToTeamsDevDemo1WebPart.js",
+          "manifest": "./src/webparts/introToTeamsDevDemo1/IntroToTeamsDevDemo1WebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "IntroToTeamsDevDemo1WebPartStrings": "lib/webparts/introToTeamsDevDemo1/loc/{locale}.js"
+  }
+}
