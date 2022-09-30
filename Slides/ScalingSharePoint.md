@@ -1,5 +1,5 @@
 
-# Scaling SharePoint: Meeting the Demands of Exponential Growth 
+# Scaling SharePoint: Meeting the Demands of Exponential Growth
 
 Thank you for attending our session on Scaling SharePoint. We hope you enjoyed the session. Here is a list of the resources we referenced in the session.
 
@@ -14,12 +14,12 @@ Thank you for attending our session on Scaling SharePoint. We hope you enjoyed t
 ## Customer Experience Resources
 
 - [User Interviews](https://www.nngroup.com/articles/user-interviews/)
-- [Good Customer Experience Demands Organizational Fluidity](https://symp.info/CXOrganizationalFluidity) 
+- [Good Customer Experience Demands Organizational Fluidity](https://symp.info/CXOrganizationalFluidity)
 - [User Experience vs. Customer Experience: What's the Difference?](https://symp.info/UXvsCX)
 
 ## Governance Resources
 
-- [Sue Hanley’s Governance Policies & Guidelines Questions](http://tiny.cc/SharePointGovQuestions)
+- [Sue Hanley’s Governance Policies & Guidelines Questions](http://tiny.cc/M365GovQuestions)
 
 ## Template Resources
 
@@ -30,5 +30,6 @@ Thank you for attending our session on Scaling SharePoint. We hope you enjoyed t
 - [PnP Provisioning Template](https://symp.info/PnPProvisioning)
 
 ## Contact Information
+
 - [Twitter - @spdcp](https://www.twitter.com/spdcp)
 - [Twitter - @EEMancini](https://www.twitter.com/EEMancini)
