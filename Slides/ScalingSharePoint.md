@@ -17,9 +17,10 @@ Thank you for attending our session on Scaling SharePoint. We hope you enjoyed t
 - [Good Customer Experience Demands Organizational Fluidity](https://symp.info/CXOrganizationalFluidity)
 - [User Experience vs. Customer Experience: What's the Difference?](https://symp.info/UXvsCX)
 
-## Governance Resources
+## Community Resources
 
 - [Sue Hanley’s Governance Policies & Guidelines Questions](http://tiny.cc/M365GovQuestions)
+- [Where Yammer Excels over Teams](https://emilymancini.com/2022/07/08/where-yammer-excels-over-teams/)
 
 ## Template Resources
 
