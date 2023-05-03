@@ -1,0 +1,27 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "code-once-use-everywhere-demo-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/codeOnceUseEverywhereDemo/CodeOnceUseEverywhereDemoWebPart.js",
+          "manifest": "./src/webparts/codeOnceUseEverywhereDemo/CodeOnceUseEverywhereDemoWebPart.manifest.json"
+        }
+      ]
+    },
+    "code-once-use-anywhere-ace-adaptive-card-extension": {
+      "components": [
+        {
+          "entrypoint": "./lib/adaptiveCardExtensions/codeOnceUseAnywhereAce/CodeOnceUseAnywhereAceAdaptiveCardExtension.js",
+          "manifest": "./src/adaptiveCardExtensions/codeOnceUseAnywhereAce/CodeOnceUseAnywhereAceAdaptiveCardExtension.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "CodeOnceUseEverywhereDemoWebPartStrings": "lib/webparts/codeOnceUseEverywhereDemo/loc/{locale}.js",
+    "CodeOnceUseAnywhereAceAdaptiveCardExtensionStrings": "lib/adaptiveCardExtensions/codeOnceUseAnywhereAce/loc/{locale}.js"
+  }
+}

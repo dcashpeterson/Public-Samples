@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "Code Once Use Everywhere Demo",
+    "id": "1eb4ecb0-5d72-406c-af0c-7dd6893b4f64",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.17.1"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "code-once-use-everywhere description"
+      },
+      "longDescription": {
+        "default": "code-once-use-everywhere description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "code-once-use-everywhere Feature",
+        "description": "The feature that activates elements of the code-once-use-everywhere solution.",
+        "id": "159ccb64-e8fe-4ce4-9e77-7bebc25acb63",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/code-once-use-everywhere.sppkg"
+  }
+}

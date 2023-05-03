@@ -1,0 +1,8 @@
+@use 'sass:meta';
+@import '~@fluentui/react/dist/sass/References.scss';
+
+.codeOnceUseEverywhereDemo {
+  :global {
+    @include meta.load-css('node_modules/@n8d/htwoo-core/lib/sass/htwoo-core');
+  }
+}

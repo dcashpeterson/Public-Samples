@@ -1,0 +1,22 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": false,
+    "nodeVersion": "16.19.1",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.9.1"
+    },
+    "version": "1.17.1",
+    "libraryName": "code-once-use-everywhere",
+    "libraryId": "1eb4ecb0-5d72-406c-af0c-7dd6893b4f64",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "code-once-use-everywhere",
+    "solutionShortDescription": "code-once-use-everywhere description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "adaptiveCardExtension",
+    "aceTemplateType": "PrimaryText"
+  }
+}
