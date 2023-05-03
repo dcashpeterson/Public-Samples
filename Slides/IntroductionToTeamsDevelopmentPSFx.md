@@ -2,7 +2,8 @@
 
 Thank you for coming to my session on creating custom applications in Teams using SPFx. I hope you enjoyed the session. Here is a list of the resources I posted in my session.
 
-- [Demo Source Code](https://github.com/dcashpeterson/Public-Samples/tree/master/Code/IntroToTeamsDev-Demo1)
+- [Demo Source Code](https://symp.info/CodeOnceUseEverywhere)
+- [Community Demo](https://www.youtube.com/watch?v=CngGpeXVsUo)
 - [What’s a Dev Tenant](https://symp.info/DevTenant)
 - [SPFx Setup](https://symp.info/devenvsetup)
 - [Teams Development](https://symp.info/teamsDevDocs)
