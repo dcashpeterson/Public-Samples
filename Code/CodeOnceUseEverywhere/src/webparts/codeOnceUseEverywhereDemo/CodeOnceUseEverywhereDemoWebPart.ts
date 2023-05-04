@@ -58,9 +58,11 @@ export default class CodeOnceUseEverywhereDemoWebPart extends BaseClientSideWebP
 
     //Initialize Service
     await COService.Init(this.context.serviceScope);
-    COService.webUrl = "https://derekcp.sharepoint.com/sites/GlobalSalesTeams";
-    this._environment = await this._getEnvironment();
-    this._clients = await COService.GetItems(this._environment, this.context.pageContext.user.loginName)
+    if (COService.ready) {
+      this._environment = await this._getEnvironment();
+      this._clients = await COService.GetItems(this._environment, this.context.pageContext.user.loginName)
+    }
+
 
     return;
   }

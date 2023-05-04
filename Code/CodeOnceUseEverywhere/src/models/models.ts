@@ -1,7 +1,7 @@
 import { ChoiceFieldFormatType } from "@pnp/sp/fields";
 
 export enum Lists {
-  DEMOITEMSLIST = "Clients"
+  DEMOITEMSLIST = "Pipeline"
 }
 export enum Environment {
   SHAREPOINT = "SharePoint",
@@ -10,54 +10,57 @@ export enum Environment {
   OFFICE = "Office",
   OUTLOOK = "Outlook",
   LOCALHOST = "Localhost",
-  ACE = "ACE"
+  ACE = "Ace"
 }
 
 export interface IClient {
   id: number;
-  title: string;
-  jobtitle: string;
-  email: string;
-  company: string;
-  address: string;
-  city: string;
-  stateprovince: string;
-  postalcode: string;
-  country: string;
-  salesleadname: string;
-  salesleadid: number;
+  companyName: string;
+  contactName: string;
+  contactTitle: string;
+  contactEmail: string;
+  contactPhone: string;
+  projectName: string;
+  projectDescription: string;
+  salesLeadName: string;
+  salesLeadId: number;
+  pipelineStatus: string;
+  lastContactDate: string;
 }
 
 export class Client implements IClient {
   constructor(
     public id: number = 0,
-    public title: string = "",
-    public jobtitle: string = "",
-    public email: string = "",
-    public company: string = "",
-    public address: string = "",
-    public city: string = "",
-    public stateprovince: string = "",
-    public postalcode: string = "",
-    public country: string = "",
-    public salesleadname: string = "",
-    public salesleadid: number = 0
+    public companyName: string = "",
+    public contactName: string = "",
+    public contactTitle: string = "",
+    public contactEmail: string = "",
+    public contactPhone: string = "",
+    public projectName: string = "",
+    public projectDescription: string = "",
+    public salesLeadName: string = "",
+    public salesLeadId: number = 0,
+    public pipelineStatus: string = "",
+    public lastContactDate: string = ""
   ) { }
 }
 
 
 export interface IFieldList {
-  name: string;
-  props: { FieldTypeKind: number; choices?: string[], richText?: boolean, editFormat?: ChoiceFieldFormatType, minValue?: number, maxValue?: number, localID?: number };
+  internalName: string;
+  displayName: string;
+  props: { FieldTypeKind: number, choices?: string[], richText?: boolean, editFormat?: ChoiceFieldFormatType, minValue?: number, maxValue?: number, localID?: number };
 }
 
 export const ListFields: IFieldList[] = [
-  { name: "MultiLineText", props: { FieldTypeKind: 3, richText: false } },
-  { name: "ChoiceFieldDDL", props: { FieldTypeKind: 6, choices: ["Choice 1", "Choice 2", "Choice 3"], editFormat: ChoiceFieldFormatType.Dropdown } },
-  { name: "ChoiceFieldRadio", props: { FieldTypeKind: 6, choices: ["Radio 1", "Radio 2", "Radio 3"], editFormat: ChoiceFieldFormatType.RadioButtons } },
-  { name: "ChoiceFieldCheckbox", props: { FieldTypeKind: 15, choices: ["Checkbox 1", "Checkbox 2", "Checkbox 3"], editFormat: ChoiceFieldFormatType.Dropdown } },
-  { name: "CurrencyField", props: { FieldTypeKind: 10, minValue: 0, maxValue: 100000, localID: 1033 } },
-  { name: "DateTimeField", props: { FieldTypeKind: 4 } },
-  { name: "NumberField", props: { FieldTypeKind: 9, minValue: 0, maxValue: 100000 } },
-  { name: "YesNoField", props: { FieldTypeKind: 8 } }
+  { internalName: "CompanyName", displayName: "Company Name", props: { FieldTypeKind: 2 } },
+  { internalName: "ContactName", displayName: "Contact Name", props: { FieldTypeKind: 2 } },
+  { internalName: "ContactTitle", displayName: "Contact Title", props: { FieldTypeKind: 2 } },
+  { internalName: "ContactEmail", displayName: "Contact Email", props: { FieldTypeKind: 2 } },
+  { internalName: "ContactPhone", displayName: "Contact Phone", props: { FieldTypeKind: 2 } },
+  { internalName: "ProjectName", displayName: "Project Name", props: { FieldTypeKind: 2 } },
+  { internalName: "ProjectDescription", displayName: "Project Description", props: { FieldTypeKind: 3, richText: false } },
+  { internalName: "SalesLead", displayName: "Sales Lead", props: { FieldTypeKind: 20 } },
+  { internalName: "PipelineStatus", displayName: "Pipeline Status", props: { FieldTypeKind: 6, choices: ["1. Referred", "2. In negotiation", "3. On Hold", "4. Closed - Won", "5. Closed - Lost", "6. Closed - Declined"], editFormat: ChoiceFieldFormatType.Dropdown } },
+  { internalName: "LastContactDate", displayName: "Last Contact Date", props: { FieldTypeKind: 4 } },
 ];

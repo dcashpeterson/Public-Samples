@@ -1,13 +1,13 @@
 import { PageContext } from "@microsoft/sp-page-context";
-import { Client, Environment, IFieldList, ListFields, Lists } from "../models/models";
-import { CalendarType, DateTimeFieldFormatType, DateTimeFieldFriendlyFormatType, UrlFieldFormatType } from "@pnp/sp/fields";
+import { Client, Environment, Lists } from "../models/models";
 import { ServiceKey, ServiceScope } from "@microsoft/sp-core-library";
 import { spfi, SPFI, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/views";
-import { IView } from "@pnp/sp/views";
+import { COConfigService } from "./CodeOnce.Config.Service";
+import { demoWebUrl } from "../models/const";
 
 export interface ICodeOnceService {
   readonly ready: boolean;
@@ -31,15 +31,15 @@ export class CodeOnceService implements ICodeOnceService {
   private _sp: SPFI;
   private _pageContext: PageContext;
   private _ready = false;
-  private _webUrl = "";
+  private _webUrl = demoWebUrl;
 
   public async Init(serviceScope: ServiceScope): Promise<void> {
     try {
       serviceScope.whenFinished(async () => {
         this._pageContext = serviceScope.consume(PageContext.serviceKey);
         this._sp = spfi().using(SPFx({ pageContext: this._pageContext }));
+        await COConfigService.Init(serviceScope);
         this._ready = true;
-        await this._configList(Lists.DEMOITEMSLIST, "", ListFields);
       });
     } catch (err) {
       console.error(`${this.LOG_SOURCE} (init) - ${err}`);
@@ -69,92 +69,6 @@ export class CodeOnceService implements ICodeOnceService {
         `${this.LOG_SOURCE} (webUrl) - cannot connect to new web - ${err}`
       );
     }
-  }
-
-  public async _configList(
-    listName: string,
-    listDescription: string,
-    fieldList: IFieldList[]
-  ): Promise<boolean> {
-    let retVal = false;
-    try {
-      const list = await this._sp.web.lists.ensure(listName, listDescription, 100, false, { OnQuickLaunch: true });
-      if (list.created) {
-        for (let i = 0; i < fieldList.length; i++) {
-          if (fieldList[i].props.FieldTypeKind === 2) {
-            await this._sp.web.lists
-              .getById(list.data.Id)
-              .fields.addText(fieldList[i].name);
-          } else if (fieldList[i].props.FieldTypeKind === 3) {
-            await this._sp.web.lists
-              .getById(list.data.Id)
-              .fields.createFieldAsXml(
-                `<Field Type="Note" Name="${fieldList[i].name}" DisplayName="${fieldList[i].name}" Required="FALSE" RichText="${fieldList[i].props.richText}" RichTextMode="FullHtml" />`
-              );
-          } else if (fieldList[i].props.FieldTypeKind === 4) {
-            await this._sp.web.lists
-              .getById(list.data.Id)
-              .fields.addDateTime(fieldList[i].name, {
-                DisplayFormat: DateTimeFieldFormatType.DateOnly,
-                DateTimeCalendarType: CalendarType.Gregorian,
-                FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled,
-              });
-          } else if (fieldList[i].props.FieldTypeKind === 6) {
-            await this._sp.web.lists
-              .getById(list.data.Id)
-              .fields.addChoice(fieldList[i].name, {
-                Choices: fieldList[i].props.choices,
-                EditFormat: fieldList[i].props.editFormat
-              });
-          } else if (fieldList[i].props.FieldTypeKind === 8) {
-            await this._sp.web.lists
-              .getById(list.data.Id)
-              .fields.addBoolean(fieldList[i].name);
-          } else if (fieldList[i].props.FieldTypeKind === 9) {
-            await this._sp.web.lists
-              .getById(list.data.Id)
-              .fields.addNumber(fieldList[i].name, {
-                MinimumValue: fieldList[i].props.minValue,
-                MaximumValue: fieldList[i].props.maxValue
-              });
-          } else if (fieldList[i].props.FieldTypeKind === 10) {
-            await this._sp.web.lists
-              .getById(list.data.Id)
-              .fields.addCurrency(fieldList[i].name, {
-                MinimumValue: fieldList[i].props.minValue,
-                MaximumValue: fieldList[i].props.maxValue,
-                CurrencyLocaleId: fieldList[i].props.localID
-              });
-          } else if (fieldList[i].props.FieldTypeKind === 11) {
-            await this._sp.web.lists
-              .getById(list.data.Id)
-              .fields.addUrl(fieldList[i].name, {
-                DisplayFormat: UrlFieldFormatType.Hyperlink,
-              });
-          } else if (fieldList[i].props.FieldTypeKind === 12) {
-            await this._sp.web.lists
-              .getById(list.data.Id)
-              .fields.addNumber(fieldList[i].name);
-          } else if (fieldList[i].props.FieldTypeKind === 15) {
-            await this._sp.web.lists
-              .getById(list.data.Id)
-              .fields.addMultiChoice(fieldList[i].name, {
-                Choices: fieldList[i].props.choices,
-                FillInChoice: false,
-
-              });
-          }
-        }
-        const view: IView = await this._sp.web.lists.getById(list.data.Id).defaultView;
-        for (let i = 0; i < fieldList.length; i++) {
-          await view.fields.add(fieldList[i].name);
-        }
-      }
-      retVal = true;
-    } catch (err) {
-      console.error(`${this.LOG_SOURCE}:(createList) - ${err}`);
-    }
-    return retVal;
   }
 
   public async GetItems(environment: Environment, userId?: string): Promise<Client[]> {

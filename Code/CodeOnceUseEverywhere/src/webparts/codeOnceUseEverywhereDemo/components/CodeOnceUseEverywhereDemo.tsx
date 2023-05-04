@@ -25,12 +25,12 @@ export default class CodeOnceUseEverywhereDemo extends React.Component<ICodeOnce
             {this.props.clients.map((c, index) => {
               return (
                 <tr key={index}>
-                  <td>{c.title}</td>
-                  <td>{c.jobtitle}</td>
-                  <td>{c.email}</td>
-                  <td>{c.company}</td>
+                  <td>{c.companyName}</td>
+                  <td>{c.contactEmail}</td>
+                  <td>{c.contactName}</td>
+                  <td>{c.companyName}</td>
                   {(this.props.environment !== Environment.PERSONALAPP) &&
-                    <th>{c.salesleadname}</th>
+                    <th>{c.salesLeadName}</th>
                   }
                 </tr>
               );

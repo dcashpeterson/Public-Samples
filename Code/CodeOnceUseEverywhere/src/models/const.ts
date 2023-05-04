@@ -1,0 +1,1 @@
+export const demoWebUrl: string = "https://derekcp.sharepoint.com/sites/GlobalSalesTeams";

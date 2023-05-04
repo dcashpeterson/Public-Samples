@@ -37,7 +37,6 @@ export default class CodeOnceUseAnywhereAceAdaptiveCardExtension extends BaseAda
   public async onInit(): Promise<void> {
     try {
       await COService.Init(this.context.serviceScope);
-      COService.webUrl = "https://derekcp.sharepoint.com/sites/GlobalSalesTeams";
 
       this.cardNavigator.register(CARD_VIEW_REGISTRY_ID, () => new CardView());
       this.quickViewNavigator.register(QUICK_VIEW_REGISTRY_ID, () => new QuickView());
