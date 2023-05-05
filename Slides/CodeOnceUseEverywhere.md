@@ -10,7 +10,7 @@ Thank you for coming to my session on using SPFx to create applications. I hope 
 
 - [PnP Community Demo](https://www.youtube.com/watch?v=CngGpeXVsUo)
 - [What’s a Dev Tenant](https://symp.info/DevTenant)
-- [HTWOO](https://lab.n8d.studio/htwoo/)
+- [hTWOo](https://lab.n8d.studio/htwoo/)
 
 ## Development Resources
 
