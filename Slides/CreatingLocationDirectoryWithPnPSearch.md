@@ -5,8 +5,7 @@ Thank you for attending my session on Creating a Location Directory using PnP Se
 
 ## Source Code
 
-- [Source Code](https://symp.info/DevTenant)
-
+- [Source Code](https://symp.info/LocationDirectory)
 
 ## Community Resources
 
@@ -14,7 +13,6 @@ Thank you for attending my session on Creating a Location Directory using PnP Se
 - [PnP Modern Search Templating Guidance](https://microsoft-search.github.io/pnp-modern-search/extensibility/templating/)
 - [Using the Modern PnP Search Web Part – Emily Mancini](<https://emilymancini.com/2022/10/26/using-the-modern-pnp-search-web-part/>)
 - [What’s a Dev Tenant](https://symp.info/DevTenant)
-
 
 ## Custom Layout Resources
 
