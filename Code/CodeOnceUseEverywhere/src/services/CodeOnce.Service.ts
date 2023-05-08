@@ -38,9 +38,9 @@ export class CodeOnceService implements ICodeOnceService {
       serviceScope.whenFinished(async () => {
         this._pageContext = serviceScope.consume(PageContext.serviceKey);
         this._sp = spfi().using(SPFx({ pageContext: this._pageContext }));
-        await COConfigService.Init(serviceScope);
-        this._ready = true;
       });
+      await COConfigService.Init(serviceScope);
+      this._ready = true;
     } catch (err) {
       console.error(`${this.LOG_SOURCE} (init) - ${err}`);
     }
@@ -80,7 +80,7 @@ export class CodeOnceService implements ICodeOnceService {
       switch (environment) {
         case Environment.PERSONALAPP: // running in Personal App
         case Environment.ACE: // running in Personal App
-          items = await this._sp.web.lists.getByTitle(Lists.DEMOITEMSLIST).items.orderBy('Created', false).select('Id', 'Title', 'JobTitle', 'EMail', 'Company', 'WorkAddress', 'WorkCity', 'WorkState', 'WorkZip', 'WorkCountry', 'SalesLead/FirstName', 'SalesLead/LastName', 'SalesLead/ID').expand('SalesLead').filter(`SalesLead/EMail eq '${userId}'`)();
+          items = await this._sp.web.lists.getByTitle(Lists.DEMOITEMSLIST).items.orderBy('LastContactDate', false).select('Id', 'CompanyName', 'ContactName', 'ContactTitle', 'ContactEmail', 'ContactPhone', 'ProjectName', 'ProjectDescription', 'PipelineStatus', 'LastContactDate', 'SalesLead/FirstName', 'SalesLead/LastName', 'SalesLead/ID').expand('SalesLead').filter(`SalesLead/EMail eq '${userId}'`)();
           break;
 
         case Environment.OFFICE: // running in Office
@@ -88,7 +88,7 @@ export class CodeOnceService implements ICodeOnceService {
         case Environment.TEAM: // running in Teams
         case Environment.SHAREPOINT: // running in SharePoint
         case Environment.LOCALHOST: // running on LocalHost
-          items = await this._sp.web.lists.getByTitle(Lists.DEMOITEMSLIST).items.orderBy('Created', false).select('Id', 'Title', 'JobTitle', 'EMail', 'Company', 'WorkAddress', 'WorkCity', 'WorkState', 'WorkZip', 'WorkCountry', 'SalesLead/FirstName', 'SalesLead/LastName', 'SalesLead/ID').expand('SalesLead')();
+          items = await this._sp.web.lists.getByTitle(Lists.DEMOITEMSLIST).items.orderBy('LastContactDate', false).select('Id', 'CompanyName', 'ContactName', 'ContactTitle', 'ContactEmail', 'ContactPhone', 'ProjectName', 'ProjectDescription', 'PipelineStatus', 'LastContactDate', 'SalesLead/FirstName', 'SalesLead/LastName', 'SalesLead/ID').expand('SalesLead')();
           break;
         default:
           throw new Error('Unknown host');
@@ -99,17 +99,17 @@ export class CodeOnceService implements ICodeOnceService {
         return (
           retVal.push(new Client(
             item.Id,
-            item.Title,
-            item.JobTitle,
-            item.EMail,
-            item.Company,
-            item.WorkAddress,
-            item.WorkCity,
-            item.WorkState,
-            item.WorkZip,
-            item.WorkCountry,
+            item.CompanyName,
+            item.ContactName,
+            item.ContactTitle,
+            item.ContactEmail,
+            item.ContactPhone,
+            item.ProjectName,
+            item.ProjectDescription,
             item.SalesLead.FirstName + " " + item.SalesLead.LastName,
-            item.SalesLead.ID))
+            item.SalesLead.ID,
+            item.PipelineStatus,
+            item.LastContactDate))
         );
 
       });

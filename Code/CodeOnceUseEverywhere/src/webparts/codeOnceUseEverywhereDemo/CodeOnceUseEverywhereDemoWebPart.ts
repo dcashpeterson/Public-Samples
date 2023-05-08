@@ -16,6 +16,8 @@ import { Client, Environment } from '../../models/models';
 import { symset } from '@n8d/htwoo-react/SymbolSet';
 import { ThemeProvider } from '@microsoft/sp-component-base';
 import { SPFxThemes, ISPFxThemes } from '@n8d/htwoo-react/SPFxThemes';
+// Requires typings to be declared in an images.d.ts file
+import fuireg from '@n8d/htwoo-icons/fluent-ui-regular/fluent-ui-regular.svg';
 
 export interface ICodeOnceUseEverywhereDemoWebPartProps {
   description: string;
@@ -47,7 +49,7 @@ export default class CodeOnceUseEverywhereDemoWebPart extends BaseClientSideWebP
 
   protected async onInit(): Promise<void> {
     // Initialize Icons Symbol Set
-    await symset.initSymbols();
+    await symset.initSymbols(fuireg);
     // Consume the new ThemeProvider service
     const microsoftTeams = this.context.sdks?.microsoftTeams;
     const themeProvider = this.context.serviceScope.consume(ThemeProvider.serviceKey);
@@ -60,7 +62,7 @@ export default class CodeOnceUseEverywhereDemoWebPart extends BaseClientSideWebP
     await COService.Init(this.context.serviceScope);
     if (COService.ready) {
       this._environment = await this._getEnvironment();
-      this._clients = await COService.GetItems(this._environment, this.context.pageContext.user.loginName)
+      this._clients = await COService.GetItems(this._environment, this.context.pageContext.user.loginName);
     }
 
 

@@ -1,6 +1,6 @@
 import { PageContext } from "@microsoft/sp-page-context";
 import { IFieldList, ListFields, Lists } from "../models/models";
-import { CalendarType, DateTimeFieldFormatType, DateTimeFieldFriendlyFormatType, FieldUserSelectionMode, IFieldAddResult, UrlFieldFormatType } from "@pnp/sp/fields";
+import { CalendarType, DateTimeFieldFormatType, DateTimeFieldFriendlyFormatType, FieldUserSelectionMode, UrlFieldFormatType } from "@pnp/sp/fields";
 import { IView } from "@pnp/sp/views";
 import { ServiceKey, ServiceScope } from "@microsoft/sp-core-library";
 import { spfi, SPFI, SPFx } from "@pnp/sp";
@@ -35,9 +35,9 @@ export class CodeOnceConfigService implements ICodeOnceConfigService {
       serviceScope.whenFinished(async () => {
         this._pageContext = serviceScope.consume(PageContext.serviceKey);
         this._sp = spfi().using(SPFx({ pageContext: this._pageContext }));
-        this._ready = await this._configApp();
-
       });
+
+      this._ready = await this._configList(Lists.DEMOITEMSLIST, "");
     } catch (err) {
       console.error(`${this.LOG_SOURCE} (init) - ${err}`);
     }
@@ -68,92 +68,114 @@ export class CodeOnceConfigService implements ICodeOnceConfigService {
     }
   }
 
-  private async _configApp(): Promise<boolean> {
-    let retVal = false;
-    try {
-      const listConfigured = await this._configList(Lists.DEMOITEMSLIST, "");
-      if (listConfigured) {
-        retVal = await this._configSiteColumns(ListFields, Lists.DEMOITEMSLIST);
-      }
-    } catch (err) {
-      console.error(`${this.LOG_SOURCE}:(ConfigApp) - ${err}`);
-    }
-    return retVal;
-  }
+  // private async _configApp(): Promise<boolean> {
+  //   let retVal = false;
+  //   try {
+  //     if (await this._configList(Lists.DEMOITEMSLIST, "")) {
+  //       retVal = true;
+  //     } else {
+  //       retVal = await this._configSiteColumns(ListFields, Lists.DEMOITEMSLIST);
+  //     }
+  //   } catch (err) {
+  //     console.error(`${this.LOG_SOURCE}:(ConfigApp) - ${err}`);
+  //   }
+  //   return retVal;
+  // }
 
   private async _configSiteColumns(fieldList: IFieldList[], listName: string): Promise<boolean> {
     let retVal = false;
     try {
       const webInfo = await this._sp.web();
       const groupName = "_" + webInfo.Title;
+      const list = await this._sp.web.lists.getByTitle(Lists.DEMOITEMSLIST);
       for (let i = 0; i < fieldList.length; i++) {
-
-        let field: IFieldAddResult;
         if (fieldList[i].props.FieldTypeKind === 2) {
-          field = await this._sp.web.fields.addText(fieldList[i].internalName, {
+
+          await list.fields.addText(fieldList[i].internalName, {
             Group: groupName,
             Title: fieldList[i].displayName
           });
+
+
         } else if (fieldList[i].props.FieldTypeKind === 3) {
-          field = await this._sp.web.fields.createFieldAsXml(
-            `<Field Type="Note" Name="${fieldList[i].internalName}" DisplayName="${fieldList[i].displayName}" Required="FALSE" RichText="${fieldList[i].props.richText}" RichTextMode="FullHtml" Group="${groupName}" />`
+
+          await list.fields.createFieldAsXml(
+            `<Field Type="Note" Name="${fieldList[i].internalName}" DisplayName="${fieldList[i].internalName}" Required="FALSE" RichText="${fieldList[i].props.richText}" RichTextMode="FullHtml" Group="${groupName}" />`
           );
+          await list.fields.getByInternalNameOrTitle(fieldList[i].internalName).update({ Title: fieldList[i].displayName });
+
         } else if (fieldList[i].props.FieldTypeKind === 4) {
-          field = await this._sp.web.fields.addDateTime(fieldList[i].internalName, {
+
+          await list.fields.addDateTime(fieldList[i].internalName, {
             DisplayFormat: DateTimeFieldFormatType.DateOnly,
             DateTimeCalendarType: CalendarType.Gregorian,
             FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled,
             Group: groupName,
             Title: fieldList[i].displayName
           });
+
         } else if (fieldList[i].props.FieldTypeKind === 6) {
-          field = await this._sp.web.fields.addChoice(fieldList[i].internalName, {
+
+          await list.fields.addChoice(fieldList[i].internalName, {
             Choices: fieldList[i].props.choices,
             EditFormat: fieldList[i].props.editFormat,
             Group: groupName,
             Title: fieldList[i].displayName
           });
+
         } else if (fieldList[i].props.FieldTypeKind === 8) {
-          field = await this._sp.web.fields.addBoolean(fieldList[i].internalName);
+
+          await list.fields.addBoolean(fieldList[i].internalName, { Group: groupName, Title: fieldList[i].displayName });
+
         } else if (fieldList[i].props.FieldTypeKind === 9) {
-          field = await this._sp.web.fields.addNumber(fieldList[i].internalName, {
+
+          await list.fields.addNumber(fieldList[i].internalName, {
             MinimumValue: fieldList[i].props.minValue,
             MaximumValue: fieldList[i].props.maxValue,
             Group: groupName,
             Title: fieldList[i].displayName
           });
+
         } else if (fieldList[i].props.FieldTypeKind === 10) {
-          field = await this._sp.web.fields.addCurrency(fieldList[i].internalName, {
+
+          await list.fields.addCurrency(fieldList[i].internalName, {
             MinimumValue: fieldList[i].props.minValue,
             MaximumValue: fieldList[i].props.maxValue,
             CurrencyLocaleId: fieldList[i].props.localID,
             Group: groupName,
             Title: fieldList[i].displayName
           });
+
         } else if (fieldList[i].props.FieldTypeKind === 11) {
-          field = await this._sp.web.fields.addUrl(fieldList[i].internalName, {
+
+          await list.fields.addUrl(fieldList[i].internalName, {
             DisplayFormat: UrlFieldFormatType.Hyperlink,
             Group: groupName,
             Title: fieldList[i].displayName
           });
+
         } else if (fieldList[i].props.FieldTypeKind === 12) {
-          field = await this._sp.web.fields.addNumber(fieldList[i].internalName);
+
+          await list.fields.addNumber(fieldList[i].internalName, { Group: groupName, Title: fieldList[i].displayName });
+
         } else if (fieldList[i].props.FieldTypeKind === 15) {
-          field = await this._sp.web.fields.addMultiChoice(fieldList[i].internalName, {
+
+          await list.fields.addMultiChoice(fieldList[i].internalName, {
             Choices: fieldList[i].props.choices,
             FillInChoice: false,
             Group: groupName,
             Title: fieldList[i].displayName
           });
+
         } else if (fieldList[i].props.FieldTypeKind === 20) {
-          field = await this._sp.web.fields.addUser(fieldList[i].internalName, { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: groupName, Title: fieldList[i].displayName });
+
+          await list.fields.addUser(fieldList[i].internalName, { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: groupName, Title: fieldList[i].displayName });
 
         }
-        await this._sp.web.lists.getByTitle(listName).fields.createFieldAsXml(field.data.SchemaXml);
-
       }
 
-      const view: IView = await this._sp.web.lists.getByTitle(listName).defaultView;
+      const view: IView = await list.defaultView;
+      await view.fields.removeAll();
       for (let i = 0; i < fieldList.length; i++) {
         await view.fields.add(fieldList[i].internalName);
       }
@@ -172,8 +194,9 @@ export class CodeOnceConfigService implements ICodeOnceConfigService {
       const list = await this._sp.web.lists.ensure(listName, listDescription, 100, false, { OnQuickLaunch: true });
       if (list.created) {
         await this._sp.web.lists.getByTitle(listName).fields.getByTitle("Title").update({ Hidden: true });
-        retVal = true;
+        await this._configSiteColumns(ListFields, Lists.DEMOITEMSLIST);
       }
+      retVal = true;
     } catch (err) {
       console.error(`${this.LOG_SOURCE}:(_configList) - ${err}`);
     }
