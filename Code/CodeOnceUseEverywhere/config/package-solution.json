@@ -21,7 +21,7 @@
 
     }, 
 
-    "iconPath": "assets/SolutionIcon.png",
+    "iconPath": "images/SolutionIcon.png",
     "metadata": {
       "shortDescription": {
         "default": "code-once-use-everywhere description"
