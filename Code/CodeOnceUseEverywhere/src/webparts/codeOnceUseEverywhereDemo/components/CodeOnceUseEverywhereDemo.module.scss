@@ -4,5 +4,48 @@
 .codeOnceUseEverywhereDemo {
   :global {
     @include meta.load-css('node_modules/@n8d/htwoo-core/lib/sass/htwoo-core');
+
+    font-family: "Segoe UI",
+      -apple-system,
+      BlinkMacSystemFont,
+      Roboto,
+      "Helvetica Neue",
+      sans-serif;
+
+    .hoo-mdldialog-outer.is-sidebar-right .hoo-mdldialog {
+      height: 100vh;
+      opacity: 1;
+      position: absolute;
+      right: 30px;
+      top: 45px;
+      transform: scaleX(0);
+      transform-origin: top right;
+    }
+
+
+
+    .hoo-dlgheader-closer {
+      padding-top: .25rem;
+      padding-left: .5rem;
+    }
+
+    .hoo-input-group input {
+      width: 100%;
+    }
+
+    .formLabel {
+      font-weight: 700;
+    }
+
+    .hoo-icon,
+    .hoo-button-primary {
+      cursor: pointer;
+    }
   }
+
+  .newButton {
+    float: right;
+  }
+
+  padding: 1rem;
 }

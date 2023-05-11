@@ -13,6 +13,12 @@ export enum Environment {
   ACE = "Ace"
 }
 
+export enum FormView {
+  VIEW = "View",
+  EDIT = "Edit",
+  NEW = "New"
+}
+
 export interface IClient {
   id: number;
   companyName: string;

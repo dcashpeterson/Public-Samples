@@ -18,6 +18,7 @@ import { ThemeProvider } from '@microsoft/sp-component-base';
 import { SPFxThemes, ISPFxThemes } from '@n8d/htwoo-react/SPFxThemes';
 // Requires typings to be declared in an images.d.ts file
 import fuireg from '@n8d/htwoo-icons/fluent-ui-regular/fluent-ui-regular.svg';
+import { demoWebUrl } from '../../models/const';
 
 export interface ICodeOnceUseEverywhereDemoWebPartProps {
   description: string;
@@ -31,11 +32,10 @@ export default class CodeOnceUseEverywhereDemoWebPart extends BaseClientSideWebP
   private _spfxThemes: ISPFxThemes = new SPFxThemes();
   private LOG_SOURCE = "🔶 CodeOnceUseEverywhereDemoWebPart";
 
-  public render(): void {
+  public async render(): Promise<void> {
     const element: React.ReactElement<ICodeOnceUseEverywhereDemoProps> = React.createElement(
       CodeOnceUseEverywhereDemo,
       {
-        description: this.properties.description,
         isDarkTheme: this._isDarkTheme,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
@@ -53,19 +53,21 @@ export default class CodeOnceUseEverywhereDemoWebPart extends BaseClientSideWebP
     // Consume the new ThemeProvider service
     const microsoftTeams = this.context.sdks?.microsoftTeams;
     const themeProvider = this.context.serviceScope.consume(ThemeProvider.serviceKey);
-    this._spfxThemes.initThemeHandler(this.domElement, themeProvider, microsoftTeams);
-
-    // If no ThemeProvider service, do not include property which will use page context
-    this._spfxThemes.initThemeHandler(document.body);
 
     //Initialize Service
-    await COService.Init(this.context.serviceScope);
+    await COService.Init(this.context.serviceScope, this.context);
     if (COService.ready) {
+      COService.webUrl = demoWebUrl;
       this._environment = await this._getEnvironment();
-      this._clients = await COService.GetItems(this._environment, this.context.pageContext.user.loginName);
+      this._clients = await COService.GetItems(this._environment, COService.currentUser.Id);
     }
 
+    if (this._environment !== Environment.OUTLOOK) {
+      this._spfxThemes.initThemeHandler(this.domElement, themeProvider, microsoftTeams);
 
+      // If no ThemeProvider service, do not include property which will use page context
+      this._spfxThemes.initThemeHandler(document.body);
+    }
     return;
   }
 

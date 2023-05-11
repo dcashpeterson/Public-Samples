@@ -2,7 +2,7 @@ import { ISPFxAdaptiveCard, BaseAdaptiveCardView, IActionArguments } from '@micr
 import * as strings from 'CodeOnceUseAnywhereAceAdaptiveCardExtensionStrings';
 import { DISPLAY_VIEW_REGISTRY_ID, EDIT_VIEW_REGISTRY_ID, ICodeOnceUseAnywhereAceAdaptiveCardExtensionProps, ICodeOnceUseAnywhereAceAdaptiveCardExtensionState } from '../CodeOnceUseAnywhereAceAdaptiveCardExtension';
 import { Client, Environment } from '../../../models/models';
-import { find } from '@microsoft/sp-lodash-subset';
+
 import { COService } from '../../../services/CodeOnce.Service';
 
 export interface IQuickViewData {
@@ -43,8 +43,8 @@ export class QuickView extends BaseAdaptiveCardView<
           this.setState({ currentItemID: itemId });
         }
         else if (id === 'delete') {
-          const item: Client = find(this.state.items, { id: itemId });
-          await COService.DeleteItem(item);
+          //const item: Client = find(this.state.items, { id: itemId });
+          //await COService.DeleteItem(item);
           const items = await COService.GetItems(Environment.ACE, this.context.pageContext.user.loginName);
           this.setState({ items: items });
         }
