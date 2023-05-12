@@ -1,28 +1,395 @@
 {
-  "schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-  "type": "AdaptiveCard",
-  "version": "1.5",
-  "body": [
-    {
-      "type": "TextBlock",
-      "weight": "Bolder",
-      "text": "${title}"
-    },
-    {
-      "type": "ColumnSet",
-      "columns": [
+    "schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.5",
+    "body": [
         {
-          "type": "Column",
-          "items": [
-            {
-              "type": "TextBlock",
-              "weight": "Bolder",
-              "text": "${subTitle}",
-              "wrap": true
-            }
-          ]
+            "type": "Container",
+            "items": [
+
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${$root.strings.CompanyNameLabel}: ",
+                                    "color": "Dark",
+                                    "weight": "Bolder",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "110px"
+                        },{
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${item.companyName}",
+                                    "color": "Dark",
+                                    "weight": "Default",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "spacing": "Small"
+                },
+{
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${$root.strings.ContactNameLabel}: ",
+                                    "color": "Dark",
+                                    "weight": "Bolder",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "110px"
+                        },{
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${item.contactName}",
+                                    "color": "Dark",
+                                    "weight": "default",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "spacing": "Small"
+                },{
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${$root.strings.ContactTitleLabel}: ",
+                                    "color": "Dark",
+                                    "weight": "Bolder",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "110px"
+                        },{
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${item.contactTitle}",
+                                    "color": "Dark",
+                                    "weight": "default",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "spacing": "Small"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${$root.strings.ContactEmailLabel}: ",
+                                    "color": "Dark",
+                                    "weight": "Bolder",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "110px"
+                        },{
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "[${item.contactEmail}](https://outlook.office.com/mail/deeplink/compose?to=${item.contactEmail})",
+                                    "color": "Dark",
+                                    "weight": "default",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "spacing": "Small"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${$root.strings.ContactPhoneLabel}: ",
+                                    "color": "Dark",
+                                    "weight": "Bolder",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "110px"
+                        },{
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "[${item.contactPhone}](tel:${item.contactPhone})",
+                                    "color": "Dark",
+                                    "weight": "default",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "spacing": "Small"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${$root.strings.ProjectNameLabel}: ",
+                                    "color": "Dark",
+                                    "weight": "Bolder",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "110px"
+                        },{
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${item.projectName}",
+                                    "color": "Dark",
+                                    "weight": "default",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "spacing": "Small"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${$root.strings.PipelineStatusLabel}: ",
+                                    "color": "Dark",
+                                    "weight": "Bolder",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "110px"
+                        },{
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${item.pipelineStatus}",
+                                    "color": "Dark",
+                                    "weight": "default",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "spacing": "Small"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${$root.strings.LastContactDateLabel}: ",
+                                    "color": "Dark",
+                                    "weight": "Bolder",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "110px"
+                        },{
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "{{DATE(${item.lastContactDate}, COMPACT)}}",
+                                    "color": "Dark",
+                                    "weight": "default",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "spacing": "Small"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${$root.strings.ProjectDescriptionLabel}: ",
+                                    "color": "Dark",
+                                    "weight": "Bolder",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 1,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "spacing": "Small"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${item.projectDescription}",
+                                    "color": "Dark",
+                                    "weight": "default",
+                                    "size": "default",
+                                    "wrap": true,
+                                    "maxLines": 5,
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ],
+                    "spacing": "Small"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                  "type": "ActionSet",
+                                  "actions": [{
+                                    "type": "Action.Submit",
+                                    "title": "${$root.strings.EditLabel}",
+                                    "style": "positive",
+                                    "data": {
+                                      "id": "edit",
+                                      "itemId": "${item.id}"
+                                    }
+                                  }]
+                                }
+                            ],
+                            "width": "stretch"
+                        },{
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "ActionSet",
+                                    "actions": [{
+                                      "type": "Action.Submit",
+                                      "title": "${$root.strings.CancelLabel}",
+                                      "style": "positive",
+                                      "data": {
+                                        "id": "cancel",
+                                        "itemId": "${item.id}"
+                                      }
+                                    }]
+                                }
+                              ]
+                            }
+                          ],
+                          "width": "stretch"
+                
+                }
+                
+            ]
         }
-      ]
-    }
-  ]
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
 }

@@ -4,11 +4,13 @@ import { DISPLAY_VIEW_REGISTRY_ID, EDIT_VIEW_REGISTRY_ID, ICodeOnceUseAnywhereAc
 import { Client, Environment } from '../../../models/models';
 
 import { COService } from '../../../services/CodeOnce.Service';
+import { find } from '@microsoft/sp-lodash-subset';
 
 export interface IQuickViewData {
   title: string;
   items: Client[];
   editItemButton: string;
+  strings: ICodeOnceUseAnywhereAceAdaptiveCardExtensionStrings;
 }
 
 export class QuickView extends BaseAdaptiveCardView<
@@ -23,7 +25,8 @@ export class QuickView extends BaseAdaptiveCardView<
     return {
       items: this.state.items,
       title: strings.Title,
-      editItemButton: strings.EditItem
+      editItemButton: strings.EditItem,
+      strings: strings
     };
   }
 
@@ -43,10 +46,10 @@ export class QuickView extends BaseAdaptiveCardView<
           this.setState({ currentItemID: itemId });
         }
         else if (id === 'delete') {
-          //const item: Client = find(this.state.items, { id: itemId });
-          //await COService.DeleteItem(item);
-          const items = await COService.GetItems(Environment.ACE, this.context.pageContext.user.loginName);
-          this.setState({ items: items });
+          const item: Client = find(this.state.items, { id: itemId });
+          await COService.DeleteItem(item.id);
+          const items = await COService.GetItems(Environment.ACE, COService.currentUser.Id);
+          this.setState({ items: items, currentItemID: null });
         }
       }
     } catch (err) {

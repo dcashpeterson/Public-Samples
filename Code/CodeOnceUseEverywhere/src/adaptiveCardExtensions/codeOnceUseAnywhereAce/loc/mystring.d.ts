@@ -12,6 +12,19 @@ declare interface ICodeOnceUseAnywhereAceAdaptiveCardExtensionStrings {
   ViewItems: string;
   AddItem: string;
   EditItem: string;
+  CompanyNameLabel: string;
+  ContactNameLabel: string;
+  ContactTitleLabel: string;
+  ContactEmailLabel: string;
+  ContactPhoneLabel: string;
+  ProjectNameLabel: string;
+  ProjectDescriptionLabel: string;
+  SalesLeadNameLabel: string;
+  PipelineStatusLabel: string;
+  LastContactDateLabel: string;
+  EditLabel: string;
+  CancelLabel: string;
+  SaveLabel: string;
 }
 
 declare module 'CodeOnceUseAnywhereAceAdaptiveCardExtensionStrings' {

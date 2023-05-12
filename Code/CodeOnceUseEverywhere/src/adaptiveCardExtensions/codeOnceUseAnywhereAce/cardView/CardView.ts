@@ -34,7 +34,7 @@ export class CardView extends BasePrimaryTextCardView<ICodeOnceUseAnywhereAceAda
 
   public get data(): IPrimaryTextCardParameters {
     const welcomeMessage = `${strings.WelcomeMessage + this.context.pageContext.user.displayName}`;
-    const cardText = `${strings.PrimaryText.replace("_xxx_", this.state.items.length.toString())}`;
+    const cardText = `${strings.PrimaryText.replace("_xxx_", this.state.items.length.toString()).replace("_xx_", ((this.state.items.length > 1) ? "s" : ""))}`;
 
     return {
       primaryText: welcomeMessage,

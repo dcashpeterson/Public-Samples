@@ -3,7 +3,7 @@
   "solution": {
     "name": "Code Once Use Everywhere Demo",
     "id": "1eb4ecb0-5d72-406c-af0c-7dd6893b4f64",
-    "version": "1.0.0.1",
+    "version": "1.0.0.2",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,

@@ -99,33 +99,33 @@ export default class EditForm extends React.PureComponent<IEditFormProps, IEditF
                     groupItems: [
                       {
                         disabled: false,
-                        key: '1. Referred',
-                        text: '1. Referred'
+                        key: 'Referred',
+                        text: 'Referred'
                       },
                       {
                         disabled: false,
-                        key: '2. In negotiation',
-                        text: '2. In negotiation'
+                        key: 'In negotiation',
+                        text: 'In negotiation'
                       },
                       {
                         disabled: false,
-                        key: '3. On Hold',
-                        text: '3. On Hold'
+                        key: 'On Hold',
+                        text: 'On Hold'
                       },
                       {
                         disabled: false,
-                        key: '4. Closed - Won',
-                        text: '4. Closed - Won'
+                        key: 'Closed - Won',
+                        text: 'Closed - Won'
                       },
                       {
                         disabled: false,
-                        key: '5. Closed - Lost',
-                        text: '5. Closed - Lost'
+                        key: 'Closed - Lost',
+                        text: 'Closed - Lost'
                       },
                       {
                         disabled: false,
-                        key: '6. Closed - Declined',
-                        text: '6. Closed - Declined'
+                        key: 'Closed - Declined',
+                        text: 'Closed - Declined'
                       }
                     ],
                     groupName: ''

@@ -59,17 +59,17 @@ export default class CodeOnceUseEverywhereDemo extends React.Component<ICodeOnce
     this.state = new CodeOnceUseEverywhereDemoState(false, FormView.VIEW, new Client(), this.props.clients);
   }
 
-  private _updateFormVisibility = (view: FormView, client: Client) => {
+  private _updateFormVisibility = (view: FormView, client: Client): void => {
     this.setState({ dialogVisibility: !this.state.dialogVisibility, dialogView: view, currentClient: client });
   }
 
-  private _deleteItem = async (id: number) => {
+  private _deleteItem = async (id: number): Promise<void> => {
     await COService.DeleteItem(id);
     const clients: Client[] = await COService.GetItems(this.props.environment, COService.currentUser.Id);
     this.setState({ clients: clients, dialogVisibility: false, dialogView: FormView.VIEW, currentClient: new Client() });
   }
 
-  private _saveItem = async (client: Client) => {
+  private _saveItem = async (client: Client): Promise<void> => {
     client.salesLeadId = COService.currentUser.Id;
     client.salesLeadName = COService.currentUser.Title;
     await COService.SaveItem(client);
@@ -77,7 +77,7 @@ export default class CodeOnceUseEverywhereDemo extends React.Component<ICodeOnce
     this.setState({ clients: clients, dialogVisibility: !this.state.dialogVisibility, dialogView: FormView.VIEW, currentClient: new Client() });
   }
 
-  private _updateItem = async (client: Client) => {
+  private _updateItem = async (client: Client): Promise<void> => {
     await COService.UpdateItem(client);
     const clients: Client[] = await COService.GetItems(this.props.environment, COService.currentUser.Id);
     this.setState({ clients: clients, dialogVisibility: !this.state.dialogVisibility, dialogView: FormView.VIEW, currentClient: new Client() });

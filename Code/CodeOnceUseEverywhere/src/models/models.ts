@@ -19,6 +19,17 @@ export enum FormView {
   NEW = "New"
 }
 
+export interface IChoice {
+  choice: string;
+  value: string;
+}
+export class Choice implements IChoice {
+  constructor(
+    public choice: string = "",
+    public value: string = ""
+  ) { }
+}
+
 export interface IClient {
   id: number;
   companyName: string;
@@ -67,6 +78,6 @@ export const ListFields: IFieldList[] = [
   { internalName: "ProjectName", displayName: "Project Name", props: { FieldTypeKind: 2 } },
   { internalName: "ProjectDescription", displayName: "Project Description", props: { FieldTypeKind: 3, richText: false } },
   { internalName: "SalesLead", displayName: "Sales Lead", props: { FieldTypeKind: 20 } },
-  { internalName: "PipelineStatus", displayName: "Pipeline Status", props: { FieldTypeKind: 6, choices: ["1. Referred", "2. In negotiation", "3. On Hold", "4. Closed - Won", "5. Closed - Lost", "6. Closed - Declined"], editFormat: ChoiceFieldFormatType.Dropdown } },
+  { internalName: "PipelineStatus", displayName: "Pipeline Status", props: { FieldTypeKind: 6, choices: ["Referred", "In negotiation", "On Hold", "Closed - Won", "Closed - Lost", "Closed - Declined"], editFormat: ChoiceFieldFormatType.Dropdown } },
   { internalName: "LastContactDate", displayName: "Last Contact Date", props: { FieldTypeKind: 4 } },
 ];

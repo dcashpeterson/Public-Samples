@@ -8,6 +8,7 @@ import { Client, Environment } from '../../models/models';
 import { DisplayView } from './quickView/DisplayView';
 import { EditView } from './quickView/EditView';
 import { NewView } from './quickView/NewView';
+import { demoWebUrl } from '../../models/const';
 
 export interface ICodeOnceUseAnywhereAceAdaptiveCardExtensionProps {
   title: string;
@@ -37,6 +38,11 @@ export default class CodeOnceUseAnywhereAceAdaptiveCardExtension extends BaseAda
   public async onInit(): Promise<void> {
     try {
       await COService.Init(this.context.serviceScope, null);
+      if (COService.ready) {
+        COService.webUrl = demoWebUrl;
+        //Get the items for the current user;
+        this._myItems = await COService.GetItems(Environment.ACE, COService.currentUser.Id);
+      }
 
       this.cardNavigator.register(CARD_VIEW_REGISTRY_ID, () => new CardView());
       this.quickViewNavigator.register(QUICK_VIEW_REGISTRY_ID, () => new QuickView());
@@ -45,7 +51,7 @@ export default class CodeOnceUseAnywhereAceAdaptiveCardExtension extends BaseAda
       this.quickViewNavigator.register(NEW_VIEW_REGISTRY_ID, () => new NewView());
 
       //Get the items for the current user;
-      this._myItems = await COService.GetItems(Environment.ACE, this.context.pageContext.user.loginName);
+      this._myItems = await COService.GetItems(Environment.ACE, COService.currentUser.Id);
 
       this.state = {
         items: this._myItems,

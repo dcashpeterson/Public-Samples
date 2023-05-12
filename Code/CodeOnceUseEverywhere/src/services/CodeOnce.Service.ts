@@ -1,5 +1,5 @@
 import { PageContext } from "@microsoft/sp-page-context";
-import { Client, Environment, Lists } from "../models/models";
+import { Choice, Client, Environment, Lists } from "../models/models";
 import { ServiceKey, ServiceScope } from "@microsoft/sp-core-library";
 import { spfi, SPFI, SPFx as spSPFx } from "@pnp/sp";
 import { GraphFI, graphfi, SPFx as graphSPFx } from "@pnp/graph";
@@ -21,6 +21,7 @@ export interface ICodeOnceService {
   readonly sp: SPFI;
   readonly pageContext: PageContext;
   webUrl: string;
+  PipelineChoices: Choice[];
   Init(serviceScope: ServiceScope, aadToken: any): Promise<void>;
   GetItems: (environment: Environment, userId: string) => Promise<Client[]>;
   SaveItem: (item: Client) => Promise<void>;
@@ -42,6 +43,7 @@ export class CodeOnceService implements ICodeOnceService {
   private _ready = false;
   private _webUrl = demoWebUrl;
   private _currentUser: ISiteUser;
+  private _pipelineChoices: Choice[] = [];
 
   public async Init(serviceScope: ServiceScope, context: WebPartContext): Promise<void> {
     try {
@@ -54,6 +56,7 @@ export class CodeOnceService implements ICodeOnceService {
       this._ready = true;
       this._currentUser = await this._getCurrentUser();
       this._context = context;
+      this._pipelineChoices = await this._getChoiceFieldValues("PipelineStatus");
     } catch (err) {
       console.error(`${this.LOG_SOURCE} (init) - ${err}`);
     }
@@ -90,6 +93,9 @@ export class CodeOnceService implements ICodeOnceService {
         `${this.LOG_SOURCE} (webUrl) - cannot connect to new web - ${err}`
       );
     }
+  }
+  public get PipelineChoices(): Choice[] {
+    return this._pipelineChoices;
   }
 
   public async GetItems(environment: Environment, userId?: string): Promise<Client[]> {
@@ -194,8 +200,8 @@ export class CodeOnceService implements ICodeOnceService {
     }
   }
 
-  private async _getCurrentUser(): Promise<any> {
-    let retVal: any;
+  private async _getCurrentUser(): Promise<ISiteUser> {
+    let retVal;
     try {
       retVal = await this._sp.web.currentUser();
     } catch (err) {
@@ -203,9 +209,10 @@ export class CodeOnceService implements ICodeOnceService {
     }
     return retVal;
   }
-  ///mail/deeplink/compose/?mailtouri=%s
+
+  //Use the graph to get the members of the team and return their email addresses
   private async _getTeamMemeberIDs(groupId: string): Promise<string[]> {
-    let retVal: string[] = [];
+    const retVal: string[] = [];
     try {
       const members = await this._graph.groups.getById(groupId).members();
 
@@ -218,5 +225,17 @@ export class CodeOnceService implements ICodeOnceService {
     return retVal;
   }
 
+  private async _getChoiceFieldValues(fieldName: string): Promise<Choice[]> {
+    const retVal: Choice[] = [];
+    try {
+      const choiceField = await this._sp.web.lists.getByTitle(Lists.DEMOITEMSLIST).fields.getByInternalNameOrTitle(fieldName)();
+      choiceField.Choices.map((choice: string) => {
+        retVal.push(new Choice(choice, choice));
+      });
+    } catch (err) {
+      console.error(`${this.LOG_SOURCE}:(_getChoiceFieldValues) - ${err.message}`);
+    }
+    return retVal;
+  }
 }
 export const COService = new CodeOnceService();
