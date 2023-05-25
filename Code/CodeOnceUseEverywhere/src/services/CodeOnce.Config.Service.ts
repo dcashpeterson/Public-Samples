@@ -34,7 +34,7 @@ export class CodeOnceConfigService implements ICodeOnceConfigService {
     try {
       serviceScope.whenFinished(async () => {
         this._pageContext = serviceScope.consume(PageContext.serviceKey);
-        this._sp = spfi().using(SPFx({ pageContext: this._pageContext }));
+        this._sp = spfi(this._webUrl).using(SPFx({ pageContext: this._pageContext }));
       });
 
       this._ready = await this._configList(Lists.DEMOITEMSLIST, "");
@@ -58,9 +58,10 @@ export class CodeOnceConfigService implements ICodeOnceConfigService {
     return this._webUrl;
   }
   public set webUrl(value: string) {
-    this._webUrl = value;
+    //this._webUrl = value;
+    console.log("hi");
     try {
-      this._sp = spfi(value).using(SPFx({ pageContext: this._pageContext }));
+      this._sp = spfi(this._webUrl).using(SPFx({ pageContext: this._pageContext }));
     } catch (err) {
       console.error(
         `${this.LOG_SOURCE} (webUrl) - cannot connect to new web - ${err}`

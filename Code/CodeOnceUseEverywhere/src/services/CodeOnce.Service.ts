@@ -49,7 +49,7 @@ export class CodeOnceService implements ICodeOnceService {
     try {
       serviceScope.whenFinished(async () => {
         this._pageContext = serviceScope.consume(PageContext.serviceKey);
-        this._sp = spfi().using(spSPFx({ pageContext: this._pageContext }));
+        this._sp = spfi(this._webUrl).using(spSPFx({ pageContext: this._pageContext }));
         this._graph = graphfi().using(graphSPFx(context));
       });
       await COConfigService.Init(serviceScope);
@@ -85,9 +85,10 @@ export class CodeOnceService implements ICodeOnceService {
     return this._webUrl;
   }
   public set webUrl(value: string) {
-    this._webUrl = value;
+    //this._webUrl = value;
+    console.log("hi");
     try {
-      this._sp = spfi(value).using(spSPFx({ pageContext: this._pageContext }));
+      this._sp = spfi(this._webUrl).using(spSPFx({ pageContext: this._pageContext }));
     } catch (err) {
       console.error(
         `${this.LOG_SOURCE} (webUrl) - cannot connect to new web - ${err}`
@@ -113,8 +114,8 @@ export class CodeOnceService implements ICodeOnceService {
           const members = await this._getTeamMemeberIDs(teamsContext.team?.groupId);
           members.map((member, index) => {
             filter += `SalesLead/EMail eq '${member}'`
-            if (index >= member.length - 1) {
-              filter += " OR "
+            if (index < members.length - 1) {
+              filter += " or "
             }
           });
           break;
