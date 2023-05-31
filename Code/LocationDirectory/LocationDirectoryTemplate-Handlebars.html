@@ -1,0 +1,402 @@
+<content id="data-content">
+
+  <style>
+    /* Insert your CSS overrides here */
+    .template--listItem {
+      border: 1px solid black;
+      margin-bottom: 1em;
+      list-style: none;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .directions {
+      color: {
+          {
+          @root.theme.palette.themeSecondary
+        }
+      }
+
+      ;
+      display:block;
+    }
+
+    .directions a,
+    .directions a:hover,
+    .directions a:visited,
+    .directions a.active {
+      text-decoration: underline;
+
+      color: {
+          {
+          @root.theme.palette.themeSecondary
+        }
+      }
+
+      ;
+    }
+
+    .template--listItem--result h4 {
+      margin-bottom: 0.25em;
+    }
+
+    .locationContainer {
+      display: flex;
+      flex-flow: row;
+      padding: .5em;
+
+    }
+
+    h3.header {
+      font-weight: normal;
+      font-size: 1.75em;
+      margin: 0;
+      padding: 0.5em 0.5em 0 0.5em;
+
+      color: {
+          {
+          @root.theme.palette.themePrimary
+        }
+      }
+
+      ;
+    }
+
+    .header a,
+    .header a:hover,
+    .header a:visited,
+    .header a.active {
+
+      color: {
+          {
+          @root.theme.palette.themePrimary
+        }
+      }
+
+      ;
+    }
+
+    .block {
+      padding: .5em;
+      width: 100%;
+    }
+
+    .block h4 {
+      margin: 0;
+      padding: 1em 0 0 0;
+    }
+
+    .block h4.first {
+      padding: 0;
+    }
+
+    .profile {
+      padding-top: .25em;
+    }
+
+    .highlight {
+      background-color: hsla(0deg, 0%, 83%, 0.3);
+    }
+
+    .note {
+      display: block;
+    }
+
+    .note span {
+      font-weight: bold;
+    }
+  </style>
+
+  <div class="template">
+
+    {{#if @root.properties.showSelectedFilters}}
+    <pnp-selectedfilters data-filters="{{JSONstringify filters.selectedFilters 2}}"
+      data-filters-configuration="{{JSONstringify filters.filtersConfiguration 2}}"
+      data-instance-id="{{filters.instanceId}}" data-operator="{{filters.filterOperator}}"
+      data-theme-variant="{{JSONstringify @root.theme}}">
+    </pnp-selectedfilters>
+    {{/if}}
+    <div class="template--header">
+      {{#if @root.properties.showResultsCount}}
+      <div class="template--resultCount">
+        <label class="ms-fontWeight-semibold">{{getCountMessage @root.data.totalItemsCount
+          @root.inputQueryText}}</label>
+      </div>
+      {{/if}}
+
+      <div class="template--sort">
+        <pnp-sortfield data-fields="{{JSONstringify @root.properties.dataSourceProperties.sortList}}"
+          data-default-selected-field="{{sort.selectedSortFieldName}}"
+          data-default-direction="{{sort.selectedSortDirection}}" data-theme-variant="{{JSONstringify @root.theme}}">
+        </pnp-sortfield>
+      </div>
+    </div>
+    {{#if @root.data.promotedResults}}
+    <ul class="template--defaultList template--promotedResults">
+      {{#each @root.data.promotedResults as |promotedResult|}}
+      <li>
+        <div>
+          <pnp-icon data-name="MiniLink" aria-hidden="true"></pnp-icon>
+        </div>
+        <div>
+          <a href="{{url}}" style="color:{{@root.theme.semanticColors.link}}">{{title}}</a>
+          <div>{{description}}</div>
+        </div>
+      </li>
+      {{/each}}
+    </ul>
+    {{/if}}
+    <ul class="template--defaultList">
+      {{#each data.items as |item|}}
+      <pnp-select data-enabled="{{@root.properties.itemSelectionProps.allowItemSelection}}" data-index="{{@index}}"
+        data-is-selected="{{isItemSelected @root.selectedKeys @index}}">
+        <template id="content">
+          <li class="template--listItem">
+            {{#> resultTypes item=item}}
+            {{#if (slot item @root.slots.Title) }}
+            <h3 class="header">
+              {{#if SiteUrlOWSURLH }}
+              <a href="{{getUrlField item.SiteUrlOWSURLH 'URL'}}">{{ replace (slot item @root.slots.Title) "string;#"
+                ""}}
+                {{#if (slot item @root.slots.Organization) ~}}
+                -{{slot item @root.slots.Organization}}
+                {{/if}}</a>
+              {{else}}
+              {{ replace (slot item @root.slots.Title) "string;#" "" }}
+              {{#if (slot item @root.slots.Organization) ~}}
+              -{{slot item @root.slots.Organization}}
+              {{/if}}
+              {{/if}}
+            </h3>
+            {{#if (slot item @root.slots.AKA) }}
+            <span>AKA: {{slot item @root.slots.AKA ~}}</span>
+            {{/if}}
+            {{/if}}
+            <div class="locationContainer">
+              {{#unlessEq (slot item @root.slots.Address1) '' }}
+              <div class="block">
+                {{#if (slot item @root.slots.Address1) ~}}
+                {{slot item @root.slots.Address1}}
+                {{/if}}
+                {{#if (slot item @root.slots.Address2) ~}}
+                </br>{{slot item @root.slots.Address2}}
+                {{/if}}
+                {{#if (slot item @root.slots.City) ~}}
+                </br>{{slot item @root.slots.City}}, {{slot item @root.slots.State}} {{slot item
+                @root.slots.Zip}}
+                {{/if}}
+
+                {{#if (slot item @root.slots.Address1) ~}}
+                <span class="directions"><a
+                    href="https://www.google.com/maps/dir/''/{{slot item @root.slots.Address1}},{{slot item @root.slots.City}},{{slot item @root.slots.State}} {{slot item @root.slots.Zip}}/"
+                    target="_blank">Directions</a>
+                </span>
+                {{/if}}
+                {{#if (slot item @root.slots.WeekdayHours) ~}}
+                <h4>Hours of Operation</h4>
+                <span>
+                  {{#if (slot item @root.slots.WeekdayHours) ~}}
+                  M-F: {{slot item @root.slots.WeekdayHours}}<br />
+                  {{/if}}
+                  {{#if (slot item @root.slots.WeekendHours) ~}}
+                  S-S: {{slot item @root.slots.WeekendHours}}<br />
+                  {{/if}}
+                </span>
+                {{/if}}
+              </div>
+              {{/unlessEq}}
+              {{#unlessEq (slot item @root.slots.WorkPhone) '' }}
+              <div class="block">
+                {{#if (slot item @root.slots.WorkPhone) ~}}
+                <h4 class="first">Contact Information</h4>
+                <span>
+                  {{#if (slot item @root.slots.WorkPhone) ~}}
+                  Main Phone: {{slot item @root.slots.WorkPhone}}<br />
+                  {{/if}}
+                  {{#if (slot item @root.slots.Fax) ~}}
+                  Fax: {{slot item @root.slots.Fax}}<br />
+                  {{/if}}
+                  {{#if (slot item @root.slots.RefillLine) ~}}
+                  Refill Line: {{slot item @root.slots.RefillLine}}<br />
+                  {{/if}}
+                  {{#if (slot item @root.slots.OtherContactInfo) ~}}
+                  Other Contact Information:<br>{{slot item @root.slots.OtherContactInfo}}<br />
+                  {{/if}}
+                </span>
+                {{/if}}
+              </div>
+              {{/unlessEq}}
+              <div class="block">
+                {{#if (slot item @root.slots.Manager) ~}}
+                <h4 class="first">Manager</h4>
+                {{#each (split (slot item @root.slots.Manager) "|") as |part| }}
+                {{#if @first}}
+                {{#with (split part ";")}}
+
+                <mgt-person user-id="{{getUserEmail (slot item @root.slots.Manager)}}" person-card="hover"
+                  class="profile">
+                  <template>
+                    <pnp-persona data-image-url="/_layouts/15/userphoto.aspx?size=L&username={{[1]}}"
+                      data-primary-text="{{[0]}}">
+                    </pnp-persona>
+                  </template>
+                  <template data-type="person-card">
+                    <mgt-person-card inherit-details>
+                    </mgt-person-card>
+                  </template>
+                </mgt-person>
+                {{/with}}
+                {{/if}}
+                {{/each}}
+                {{/if}}
+                {{#if (slot item @root.slots.OfficeCoordinator) ~}}
+                <h4>Office Coordinator</h4>
+                {{#each (split (slot item @root.slots.OfficeCoordinator) "|") as |part| }}
+                {{#if @first}}
+                {{#with (split part ";")}}
+
+                <mgt-person user-id="{{getUserEmail (slot item @root.slots.OfficeCoordinator)}}" person-card="hover"
+                  class="profile">
+                  <template>
+                    <pnp-persona data-image-url="/_layouts/15/userphoto.aspx?size=L&username={{[1]}}"
+                      data-primary-text="{{[0]}}">
+                    </pnp-persona>
+                  </template>
+                  <template data-type="person-card">
+                    <mgt-person-card inherit-details>
+                    </mgt-person-card>
+                  </template>
+                </mgt-person>
+                {{/with}}
+                {{/if}}
+                {{/each}}
+                {{/if}}
+                {{#if (slot item @root.slots.PracticeECC) ~}}
+                <h4>Practice ECC</h4>
+                {{#each (split (slot item @root.slots.PracticeECC) "|") as |part| }}
+                {{#if @first}}
+                {{#with (split part ";")}}
+
+                <mgt-person user-id="{{getUserEmail (slot item @root.slots.PracticeECC)}}" person-card="hover"
+                  class="profile">
+                  <template>
+                    <pnp-persona data-image-url="/_layouts/15/userphoto.aspx?size=L&username={{[1]}}"
+                      data-primary-text="{{[0]}}">
+                    </pnp-persona>
+                  </template>
+                  <template data-type="person-card">
+                    <mgt-person-card inherit-details>
+                    </mgt-person-card>
+                  </template>
+                </mgt-person>
+                {{/with}}
+                {{/if}}
+                {{/each}}
+                {{/if}}
+              </div>
+              {{#eq (slot item @root.slots.Address1) '' }}
+              <div class="block">
+              </div>
+              {{/eq}}
+            </div>
+            {{#eq (slot item @root.slots.ContentType) '_Practice' ~}}
+            <div class="locationContainer highlight">
+              {{#unlessEq (slot item @root.slots.Departments) '' }}
+              <div class="block">
+                {{#if (slot item @root.slots.Departments) ~}}
+                <span class="note"><span>Departments: </span>
+                  {{#each (split (slot item @root.slots.Departments) ";") as |tag| }}
+                  {{tag}}{{#if @last}}{{else}}, {{/if}}
+                  {{/each}}</span>
+                {{/if}}
+                {{#if (slot item @root.slots.Departments) ~}}
+                <span class="note"><span>Divisions: </span>
+                  {{#each (split (slot item @root.slots.Divisions) ";") as |tag| }}
+                  {{tag}}{{#if @last}}{{else}}, {{/if}}
+                  {{/each}}
+                </span>
+                {{/if}}
+                {{#if (slot item @root.slots.Specialties) ~}}
+                <span class="note"><span>Specialties: </span>
+                  {{#each (split (slot item @root.slots.Specialties) ";") as |tag| }}
+                  {{tag}}{{#if @last}}{{else}}, {{/if}}
+                  {{/each}}
+                </span>
+                {{/if}}
+                {{#if (slot item @root.slots.Services) ~}}
+                <span class="note"><span>Services: </span>
+                  {{#each (split (slot item @root.slots.Services) ";") as |tag| }}
+                  {{tag}}{{#if @last}}{{else}}, {{/if}}
+                  {{/each}}
+                </span>
+                {{/if}}
+                {{#if (slot item @root.slots.Notes) ~}}
+                <span class="note"><span>Other Information: </span>{{slot item @root.slots.Notes}}</span>
+                {{/if}}
+              </div>
+              {{/unlessEq}}
+
+            </div>
+            {{/eq}}
+            {{/resultTypes}}
+          </li>
+        </template>
+
+      </pnp-select>
+      {{/each}}
+    </ul>
+
+    {{#if @root.properties.paging.showPaging}} {{#gt @root.data.totalItemsCount
+    @root.properties.paging.itemsCountPerPage}}
+    <pnp-pagination data-total-items="{{@root.data.totalItemsCount}}"
+      data-hide-first-last-pages="{{@root.properties.paging.hideFirstLastPages}}"
+      data-hide-disabled="{{@root.properties.paging.hideDisabled}}"
+      data-hide-navigation="{{@root.properties.paging.hideNavigation}}"
+      data-range="{{@root.properties.paging.pagingRange}}"
+      data-items-count-per-page="{{@root.properties.paging.itemsCountPerPage}}"
+      data-current-page-number="{{@root.paging.currentPageNumber}}" data-theme-variant="{{JSONstringify @root.theme}}">
+    </pnp-pagination>
+    {{/gt}} {{/if}}
+
+  </div>
+</content>
+
+<content id="placeholder-content">
+  <style>
+    /* Insert your CSS overrides here */
+  </style>
+
+  <div class="placeholder">
+    {{#if @root.properties.showResultsCount}}
+    <div class="template--resultCount">
+      <span class="placeholder--shimmer placeholder--line" style="width: 20%"></span>
+    </div>
+    {{/if}}
+    <ul class="template--defaultList">
+      {{#times @root.properties.paging.itemsCountPerPage}}
+      <li class="template--listItem" tabindex="0">
+        <div class="template--listItem--result">
+          {{#if @root.properties.layoutProperties.showFileIcon}}
+          <div class="template--listItem--icon placeholder--shimmer "></div>
+          {{/if}}
+          <div class="template--listItem--contentContainer">
+            <span class="placeholder--shimmer placeholder--line" style="width: 60%"></span>
+            <span class="placeholder--shimmer placeholder--line" style="width: 100%"></span>
+            <span class="placeholder--shimmer placeholder--line" style="width: 100%"></span>
+            <span class="placeholder--shimmer placeholder--line" style="width: 35%"></span>
+            <span class="placeholder--shimmer placeholder--line" style="width: 20%"></span>
+          </div>
+        </div>
+        {{#if @root.properties.layoutProperties.showItemThumbnail}}
+        <div class="template--listItem--thumbnailContainer">
+          <div class="thumbnail--image">
+            <div class="placeholder--shimmer" style="width: 120px;height: 70px;"></div>
+          </div>
+        </div>
+        {{/if}}
+      </li>
+      {{/times}}
+    </ul>
+  </div>
+
+</content>
