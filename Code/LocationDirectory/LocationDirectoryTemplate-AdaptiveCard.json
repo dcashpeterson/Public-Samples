@@ -1,0 +1,217 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.3",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "**${$root.data.totalItemsCount}** results",
+      "size": "Medium",
+      "wrap": true,
+      "$when": "${$root.properties.showResultsCount == true}"
+    },
+    {
+      "type": "Container",
+      "$data": "${data.items}",
+      "items": [
+        {
+          "type": "TextBlock",
+          "size": "ExtraLarge",
+          "weight": "Bolder",
+          "text": "${replace(jPath($data, concat('.',$root.slots['Title']))[0],'string;#','')} - ${jPath($data, concat('.',$root.slots['Organization']))[0]}"
+        },
+        {
+          "type": "ColumnSet",
+          "id": "${hitId}",
+          "columns": [
+          {
+            "type": "Column",
+            "items": [
+            {
+              "type": "TextBlock",
+              "text": "${string(jPath($data, concat('.',$root.slots['Address1']))[0])}",
+              "wrap": true,
+              "$when": "${string(jPath($data, concat('.',$root.slots['Address1']))[0]) != ''}"
+            },
+            {
+              "type": "TextBlock",
+              "text": "${string(jPath($data, concat('.',$root.slots['Address2']))[0])}",
+              "wrap": true,
+              "$when": "${string(jPath($data, concat('.',$root.slots['Address2']))[0]) != ''}"
+            },
+            {
+              "type": "TextBlock",
+              "text": "${string(jPath($data, concat('.',$root.slots['City']))[0])}, ${string(jPath($data, concat('.',$root.slots['State']))[0])} ${string(jPath($data, concat('.',$root.slots['Zip']))[0])}",
+              "wrap": true,
+              "$when": "${string(jPath($data, concat('.',$root.slots['Address1']))[0]) != ''}"
+            },
+            {
+              "type": "TextBlock",
+              "text": "<a href='https://www.google.com/maps/dir//${string(jPath($data, concat('.',$root.slots['Address1']))[0])} ,${string(jPath($data, concat('.',$root.slots['City']))[0])},${string(jPath($data, concat('.',$root.slots['State']))[0])} ${string(jPath($data, concat('.',$root.slots['Zip']))[0])}'>Directions</a>",
+              "wrap": true,
+              "$when": "${string(jPath($data, concat('.',$root.slots['Address2']))[0]) != ''}"
+            },
+            {
+              "type": "TextBlock",
+              "text": "Hours of Operation",
+              "wrap": true,
+              "size": "Medium",
+              "color": "Dark",
+              "weight": "Bolder",
+              "$when": "${string(jPath($data, concat('.',$root.slots['WeekdayHours']))[0]) != ''}"
+            },
+            {
+              "type": "TextBlock",
+              "text": "${string(jPath($data, concat('.',$root.slots['WeekdayHours']))[0])}",
+              "wrap": true,
+              "$when": "${string(jPath($data, concat('.',$root.slots['WeekdayHours']))[0]) != ''}"
+            },
+            {
+              "type": "TextBlock",
+              "text": "${string(jPath($data, concat('.',$root.slots['WeekendHours']))[0])}",
+              "wrap": true,
+              "$when": "${string(jPath($data, concat('.',$root.slots['WeekendHours']))[0]) != ''}"
+            }
+              ]
+            },
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Contact Information",
+                  "wrap": true,
+                  "size": "Medium",
+                  "color": "Dark",
+                  "weight": "Bolder"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "Main Phone: ${string(jPath($data, concat('.',$root.slots['WorkPhone']))[0])}",
+                  "wrap": true,
+                  "$when": "${string(jPath($data, concat('.',$root.slots['WorkPhone']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "Fax: ${string(jPath($data, concat('.',$root.slots['Fax']))[0])}",
+                  "wrap": true,
+                  "$when": "${string(jPath($data, concat('.',$root.slots['Fax']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "Refill Line: ${string(jPath($data, concat('.',$root.slots['RefillLine']))[0])}",
+                  "wrap": true,
+                  "$when": "${string(jPath($data, concat('.',$root.slots['RefillLine']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "Other Contact Information:<br> ${string(jPath($data, concat('.',$root.slots['OtherContactInfo']))[0])}",
+                  "wrap": true,
+                  "$when": "${string(jPath($data, concat('.',$root.slots['OtherContactInfo']))[0]) != ''}"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Manager",
+                  "wrap": true,
+                  "size": "Medium",
+                  "color": "Dark",
+                  "weight": "Bolder",
+                  "$when": "${string(jPath($data, concat('.',$root.slots['Manager']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "wrap": true,
+                  "text": "<mgt-person user-id='${trim(split(split(string(jPath($data, concat('.',$root.slots['Manager']))[0]), ';')[1], '|')[0])}' person-card='hover' class='profile'><template><pnp-persona data-image-url='/_layouts/15/userphoto.aspx?size=L&username=${trim(split(split(string(jPath($data, concat('.',$root.slots['Manager']))[0]), ';')[1], '|')[0])}' data-primary-text='${trim(split(string(jPath($data, concat('.',$root.slots['Manager']))[0]), ';')[0])}'></pnp-persona></template><template data-type='person-card'><mgt-person-card inherit-details></mgt-person-card></template></mgt-person>",
+                  "size": "default",
+                  "$when": "${string(jPath($data, concat('.',$root.slots['Manager']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "Office Coordinator",
+                  "wrap": true,
+                  "size": "Medium",
+                  "color": "Dark",
+                  "weight": "Bolder",
+                  "$when": "${string(jPath($data, concat('.',$root.slots['OfficeCoordinator']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "wrap": true,
+                  "text": "<mgt-person user-id='${trim(split(split(string(jPath($data, concat('.',$root.slots['OfficeCoordinator']))[0]), ';')[1], '|')[0])}' person-card='hover' class='profile'><template><pnp-persona data-image-url='/_layouts/15/userphoto.aspx?size=L&username=${trim(split(split(string(jPath($data, concat('.',$root.slots['OfficeCoordinator']))[0]), ';')[1], '|')[0])}' data-primary-text='${trim(split(string(jPath($data, concat('.',$root.slots['OfficeCoordinator']))[0]), ';')[0])}'></pnp-persona></template><template data-type='person-card'><mgt-person-card inherit-details></mgt-person-card></template></mgt-person>",
+                  "size": "default",
+                  "$when": "${string(jPath($data, concat('.',$root.slots['OfficeCoordinator']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "Practice ECC",
+                  "wrap": true,
+                  "size": "Medium",
+                  "color": "Dark",
+                  "weight": "Bolder",
+                  "$when": "${string(jPath($data, concat('.',$root.slots['PracticeECC']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "wrap": true,
+                  "text": "<mgt-person user-id='${trim(split(split(string(jPath($data, concat('.',$root.slots['PracticeECC']))[0]), ';')[1], '|')[0])}' person-card='hover' class='profile'><template><pnp-persona data-image-url='/_layouts/15/userphoto.aspx?size=L&username=${trim(split(split(string(jPath($data, concat('.',$root.slots['PracticeECC']))[0]), ';')[1], '|')[0])}' data-primary-text='${trim(split(string(jPath($data, concat('.',$root.slots['PracticeECC']))[0]), ';')[0])}'></pnp-persona></template><template data-type='person-card'><mgt-person-card inherit-details></mgt-person-card></template></mgt-person>",
+                  "size": "default",
+                  "$when": "${string(jPath($data, concat('.',$root.slots['PracticeECC']))[0]) != ''}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Departments: ${replace(string(jPath($data, concat('.',$root.slots['Departments']))[0]),';',', ')}",
+                  "wrap": true,
+                  "$when": "${string(jPath($data, concat('.',$root.slots['Departments']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "Divisions: ${replace(string(jPath($data, concat('.',$root.slots['Divisions']))[0]),';',', ')}",
+                  "wrap": true,
+                  "$when": "${string(jPath($data, concat('.',$root.slots['Divisions']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "Specialties: ${replace(string(jPath($data, concat('.',$root.slots['Specialties']))[0]),';',', ')}",
+                  "wrap": true,
+                  "$when": "${string(jPath($data, concat('.',$root.slots['Specialties']))[0]) != ''}"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "Services: ${replace(string(jPath($data, concat('.',$root.slots['Services']))[0]),';',', ')}",
+                  "wrap": true,
+                  "$when": "${string(jPath($data, concat('.',$root.slots['Services']))[0]) != ''}"
+                }
+              ],
+              "bleed": true,
+              "style": "emphasis",
+              "backgroundImage": {
+                "url": "https://yourtenant.sharepoint.com/SiteAssets/LocationDirectory/canvasbg.png",
+                "fillMode": "Repeat"
+              }
+            }
+          ],
+          "$when": "${string(jPath($data, concat('.',$root.slots['Divisions']))[0]) != ''}"
+          
+        }
+      ],
+      "separator": true,
+      "spacing": "large"
+    }
+  ]
+}

@@ -11,13 +11,7 @@
     }
 
     .directions {
-      color: {
-          {
-          @root.theme.palette.themeSecondary
-        }
-      }
-
-      ;
+      color: {{@root.theme.palette.themeSecondary}};
       display:block;
     }
 
@@ -27,13 +21,7 @@
     .directions a.active {
       text-decoration: underline;
 
-      color: {
-          {
-          @root.theme.palette.themeSecondary
-        }
-      }
-
-      ;
+      color: {{@root.theme.palette.themeSecondary}};
     }
 
     .template--listItem--result h4 {
@@ -53,27 +41,16 @@
       margin: 0;
       padding: 0.5em 0.5em 0 0.5em;
 
-      color: {
-          {
-          @root.theme.palette.themePrimary
-        }
-      }
-
-      ;
+      color: {{@root.theme.palette.themePrimary}};
     }
 
-    .header a,
-    .header a:hover,
-    .header a:visited,
-    .header a.active {
+    h3.header a,
+    h3.header a:hover,
+    h3.header a:visited,
+    h3.header a.active {
+      text-decoration: underline;
 
-      color: {
-          {
-          @root.theme.palette.themePrimary
-        }
-      }
-
-      ;
+      color: {{@root.theme.palette.themePrimary}};
     }
 
     .block {
@@ -159,12 +136,12 @@
               <a href="{{getUrlField item.SiteUrlOWSURLH 'URL'}}">{{ replace (slot item @root.slots.Title) "string;#"
                 ""}}
                 {{#if (slot item @root.slots.Organization) ~}}
-                -{{slot item @root.slots.Organization}}
+                - {{slot item @root.slots.Organization}}
                 {{/if}}</a>
               {{else}}
-              {{ replace (slot item @root.slots.Title) "string;#" "" }}
+              {{ replace (slot item @root.slots.Title) "string;#" ""}}
               {{#if (slot item @root.slots.Organization) ~}}
-              -{{slot item @root.slots.Organization}}
+              - {{slot item @root.slots.Organization}}
               {{/if}}
               {{/if}}
             </h3>
