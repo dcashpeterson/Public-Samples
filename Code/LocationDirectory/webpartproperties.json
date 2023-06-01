@@ -1,0 +1,351 @@
+{
+	"documentationLink": "https://microsoft-search.github.io/pnp-modern-search/",
+	"selectedLayoutKey": "ResultsCustom",
+	"resultTypes": [],
+	"dataSourceProperties": {
+		"queryTemplate": "{searchTerms}*\n",
+		"enableQueryRules": false,
+		"enableLocalization": false,
+		"refinementFilters": "",
+		"selectedProperties": [
+			"Address1OWSTEXT",
+			"Address2OWSTEXT",
+			"AlternatePracticeNameOWSTEXT",
+			"City",
+			"ContentType",
+			"Departments",
+			"Divisions",
+			"LocationNotesOWSMTXT",
+			"Manager",
+			"NormListID",
+			"NormSiteID",
+			"NormUniqueID",
+			"NormWebID",
+			"Notes",
+			"OfficeCoordinator",
+			"Organization",
+			"OtherContactInfoOWSTEXT",
+			"owstaxidmetadataalltagsinfo",
+			"PracticeECC",
+			"RefillLine",
+			"RefillLineOWSTEXT",
+			"RefinableString03",
+			"RefinableString06",
+			"Services",
+			"SiteUrlOWSURLH",
+			"SortableTitle",
+			"Specialties",
+			"State",
+			"Title",
+			"UniqueID",
+			"WeekdayHoursOWSTEXT",
+			"WeekendHoursOWSTEXT",
+			"WorkFaxOWSTEXT",
+			"WorkPhone",
+			"WorkPhoneOWSTEXT",
+			"WorkZipOWSTEXT"
+		],
+		"resultSourceId": "0e433468-a4b0-444f-97ea-2f2a9385e119",
+		"hitHighlightedProperties": "",
+		"sortList": [
+			{
+				"uniqueId": "92f3de64-27d7-444b-989f-0063be78e437",
+				"sortField": "SortableTitle",
+				"isDefaultSort": true,
+				"sortDirection": null,
+				"isUserSort": null,
+				"sortFieldDisplayName": null,
+				"sortIdx": 1
+			}
+		],
+		"trimDuplicates": false
+	},
+	"queryTextSource": 1,
+	"layoutProperties": {},
+	"showSelectedFilters": false,
+	"showResultsCount": true,
+	"showBlankIfNoResult": true,
+	"useMicrosoftGraphToolkit": true,
+	"enableTelemetry": true,
+	"itemSelectionProps": {
+		"allowItemSelection": false,
+		"selectionMode": "AsDataFilter",
+		"allowMulti": false,
+		"valuesOperator": "or"
+	},
+	"extensibilityLibraryConfiguration": [
+		{
+			"name": "Default extensibility library",
+			"enabled": true,
+			"id": "dc4f961b-dbe0-44b4-982d-5776bf99d015"
+		}
+	],
+	"queryModifierConfiguration": [],
+	"queryModifierProperties": {
+		"endWhenSuccessfull": false
+	},
+	"selectedVerticalKeys": [],
+	"useVerticals": false,
+	"paging": {
+		"itemsCountPerPage": 10,
+		"pagingRange": 50,
+		"showPaging": true,
+		"hideDisabled": true,
+		"hideFirstLastPages": false,
+		"hideNavigation": false,
+		"useNextLinks": false
+	},
+	"adaptiveCardsHostConfig": "{\n\t\"fontFamily\": \"Segoe UI, Helvetica Neue, sans-serif\"\n}",
+	"layoutRenderType": "Handlebars",
+	"dataSourceKey": "SharePointSearch",
+	"templateSlots": [
+		{
+			"slotName": "Path",
+			"slotField": "DefaultEncodingURL",
+			"sortIdx": 1
+		},
+		{
+			"slotName": "Summary",
+			"slotField": "HitHighlightedSummary",
+			"sortIdx": 2
+		},
+		{
+			"slotName": "FileType",
+			"slotField": "FileType",
+			"sortIdx": 3
+		},
+		{
+			"slotName": "PreviewImageUrl",
+			"slotField": "AutoPreviewImageUrl",
+			"sortIdx": 4
+		},
+		{
+			"slotName": "PreviewUrl",
+			"slotField": "AutoPreviewUrl",
+			"sortIdx": 5
+		},
+		{
+			"slotName": "Author",
+			"slotField": "AuthorOWSUSER",
+			"sortIdx": 6
+		},
+		{
+			"slotName": "Tags",
+			"slotField": "owstaxidmetadataalltagsinfo",
+			"sortIdx": 7
+		},
+		{
+			"slotName": "Date",
+			"slotField": "Created",
+			"sortIdx": 8
+		},
+		{
+			"slotName": "SiteId",
+			"slotField": "NormSiteID",
+			"sortIdx": 9
+		},
+		{
+			"slotName": "WebId",
+			"slotField": "NormWebID",
+			"sortIdx": 10
+		},
+		{
+			"slotName": "ListId",
+			"slotField": "NormListID",
+			"sortIdx": 11
+		},
+		{
+			"slotName": "ItemId",
+			"slotField": "NormUniqueID",
+			"sortIdx": 12
+		},
+		{
+			"slotName": "IsFolder",
+			"slotField": "ContentTypeId",
+			"sortIdx": 13
+		},
+		{
+			"slotName": "contentclass",
+			"slotField": "contentclass",
+			"sortIdx": 14
+		},
+		{
+			"slotName": "PersonQuery",
+			"slotField": "AADObjectID",
+			"sortIdx": 15
+		},
+		{
+			"slotName": "UserDisplayName",
+			"slotField": "Title",
+			"sortIdx": 16
+		},
+		{
+			"slotName": "UserEmail",
+			"slotField": "UserName",
+			"sortIdx": 17
+		},
+		{
+			"uniqueId": "4a69dbd7-d40e-439e-9596-f7b644faa246",
+			"slotName": "Organization",
+			"slotField": "Organization",
+			"sortIdx": 18
+		},
+		{
+			"uniqueId": "934db7f5-2de3-40bb-9081-7427fe8f0b87",
+			"slotName": "Address1",
+			"slotField": "Address1OWSTEXT",
+			"sortIdx": 19
+		},
+		{
+			"uniqueId": "092ba34a-8195-431c-acd1-9e60f7704e21",
+			"slotName": "Address2",
+			"slotField": "Address2OWSTEXT",
+			"sortIdx": 20
+		},
+		{
+			"uniqueId": "897851dd-0f49-453d-924b-b030567ed123",
+			"slotName": "City",
+			"slotField": "City",
+			"sortIdx": 21
+		},
+		{
+			"uniqueId": "70ba7270-6735-443f-9c0c-a6ece99c25f1",
+			"slotName": "State",
+			"slotField": "State",
+			"sortIdx": 22
+		},
+		{
+			"uniqueId": "0500525b-b030-44b0-b16a-176ee7709092",
+			"slotName": "Zip",
+			"slotField": "WorkZipOWSTEXT",
+			"sortIdx": 23
+		},
+		{
+			"uniqueId": "c17df7d2-f65e-4303-b371-9a75825e74b8",
+			"slotName": "WorkPhone",
+			"slotField": "WorkPhoneOWSTEXT",
+			"sortIdx": 24
+		},
+		{
+			"uniqueId": "b02c122d-6e5a-45d8-9d7f-e0072157285c",
+			"slotName": "Fax",
+			"slotField": "WorkFaxOWSTEXT",
+			"sortIdx": 25
+		},
+		{
+			"uniqueId": "5e0a3be6-ac28-428f-bf8d-39908f15830c",
+			"slotName": "WeekdayHours",
+			"slotField": "WeekdayHoursOWSTEXT",
+			"sortIdx": 26
+		},
+		{
+			"uniqueId": "a3b26281-cbb6-48dd-a4b0-4fb86270a711",
+			"slotName": "WeekendHours",
+			"slotField": "WeekendHoursOWSTEXT",
+			"sortIdx": 27
+		},
+		{
+			"uniqueId": "e424b849-be04-4ff0-b911-4c120cd2ed44",
+			"slotName": "Manager",
+			"slotField": "Manager",
+			"sortIdx": 28
+		},
+		{
+			"uniqueId": "c2ef5654-acfb-434f-8735-51fbe106ec5e",
+			"slotName": "Notes",
+			"slotField": "LocationNotesOWSMTXT",
+			"sortIdx": 29
+		},
+		{
+			"uniqueId": "c80997ab-f436-4cc7-bd66-e50d27ec20d1",
+			"slotName": "AKA",
+			"slotField": "AlternatePracticeNameOWSTEXT",
+			"sortIdx": 30
+		},
+		{
+			"uniqueId": "3105f052-595a-42e8-a57a-b8c4f56f3645",
+			"slotName": "ContentType",
+			"slotField": "ContentType",
+			"sortIdx": 31
+		},
+		{
+			"uniqueId": "8d3cb1db-efea-4439-9ae3-38a5b19fac89",
+			"slotName": "Divisions",
+			"slotField": "Divisions",
+			"sortIdx": 32
+		},
+		{
+			"uniqueId": "287f1d51-6bbf-4501-b4ec-1c880ee63408",
+			"slotName": "Departments",
+			"slotField": "Departments",
+			"sortIdx": 33
+		},
+		{
+			"uniqueId": "184a491a-bb04-41d2-8f75-3df6b5eb186d",
+			"slotName": "Specialties",
+			"slotField": "Specialties",
+			"sortIdx": 34
+		},
+		{
+			"uniqueId": "2e3b01f0-1315-4905-8a25-6ccc60ee30a8",
+			"slotName": "Services",
+			"slotField": "Services",
+			"sortIdx": 35
+		},
+		{
+			"uniqueId": "3e6f6d0c-9cb1-4ff7-8be3-7c8e05c02cc9",
+			"slotName": "OtherContactInfo",
+			"slotField": "OtherContactInfoOWSTEXT",
+			"sortIdx": 36
+		},
+		{
+			"uniqueId": "57a0340b-981a-4f13-9cd6-fc333e40d1a5",
+			"slotName": "RefillLine",
+			"slotField": "RefillLineOWSTEXT",
+			"sortIdx": 37
+		},
+		{
+			"uniqueId": "f2abe89e-cd61-4c77-b6d9-1a82f5d7d84b",
+			"slotName": "OfficeCoordinator",
+			"slotField": "OfficeCoordinator",
+			"sortIdx": 38
+		},
+		{
+			"uniqueId": "a0b2a98b-8009-4536-ac0b-50499ad11025",
+			"slotName": "PracticeECC",
+			"slotField": "PracticeECC",
+			"sortIdx": 39
+		},
+		{
+			"uniqueId": "57f38dac-41fb-4290-b010-9a7832571808",
+			"slotName": "Title",
+			"slotField": "SortableTitle",
+			"sortIdx": 40
+		}
+	],
+	"inlineTemplateContent": null,
+	"externalTemplateUrl": "https://yourtenant.sharepoint.com/SiteAssets/LocationDirectory/LocationDirectoryTemplate-Handlebars.html",
+	"useInputQueryText": true,
+	"useDynamicFiltering": false,
+	"defaultQueryText": "*",
+	"useDefaultQueryText": true,
+	"useFilters": true,
+	"title": "Results",
+	"filtersDataSourceReference": "WebPart.544c1372-fb1d-4e96-bc1e-31fd66979667.ccec8da5-bb94-4117-9089-71d79b5c3672:pnpSearchFiltersWebPart",
+	"queryText": {
+		"__type": "DynamicProperty",
+		"reference": {
+			"_reference": "WebPart.544c1372-7e5a-49ec-8db6-812f76c375f2.ed0a56a2-674a-42a1-8a15-11b093cb9b23:pnpSearchBoxWebPart",
+			"_sourceId": "WebPart.544c1372-7e5a-49ec-8db6-812f76c375f2.ed0a56a2-674a-42a1-8a15-11b093cb9b23",
+			"_property": "pnpSearchBoxWebPart"
+		}
+	},
+	"filtersData": {
+		"__type": "DynamicProperty",
+		"value": {}
+	},
+	"selectedItemFieldValue": {
+		"__type": "DynamicProperty",
+		"value": ""
+	}
+}
