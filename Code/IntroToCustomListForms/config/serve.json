@@ -1,0 +1,53 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/spfx-serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://{tenantDomain}/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "ea00c373-5c20-4c4e-b8e1-57525c0f06c9",
+        "PageType": 8,
+        "RootFolder": "/sites/mySite/Lists/MyList",
+        "properties": {
+          "sampleText": "Value"
+        }
+      }
+    },
+    "vacationRequest_NewForm": {
+      "pageUrl": "https://{tenantDomain}/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "ea00c373-5c20-4c4e-b8e1-57525c0f06c9",
+        "PageType": 8,
+        "RootFolder": "/sites/mySite/Lists/MyList",
+        "properties": {
+          "sampleText": "Value"
+        }
+      }
+    },
+    "vacationRequest_EditForm": {
+      "pageUrl": "https://{tenantDomain}/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "ea00c373-5c20-4c4e-b8e1-57525c0f06c9",
+        "PageType": 6,
+        "RootFolder": "/sites/mySite/Lists/MyList",
+        "ID": 1,
+        "properties": {
+          "sampleText": "Value"
+        }
+      }
+    },
+    "vacationRequest_ViewForm": {
+      "pageUrl": "https://{tenantDomain}/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "ea00c373-5c20-4c4e-b8e1-57525c0f06c9",
+        "PageType": 4,
+        "RootFolder": "/sites/mySite/Lists/MyList",
+        "ID": 1,
+        "properties": {
+          "sampleText": "Value"
+        }
+      }
+    }
+  }
+}

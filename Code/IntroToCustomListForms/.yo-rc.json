@@ -1,0 +1,22 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "16.19.1",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.9.1"
+    },
+    "version": "1.17.1",
+    "libraryName": "intro-to-custom-list-forms",
+    "libraryId": "4d585bdb-d721-4779-b5b1-c643597cadae",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "intro-to-custom-list-forms",
+    "solutionShortDescription": "intro-to-custom-list-forms description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "extension",
+    "extensionType": "FormCustomizer"
+  }
+}

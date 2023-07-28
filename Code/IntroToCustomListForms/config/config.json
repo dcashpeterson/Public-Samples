@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "vacation-request-form-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/vacationRequest/VacationRequestFormCustomizer.js",
+          "manifest": "./src/extensions/vacationRequest/VacationRequestFormCustomizer.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "VacationRequestFormCustomizerStrings": "lib/extensions/vacationRequest/loc/{locale}.js"
+  }
+}

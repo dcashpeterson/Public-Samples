@@ -1,0 +1,55 @@
+@use 'sass:meta';
+
+.vacationRequest {
+  :global {
+    @include meta.load-css('node_modules/@n8d/htwoo-core/lib/sass/htwoo-core');
+
+    .hoo-button-pivot.is-active .hoo-pivot-inner {
+      text-shadow: 0 0 .65px currentColor,
+        0 0 .65px currentColor !important;
+    }
+
+    .hoo-pivotbar {
+      position: absolute;
+    }
+
+    .hoo-grid {
+      padding: 0.5rem;
+    }
+
+    .inputForm {
+      max-width: 25%;
+    }
+
+    .intro {
+      grid-column: 1 / span 12;
+    }
+
+    .label {
+      grid-column: 1 / span 4;
+    }
+
+    .input {
+      grid-column: 5 / span 8;
+    }
+
+    .hoo-error {
+      color: red;
+    }
+
+    .hoo-table tr.current td,
+    .hoo-table th.current td {
+      background-color: rgba(237, 235, 233);
+    }
+  }
+
+  background-color: "[theme:white, default:#ffffff]";
+  color: "[theme:themePrimary, default:#0078d4]";
+  padding: 0.5rem;
+
+
+
+  .newButton {
+    float: right;
+  }
+}

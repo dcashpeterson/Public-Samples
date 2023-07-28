@@ -1,0 +1,9 @@
+<a href="{{slot item @root.slots.PreviewUrl}}" target="_blank" style="color: {{@root.theme.semanticColors.link}}">
+  {{replace (slot item @root.slots.Title) "string;#" ""}}
+</a>
+
+<a href="{{slot item @root.slots.ProjectSiteUrl}}" target="_blank" style="color: {{@root.theme.semanticColors.link}}">
+  {{slot item @root.slots.SiteTitle}}
+</a>
+
+{{getDate (slot item @root.slots.DueDate) "L" "0"}}

@@ -1,0 +1,113 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.3",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "**${$root.data.totalItemsCount}** results",
+      "size": "Medium",
+      "wrap": true,
+      "$when": "${$root.properties.showResultsCount == true}"
+    },
+    {
+      "type": "Container",
+      "$data": "${data.items}",
+      "separator": true,
+      "spacing":"large",
+      "backgroundImage": "${if(jPath($data, concat('.',$root.slots['DueDate']))[0] <= utcNow(), 'https://derekcp.sharepoint.com/SiteAssets/ProjectRollUp/backgroundcolor.png', '')}",
+      "items": [
+        {
+          "type": "TextBlock",
+          "size": "ExtraLarge",
+          "weight": "Bolder",
+          "color": "${if(jPath($data, concat('.',$root.slots['DueDate']))[0] <= utcNow(), 'light', '')}",
+          "text": "${if(jPath($data, concat('.',$root.slots['DueDate']))[0] <= utcNow(), 'Overdue: ', '')}${replace(jPath($data, concat('.',$root.slots['Title']))[0],'string;#','')}"
+        },
+        {
+          "type": "ColumnSet",
+          "id": "${hitId}",
+          "columns": [
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "wrap": true,
+                  "width": "stretch",
+                  "color":"${if(jPath($data, concat('.',$root.slots['DueDate']))[0] <= utcNow(), 'light', '')}",
+                  "text": "<strong>Due Date:</strong> {{DATE(${jPath($data, concat('.',$root.slots['DueDate']))[0]}, COMPACT)}}"
+                }
+              ],
+              "width": "stretch"
+            },
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "width": "stretch",
+                  "color": "${if(jPath($data, concat('.',$root.slots['DueDate']))[0] <= utcNow(), 'light', '')}",
+                  "text": "<strong>Project:</strong> ${jPath($data, concat('.',$root.slots['SiteTitle']))[0]}"
+                }
+              ],
+              "width": "stretch"
+            },
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "wrap": true,
+                  "width": "stretch",
+                  "color": "${if(jPath($data, concat('.',$root.slots['DueDate']))[0] <= utcNow(), 'light', '')}",
+                  "text": "<strong>Progress:</strong> ${jPath($data, concat('.',$root.slots['Progress']))[0]}"
+                }
+              ],
+              "width": "stretch"
+            }
+          ]
+        },
+        {
+          "type": "ColumnSet",
+          "id": "${hitId}",
+          "columns": [
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "ActionSet",
+                  "actions": [
+                    {
+                      "type": "Action.OpenUrl",
+                      "title": "View Task",
+                      "style": "positive",
+                      "url": "${jPath($data, concat('.',$root.slots['PreviewUrl']))[0]}"
+                    }
+                  ]
+                }
+              ],
+              "width": "auto"
+            },
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "ActionSet",
+                  "actions": [
+                    {
+                      "type": "Action.OpenUrl",
+                      "title": "View Project Site",
+                      "url": "${jPath($data, concat('.',$root.slots['ProjectSiteUrl']))[0]}"
+                    }
+                  ]
+                }
+              ],
+              "width": "stretch"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
