@@ -1,0 +1,26 @@
+{
+  "elmType": "div",
+  "style": {
+    "display": "flex",
+    "justify-content": "space-between",
+    "border-radius": "10px 10px 0 0",
+    "padding": "8px",
+    "font-size": "24px"
+  },
+  "attributes": {
+    "class": "=if([$Progress] == 'Completed', 'ms-bgColor-greenLight', if([$Progress] == 'In progress', 'ms-bgColor-blueLight', if([$Progress] == 'Not started', 'ms-bgColor-neutralLight', if([$Progress] == 'Blocked', 'ms-bgColor-yellow', 'ms-bgColor-orangeLight')))) + ' ms-fontColor-neutralPrimary'"
+  },
+  "children": [
+    {
+      "elmType": "div",
+      "txtContent": "[$Title]"
+    },
+    {
+      "elmType": "div",
+      "attributes": {
+        "iconName": "=if([$Progress] == 'Completed', 'CompletedSolid', if([$Progress] == 'In progress', 'PinnedSolid', if([$Progress] == 'Not started', 'TestBeakerSolid', if([$Progress] == 'Blocked', 'WarningSolid', 'Blocked2Solid'))))",
+        "title": "[$Progress]"
+      }
+    }
+  ]
+}
