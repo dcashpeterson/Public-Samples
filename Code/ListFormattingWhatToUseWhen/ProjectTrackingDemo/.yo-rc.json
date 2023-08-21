@@ -1,0 +1,22 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "16.19.1",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.9.1"
+    },
+    "version": "1.17.1",
+    "libraryName": "project-tracking-demo",
+    "libraryId": "31919ed2-fa20-4721-b78d-d67a8d2eae1b",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "project-tracking-demo",
+    "solutionShortDescription": "project-tracking-demo description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "extension",
+    "extensionType": "FormCustomizer"
+  }
+}

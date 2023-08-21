@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "project-tracking-demo-client-side-solution",
+    "id": "31919ed2-fa20-4721-b78d-d67a8d2eae1b",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.17.1"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "project-tracking-demo description"
+      },
+      "longDescription": {
+        "default": "project-tracking-demo description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "project-tracking-demo Feature",
+        "description": "The feature that activates elements of the project-tracking-demo solution.",
+        "id": "b2f9b1f0-247a-49b0-8eb5-2f0b2f239c6c",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/project-tracking-demo.sppkg"
+  }
+}

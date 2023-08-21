@@ -1,0 +1,130 @@
+@use 'sass:meta';
+
+.projectTrackerForm {
+  :global {
+    @include meta.load-css('node_modules/@n8d/htwoo-core/lib/sass/htwoo-core');
+
+    .hoo-button-pivot.is-active .hoo-pivot-inner {
+      text-shadow: 0 0 .65px currentColor,
+        0 0 .65px currentColor !important;
+    }
+
+    .hoo-pivotbar {
+      position: absolute;
+    }
+
+    .hoo-grid {
+      padding: 0.5rem;
+    }
+
+    .inputForm {
+      margin-left:50%;
+    }
+  
+
+    .intro, .header {
+      grid-column: 1 / span 12;
+    }
+
+    .label {
+      grid-column: 1 / span 2;
+      font-weight: bold;
+    }
+
+    .overdue{
+      background-color: red;
+      color: white;
+      border-radius: 25px;
+      padding: 1rem;
+
+      .hoo-icon{
+        color: white;
+      }
+    }
+
+    .header{
+      display: grid;
+      h2{
+        grid-column: 1 /span 11;
+      }
+      .icons{
+        grid-column: 12 /span 1;
+      }
+      .fullWidth{
+        grid-column: 1 / span 12;
+      }
+    }
+
+    .callOut{
+      grid-column: 1 / span 12;
+      border: 1px solid black;
+      border-radius: 25px;    
+      background-color: rgba(122,122,122.8);
+      display:grid;
+      padding:1rem;
+
+      >div{
+        padding-bottom: .5rem;
+      }
+      .spacing{
+        margin-left: 2rem;
+        color: white;
+      }
+      .label, .intro{
+        color: white;
+        font-weight: bold;
+      }
+    }
+
+    .input {
+      grid-column: 3 / span 10;
+
+      .threeCol{
+        display: grid;
+        grid-column: 1 / span 12;
+
+        .col1 {
+            width: 100%;
+            grid-column: 1 / span 4;
+          }
+
+          .col2 {
+            width: 100%;
+            grid-column: 5 / span 4;
+            font-weight: bold;
+          }
+
+          .col3 {
+            width: 100%;
+            grid-column: 9 / span 4;
+          }
+      }
+    }
+
+    .white{
+      color: white;
+    }
+
+    .hoo-error {
+      color: red;
+    }
+    .hoo-input-text{
+      width:100%;
+    }
+
+    .hoo-table tr.current td,
+    .hoo-table th.current td {
+      background-color: rgba(237, 235, 233);
+    }
+  }
+
+  background-color: "[theme:white, default:#ffffff]";
+  color: "[theme:themePrimary, default:#0078d4]";
+  padding: 0.5rem;
+
+
+
+  .newButton {
+    float: right;
+  }
+}
