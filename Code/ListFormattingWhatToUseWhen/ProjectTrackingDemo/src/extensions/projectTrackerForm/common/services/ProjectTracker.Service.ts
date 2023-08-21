@@ -148,7 +148,7 @@ export class ProjectTrackerService implements IProjectTrackerService {
       //Get the items from the list.
       //const url = this._sp.web.lists.getByTitle(Lists.DEMOITEMSLIST).items.orderBy('TaskDueDate', false).expand('AssignedTo').filter(filter).top(1).toUrl();
       //console.error(`${this.LOG_SOURCE}:(GetCurrentItem) - ${url}`);
-      const item = await this._sp.web.lists.getByTitle(Lists.DEMOITEMSLIST).items.orderBy('TaskDueDate', false).select('Id', 'Title', 'AssignedTo/FirstName', 'AssignedTo/LastName', 'AssignedTo/ID', 'AssignedTo/EMail', 'TaskDueDate', 'Progress', 'StartDate', 'TaskCategory', 'TaskNotes', 'TaskPriority', 'TrackerDescription').expand('AssignedTo').filter(filter).top(1)();
+      const item = await this._sp.web.lists.getByTitle(Lists.DEMOITEMSLIST).items.orderBy('TaskDueDate', false).select('Id', 'Title', 'AssignedTo/FirstName', 'AssignedTo/LastName', 'AssignedTo/ID', 'AssignedTo/EMail', 'TaskDueDate', 'Progress', 'StartDate', 'TaskCategory', 'TaskNotes', 'TaskPriority', 'TrackerDescription','RemediationPlan').expand('AssignedTo').filter(filter).top(1)();
       //Iterate through the items from the list and create Client objects
       item.map((item) => {
         const dueDate = new Date(item.TaskDueDate);
@@ -170,6 +170,7 @@ export class ProjectTrackerService implements IProjectTrackerService {
             item.TaskPriority,
             item.Progress,
             `${startDate.getFullYear()}-${(startDate.getMonth() + 1 <= 9) ? "0" : ""}${(startDate.getMonth() + 1).toString()}-${(startDate.getDate() <= 9) ? "0" : ""}${(startDate.getDate()).toString()}`,
+            item.RemediationPlan,
           ))
       });
     } catch (err) {
@@ -189,7 +190,8 @@ export class ProjectTrackerService implements IProjectTrackerService {
         TaskNotes: item.notes,
         TaskPriority: item.priority,
         Progress: item.progress,
-        StartDate: new Date(item.startDate).toISOString()
+        StartDate: new Date(item.startDate).toISOString(),
+        RemediationPlan: item.remediationPlan
       });
     } catch (err) {
       console.error(`${this.LOG_SOURCE}:(UpdateItem) - ${err.message}`);
@@ -207,7 +209,8 @@ export class ProjectTrackerService implements IProjectTrackerService {
         TaskNotes: item.notes,
         TaskPriority: item.priority,
         Progress: item.progress,
-        StartDate: new Date(item.startDate).toISOString()
+        StartDate: new Date(item.startDate).toISOString(),
+        RemediationPlan: item.remediationPlan
       });
     } catch (err) {
       console.error(`${this.LOG_SOURCE}:(SaveItem) - ${err.message}`);

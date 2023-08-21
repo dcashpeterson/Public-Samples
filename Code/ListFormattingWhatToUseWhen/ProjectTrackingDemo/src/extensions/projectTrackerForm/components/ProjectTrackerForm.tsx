@@ -60,7 +60,7 @@ export default class ProjectTracker extends React.Component<IProjectTrackerFormP
       }
       {
         ((this.props.formMode === FormMode.NEWVIEW) || (this.props.formMode === FormMode.EDITVIEW)) &&
-        <NewEditForm context={this.props.context} currentItem={this.props.currentItem} formMode={this.props.formMode} onSave={this.props.onSave} onClose={this.props.onClose} />
+        <NewEditForm context={this.props.context} currentItem={this.props.currentItem} formMode={this.props.formMode} onSave={this.props.onSave} onClose={this.props.onClose} changeForm={this._changeForm} />
       }
     </div>;
   }

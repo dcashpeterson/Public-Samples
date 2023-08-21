@@ -37,6 +37,7 @@ export interface IProjectTrackerItem {
   priority: string;
   progress: string;
   startDate: string;
+  remediationPlan: string;
 }
 
 export class ProjectTrackerItem implements IProjectTrackerItem {
@@ -51,5 +52,6 @@ export class ProjectTrackerItem implements IProjectTrackerItem {
     public priority: string = "",
     public progress: string = "",
     public startDate: string = "",
+    public remediationPlan: string = "",
   ) { }
 }
