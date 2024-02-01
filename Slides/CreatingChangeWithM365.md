@@ -6,6 +6,8 @@ Thank you for coming to my session on how to leverage Microsoft 365 to do commun
 
 - [Microsoft Nonprofit Resource Center](https://nonprofit.microsoft.com/)
 - [What’s a Dev Tenant](https://symp.info/DevTenant)
+- [Small Business Center](https://www.microsoft.com/en-us/microsoft-365/business)
+- [Microsoft LookBook](https://lookbook.microsoft.com/)
 
 ## Contact Information
 
