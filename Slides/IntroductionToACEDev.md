@@ -1,4 +1,4 @@
-# Introduction to Development with Viva Connections
+# Building Engaging Employee Experiences for Viva Connections Using SPFx
 
 Thank you for coming to my session on development using Adaptive Card Extensions. I hope you enjoyed the session. Here is a list of the resources I posted in my session.
 
