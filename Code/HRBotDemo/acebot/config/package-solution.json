@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "acebot-client-side-solution",
+    "id": "34b4b2c7-c895-4378-87e4-7e2021fb70c3",
+    "version": "1.0.0.1",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.18.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "acebot description"
+      },
+      "longDescription": {
+        "default": "acebot description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "acebot Feature",
+        "description": "The feature that activates elements of the acebot solution.",
+        "id": "0aade80a-90fc-4c7c-81fc-6649ead7f5e0",
+        "version": "1.0.0.1"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/acebot.sppkg"
+  }
+}

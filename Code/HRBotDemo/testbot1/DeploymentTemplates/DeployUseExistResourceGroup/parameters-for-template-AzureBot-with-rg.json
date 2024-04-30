@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "azureBotId": {
+      "value": "testbot1-bot"
+    },
+    "azureBotSku": {
+      "value": "F0"
+    },
+    "azureBotRegion": {
+      "value": "global"
+    },
+    "botEndpoint": {
+      "value": "https://testbot1-svc.azurewebsites.net/api/messages"
+    },
+    "appType": {
+      "value": "UserAssignedMSI"
+    },
+    "appId": {
+      "value": "1332495e-08eb-453f-a6b6-ba26d9c59462"
+    },
+    "UMSIName": {
+      "value": "testbot1-ident"
+    },
+    "UMSIResourceGroupName": {
+      "value": "testbot1-rg"
+    },
+    "tenantId": {
+      "value": "b74c9c1a-eac0-4cb9-8059-ec4175f946a4"
+    }
+  }
+}

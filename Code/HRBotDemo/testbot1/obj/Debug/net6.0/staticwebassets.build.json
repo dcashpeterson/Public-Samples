@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "XGNWDLRJRK5MXX016tbvG0RWPgwcQXNk0s1d1+3yzuk=",
+  "Source": "EchoBot",
+  "BasePath": "_content/EchoBot",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "EchoBot/wwwroot",
+      "Source": "EchoBot",
+      "ContentRoot": "/Users/dcashpeterson/Documents/Projects/Presentations/Code/HRBotDemo/testbot1/wwwroot/",
+      "BasePath": "_content/EchoBot",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/dcashpeterson/Documents/Projects/Presentations/Code/HRBotDemo/testbot1/wwwroot/default.html",
+      "SourceId": "EchoBot",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/dcashpeterson/Documents/Projects/Presentations/Code/HRBotDemo/testbot1/wwwroot/",
+      "BasePath": "_content/EchoBot",
+      "RelativePath": "default.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/default.html"
+    }
+  ]
+}

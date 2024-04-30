@@ -1,0 +1,4 @@
+log Listening on 56150
+log Teams App Test Tool is being launched for you to debug the Teams app: http://localhost:56150
+debug started web socket client
+debug started web socket client
