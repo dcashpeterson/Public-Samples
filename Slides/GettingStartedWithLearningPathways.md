@@ -1,5 +1,5 @@
 
-# Creating a microlearning portal with Microsoft 365 Leanring Pathways
+# Getting Started with Microsoft 365 Learning Pathways
 
 Thank you for coming to my session on using Microsoft 365 Learning Pathways. I hope you enjoyed the session. Here is a list of the resources I posted in my session.
 
@@ -12,5 +12,3 @@ Thank you for coming to my session on using Microsoft 365 Learning Pathways. I h
 - [Creating Custom Content Packs](https://symp.info/M365LP-CustomContentPack)
 - [Twitter - @spdcp](https://www.twitter.com/spdcp)
 - [LinkedIn - dcashpeterson](https://www.linkedin.com/in/dcashpeterson/)
-- [Twitter - @EEMancini](https://www.twitter.com/EEMancini)
-- [LinkedIn - eemancini](https://www.linkedin.com/in/eemancini/)
