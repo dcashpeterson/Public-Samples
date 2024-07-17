@@ -3,6 +3,7 @@
 
 Thank you for coming to my session on using Microsoft 365 Learning Pathways. I hope you enjoyed the session. Here is a list of the resources I posted in my session.
 
+- [Get Involved in Testing](https://github.com/pnp/custom-learning-office-365)
 - [What’s a Dev Tenant](https://symp.info/DevTenant)
 - [Getting Started with Learning Pathways](https://learn.microsoft.com/office365/customlearning/)
 - [Microsoft 365 Lookbook](https://lookbook.Microsoft.com)
