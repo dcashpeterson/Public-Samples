@@ -2,22 +2,12 @@
 
 Thank you for coming to my session on Creating a Compelling Employee Experience with Brand Center. I hope you enjoyed the session. Here is a list of the resources I posted in my session.
 
-## Source Code
+## Helpful Links
 
-- [Demo Source Code](https://symp.info/CodeOnceUseEverywhere)
-
-## Community Resources
-
-- [PnP Community Demo](https://www.youtube.com/watch?v=CngGpeXVsUo)
-- [What’s a Dev Tenant](https://symp.info/DevTenant) Dev tenant currently on pause
-- [hTWOo](https://lab.n8d.studio/htwoo/)
-
-## Development Resources
-
-- [SPFx Setup](https://symp.info/devenvsetup)
-- [Teams Development](https://symp.info/teamsDevDocs)
-- [Teams Dev Tutorial](https://symp.info/teamsDevTutorial)
-- [World Clock](https://symp.info/worldclock)
+- [Brand Center Overview](https://learn.microsoft.com/en-us/sharepoint/brand-center-overview)
+- [Managing Brand Fonts](https://learn.microsoft.com/en-us/sharepoint/brand-fonts)
+- [Font Packages](https://learn.microsoft.com/en-us/sharepoint/brand-center-font-packages)
+- [Microsoft Public CDN](https://learn.microsoft.com/en-us/microsoft-365/enterprise/use-microsoft-365-cdn-with-spo)
 
 ## Contact Information
 

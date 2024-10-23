@@ -1,0 +1,27 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "facilities-requests-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/facilitiesRequests/FacilitiesRequestsWebPart.js",
+          "manifest": "./src/webparts/facilitiesRequests/FacilitiesRequestsWebPart.manifest.json"
+        }
+      ]
+    },
+    "facilities-request-form-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/facilitiesRequest/FacilitiesRequestFormCustomizer.js",
+          "manifest": "./src/extensions/facilitiesRequest/FacilitiesRequestFormCustomizer.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "FacilitiesRequestsWebPartStrings": "lib/webparts/facilitiesRequests/loc/{locale}.js",
+    "FacilitiesRequestFormCustomizerStrings": "lib/extensions/facilitiesRequest/loc/{locale}.js"
+  }
+}

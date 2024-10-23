@@ -1,0 +1,17 @@
+@import '~@fluentui/react/dist/sass/References.scss';
+
+.stockTicker {
+  padding: 1em 1.5em;
+  font-size: 1.5em;
+}
+
+.up {
+  background-color: green;
+color: white;
+}
+
+.down {
+  background-color: red;
+color: black;
+}
+

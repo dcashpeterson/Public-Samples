@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "intro-to-sp-fx-web-part-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/introToSpFxWebPart/IntroToSpFxWebPartWebPart.js",
+          "manifest": "./src/webparts/introToSpFxWebPart/IntroToSpFxWebPartWebPart.manifest.json"
+        }
+      ]
+    },
+    "intro-to-sp-fx-app-customizer-application-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/introToSpFxAppCustomizer/IntroToSpFxAppCustomizerApplicationCustomizer.js",
+          "manifest": "./src/extensions/introToSpFxAppCustomizer/IntroToSpFxAppCustomizerApplicationCustomizer.manifest.json"
+        }
+      ]
+    },
+    "intro-to-sp-fx-progress-field-field-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/introToSpFxProgressField/IntroToSpFxProgressFieldFieldCustomizer.js",
+          "manifest": "./src/extensions/introToSpFxProgressField/IntroToSpFxProgressFieldFieldCustomizer.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "IntroToSpFxWebPartWebPartStrings": "lib/webparts/introToSpFxWebPart/loc/{locale}.js",
+    "IntroToSpFxAppCustomizerApplicationCustomizerStrings": "lib/extensions/introToSpFxAppCustomizer/loc/{locale}.js",
+    "IntroToSpFxProgressFieldFieldCustomizerStrings": "lib/extensions/introToSpFxProgressField/loc/{locale}.js"
+  }
+}

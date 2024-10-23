@@ -6,20 +6,16 @@ Thank you for coming to my session on getting started with the SharePoint Framew
 
 - [Demo Source Code](https://symp.info/CodeOnceUseEverywhere)
 
-## Community Resources
+## Resources
 
-- [PnP Community Demo](https://www.youtube.com/watch?v=CngGpeXVsUo)
-- [What’s a Dev Tenant](https://symp.info/DevTenant) Dev tenant currently on pause
-- [hTWOo](https://lab.n8d.studio/htwoo/)
-
-## Development Resources
-
-- [SPFx Setup](https://symp.info/devenvsetup)
-- [Teams Development](https://symp.info/teamsDevDocs)
-- [Teams Dev Tutorial](https://symp.info/teamsDevTutorial)
-- [World Clock](https://symp.info/worldclock)
+- [Overview of SharePoint Framework](https://learn.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview)
+- [Setting up a development environment](https://learn.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-development-environment)
+- [Build your first webpart](https://learn.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/get-started/build-a-hello-world-web-part)
+- [SPFx Docker Containers](https://github.com/pnp/docker-spfx)
+- [Sample Gallery](https://adoption.microsoft.com/en-us/sample-solution-gallery/)
+- [PnP Community Site](https://pnp.github.io)
 
 ## Contact Information
 
-- [Twitter - @spdcp](https://www.twitter.com/spdcp)
+- [X - @spdcp](https://www.twitter.com/spdcp)
 - [LinkedIn - @dcashpeterson](https://www.linkedin.com/in/dcashpeterson/)
