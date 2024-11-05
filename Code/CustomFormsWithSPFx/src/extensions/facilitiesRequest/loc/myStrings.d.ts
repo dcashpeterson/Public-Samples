@@ -11,6 +11,7 @@ declare interface IFacilitiesRequestFormCustomizerStrings {
   responsibleDepartmentLabel: string;
   assigneeLabel: string;
   serviceNotesLabel: string;
+  closeRequestLabel: string;
 }
 
 declare module 'FacilitiesRequestFormCustomizerStrings' {

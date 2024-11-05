@@ -12,5 +12,6 @@ define([], function() {
     "responsibleDepartmentLabel": "Responsible Department",
     "assigneeLabel": "Assignee",
     "serviceNotesLabel": "Service Notes",
+    "closeRequestLabel": "Close Request",
   }
 });

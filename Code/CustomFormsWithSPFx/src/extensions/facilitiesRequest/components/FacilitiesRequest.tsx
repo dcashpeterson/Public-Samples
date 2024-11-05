@@ -14,6 +14,7 @@ import * as strings from 'FacilitiesRequestFormCustomizerStrings';
 import HOOLabel from '@n8d/htwoo-react/HOOLabel';
 import HOOPersona from '@n8d/htwoo-react/HOOPersona';
 import HOOAvatarPres, { HOOAvatarSize, HOOPresenceStatus } from '@n8d/htwoo-react/HOOAvatarPres';
+import HOOCheckbox from '@n8d/htwoo-react/HOOCheckbox';
 
 export interface IFacilitiesRequestProps {
   context: FormCustomizerContext;
@@ -113,6 +114,18 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
       console.error(`${LOG_SOURCE} (_onChangeValue) - ${err}`);
     }
   }
+
+  private _onCompleteRequest = (fieldName: string, value: string | number | boolean): void => {
+    try {
+      const currentItem: any = cloneDeep(this.state.currentItem);
+      if (value) {
+        currentItem.requestStatus = strings.statusValues[5];
+      }
+      this.setState({ currentItem });
+    } catch (err) {
+      console.error(`${LOG_SOURCE} (_onCompleteRequest) - ${err}`);
+    }
+  }
   private _onSave = async (saveType: SaveType): Promise<void> => {
     try {
       const currentItem: FacilitiesRequestItem = cloneDeep(this.state.currentItem);
@@ -209,6 +222,11 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
             value={this.state.currentItem.serviceNotes}
             onChange={(event) => { this._onChangeString("serviceNotes", event); }}
           />
+          <HOOCheckbox
+            forId='closeRequest'
+            label={strings.closeRequestLabel}
+            checked={(this.state.currentItem.requestStatus === strings.statusValues[5]) ? true : false}
+            onChange={(event) => { this._onCompleteRequest("requestStatus", (event.target as HTMLInputElement).checked); }} />
 
         </div>)
     } catch (err) {
