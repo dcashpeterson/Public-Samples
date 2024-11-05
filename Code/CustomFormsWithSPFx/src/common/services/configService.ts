@@ -53,12 +53,12 @@ export default class ConfigService implements IConfigService {
     return this._error;
   }
 
-  public async Init(pageContext: any, aadTokenProviderFactory: any): Promise<void> {
+  public async Init(context: any): Promise<void> {
     try {
       this._error = "";
-      this._sp = spfi().using(spSPFx({ pageContext }));
-      this._graph = graphfi().using(graphSPFx({ aadTokenProviderFactory }));
-      this._context = pageContext;
+      this._sp = spfi().using(spSPFx({ pageContext: context.pageContext }));
+      this._graph = graphfi().using(graphSPFx(context));
+      this._context = context.pageContext;
       this._tenantUrl = this._context.web.absoluteUrl.replace(this._context.web.serverRelativeUrl, "").replace("https://", "");
       this._configNeeded = await this._isConfigNeeded(Lists.DEMOLISTTITLE)
       

@@ -1,5 +1,14 @@
+@use 'sass:meta';
+
 .facilitiesRequest {
+:global {
+    @include meta.load-css('node_modules/@n8d/htwoo-core/lib/sass/htwoo-core');
+  }
   background-color: "[theme:white, default:#ffffff]";
   color: "[theme:themePrimary, default:#0078d4]";
   padding: 0.5rem;
+
+  label{
+    display: block;
+  }
 }

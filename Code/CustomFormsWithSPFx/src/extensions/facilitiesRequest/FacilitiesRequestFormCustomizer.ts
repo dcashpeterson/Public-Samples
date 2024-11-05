@@ -8,7 +8,7 @@ import { ThemeProvider } from '@microsoft/sp-component-base';
 import { IFacilitiesRequestProps } from './components/FacilitiesRequest';
 import { ISPFxThemes, SPFxThemes, symset } from '@n8d/htwoo-react';
 import symbolSetFile from '../../common/assets/icons.svg';
-import {FormView } from '../../common/models/models';
+import {FacilitiesRequestItem } from '../../common/models/models';
 import { formsService } from '../../common/services/formsService';
 import { SharePointProvider } from "@microsoft/mgt-sharepoint-provider";
 import { Providers, customElementHelper } from "@microsoft/mgt-element";
@@ -34,7 +34,6 @@ const LOG_SOURCE: string = '🏳️‍🌈 FacilitiesRequestFormCustomizer';
 export default class FacilitiesRequestFormCustomizer
   extends BaseFormCustomizer<IFacilitiesRequestFormCustomizerProperties> {
   
-  private _formView: FormView = FormView.NEW;
   private _spfxThemes: ISPFxThemes = new SPFxThemes();
 
   public async onInit(): Promise<void> {
@@ -53,10 +52,8 @@ export default class FacilitiesRequestFormCustomizer
     // If no ThemeProvider service, use undefined which will use page context
     this._spfxThemes.initThemeHandler(document.body, undefined, undefined, undefined);
     //Initialize Service
-    await formsService.Init(this.context.pageContext, this.context);
-    if (formsService.ready) {
-      this._formView = formsService.GetFormView(this.displayMode);
-    }
+    await formsService.Init(this.context, this.displayMode);
+
 
     // Add your custom initialization to this method. The framework will wait
     // for the returned promise to resolve before rendering the form.
@@ -69,7 +66,6 @@ export default class FacilitiesRequestFormCustomizer
     // Use this method to perform your custom rendering.
     const facilitiesRequest = lazyLoadComponent<IFacilitiesRequestProps>(MgtComponent, {
       context: this.context,
-        formView: this._formView,
         currentItem: formsService.currentItem,
         onSave: this._onSave,
         onClose: this._onClose
@@ -84,13 +80,12 @@ export default class FacilitiesRequestFormCustomizer
     super.onDispose();
   }
 
-  private _onSave = (): void => {
-
+  private _onSave = (currentItem: FacilitiesRequestItem): void => {
     // You MUST call this.formSaved() after you save the form.
     this.formSaved();
   }
 
-  private _onClose =  (): void => {
+  private _onClose = (): void => {
     // You MUST call this.formClosed() after you close the form.
     this.formClosed();
   }

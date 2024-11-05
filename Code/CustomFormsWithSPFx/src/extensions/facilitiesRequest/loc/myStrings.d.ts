@@ -1,7 +1,16 @@
 declare interface IFacilitiesRequestFormCustomizerStrings {
-  Save: string;
-  Cancel: string;
-  Close: string;
+  statusValues: string[];
+  saveButton: string;
+  cancelButton: string;
+  errorHeader: string;
+  newRequestHeader: string;
+  newRequestIntro: string;
+  editRequestHeader: string;
+  requestorLabel: string;
+  requestDescriptionLabel: string;
+  responsibleDepartmentLabel: string;
+  assigneeLabel: string;
+  serviceNotesLabel: string;
 }
 
 declare module 'FacilitiesRequestFormCustomizerStrings' {

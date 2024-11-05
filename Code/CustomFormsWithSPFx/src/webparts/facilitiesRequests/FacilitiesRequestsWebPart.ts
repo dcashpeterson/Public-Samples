@@ -38,7 +38,7 @@ export default class FacilitiesRequestsWebPart extends BaseClientSideWebPart<IFa
       // Initialize Icons Symbol Set
       await symset.initSymbols(symbolSetFile);
       //Initialize Service
-      await formsService.Init(this.context.pageContext, this.context.aadTokenProviderFactory);
+      await formsService.Init(this.context,0);
     } catch (error) {
       console.error(LOG_SOURCE, error);
     }
