@@ -6,6 +6,9 @@ export enum Lists {
   DEMOLISTNAME = "FacilitiesRequest",
   DEMOLISTTITLE = "Facilities Request",
   DEMOLISTDESCRIPTION = "Facilities Request List",
+  LOCATIONLISTNAME = "Locations",
+  LOCATIONLISTTITLE = "Locations",
+  LOCATIONLISTDESCRIPTION = "Locations List",
 }
 
 export enum FormView {
@@ -36,21 +39,29 @@ export interface IFieldList {
   props: { FieldTypeKind: number, choices?: string[], richText?: boolean, editFormat?: ChoiceFieldFormatType, minValue?: number, maxValue?: number, localID?: number };
 }
 
+export const LocationListFields: IFieldList[] = [
+  { internalName: "Building", displayName: "Building", props: { FieldTypeKind: 2 } },
+  { internalName: "RoomNumber", displayName: "Room Number", props: { FieldTypeKind: 2 } },
+  { internalName: "RoomName", displayName: "Room Name", props: { FieldTypeKind: 2 } }
+];
+
 export const ListFields: IFieldList[] = [
-  { internalName: "Requestor", displayName: "Requestor", props: { FieldTypeKind: 20 } },
-  { internalName: "RequestDescription", displayName: "Request Description", props: { FieldTypeKind: 3, richText: false } },
-  { internalName: "RequestStatus", displayName: "Request Status", props: { FieldTypeKind: 6, choices: strings.statusValues, editFormat: ChoiceFieldFormatType.Dropdown } },
-  { internalName: "ResponsibleDepartment", displayName: "Responsible Department", props: { FieldTypeKind: 6, choices: ["Buildings and Grounds", "Facilities", "Information Technology"], editFormat: ChoiceFieldFormatType.Dropdown } },
+  { internalName: "IssueType", displayName: "Issue Type", props: { FieldTypeKind: 6, choices: strings.issueTypeValues, editFormat: ChoiceFieldFormatType.Dropdown } },
+  { internalName: "Location", displayName: "Location", props: { FieldTypeKind: 2 } },
+  { internalName: "EquipmentId", displayName: "Equipment ID", props: { FieldTypeKind: 2 } },
+  { internalName: "IssueSeverity", displayName: "Severity", props: { FieldTypeKind: 6, choices: strings.severityValues, editFormat: ChoiceFieldFormatType.Dropdown } },
+  { internalName: "IssueDescription", displayName: "Description of Issue", props: { FieldTypeKind: 3, richText: false } },
+  { internalName: "ReportedBy", displayName: "Reported By", props: { FieldTypeKind: 20 } },
+  { internalName: "ReportedDate", displayName: "Reported Date", props: { FieldTypeKind: 4 } },
   { internalName: "Assignee", displayName: "Assignee", props: { FieldTypeKind: 20 } },
-  { internalName: "ServiceNotes", displayName: "Service Notes", props: { FieldTypeKind: 3, richText: false } }//,
-  // { internalName: "ContactTitle", displayName: "Contact Title", props: { FieldTypeKind: 2 } },
-  // { internalName: "ContactEmail", displayName: "Contact Email", props: { FieldTypeKind: 2 } },
-  // { internalName: "ContactPhone", displayName: "Contact Phone", props: { FieldTypeKind: 2 } },
-  // { internalName: "ProjectName", displayName: "Project Name", props: { FieldTypeKind: 2 } },
-  // { internalName: "ProjectDescription", displayName: "Project Description", props: { FieldTypeKind: 3, richText: false } },
-  // { internalName: "SalesLead", displayName: "Sales Lead", props: { FieldTypeKind: 20 } },
-  // { internalName: "PipelineStatus", displayName: "Pipeline Status", props: { FieldTypeKind: 6, choices: ["Referred", "In negotiation", "On Hold", "Closed - Won", "Closed - Lost", "Closed - Declined"], editFormat: ChoiceFieldFormatType.Dropdown } },
-  // { internalName: "LastContactDate", displayName: "Last Contact Date", props: { FieldTypeKind: 4 } },
+  { internalName: "VerificationDate", displayName: "Verification Date", props: { FieldTypeKind: 4 } },
+  { internalName: "AdditionalComments", displayName: "Additional Comments", props: { FieldTypeKind: 3, richText: false } },
+  { internalName: "EstimatedResolutionDate", displayName: "Estimated Resolution Date", props: { FieldTypeKind: 4 } },
+  { internalName: "ResolutionDescription", displayName: "Resolution Description", props: { FieldTypeKind: 3, richText: false } },
+  { internalName: "ResolutionDate", displayName: "Resolution Date", props: { FieldTypeKind: 4 } },
+  { internalName: "ResolvedBy", displayName: "Resolved by", props: { FieldTypeKind: 20 } },
+  { internalName: "InspectionDate", displayName: "Inspection Date", props: { FieldTypeKind: 4 } },
+  { internalName: "RequestStatus", displayName: "Request Status", props: { FieldTypeKind: 6, choices: strings.statusValues, editFormat: ChoiceFieldFormatType.Dropdown } }
 ];
 
 export interface IUserField{
@@ -73,26 +84,62 @@ constructor(
   ) { }
 }
 
+export interface ILocation {
+  id: number;
+  building: string;
+  roomNumber: string;
+  roomName: string;  
+}
+
+export class Location implements ILocation {
+  constructor(
+    public id: number = 0,
+    public building: string = "",
+    public roomNumber: string = "",
+    public roomName: string = ""
+  ) {} 
+}
+
 export interface IFacilitiesRequestItem {
   id: number;
   title: string;
-  requestor: UserField|null;
-  requestDescription: string;
+  issueType: string; 
+  location: string; 
+  equipmentId: string; 
+  severity: string;
+  issueDescription: string;
+  reportedBy: UserField;
+  reportedDate: Date;
+  assignee: UserField;
+  verificationDate: Date;
+  additionalComments: string;
+  estimatedResolutionDate: Date;
+  resolutionDescription: string;
+  resolutionDate: Date; 
+  resolvedBy: UserField;
+  inspectionDate: Date;   
   requestStatus: string;
-  responsibleDepartment: string;
-  assignee: UserField | null;
-  serviceNotes: string;
 }
 
 export class FacilitiesRequestItem implements IFacilitiesRequestItem {
   constructor(
     public id: number = 0,
     public title: string = "",
-    public requestor: UserField | null = null,
-    public requestDescription: string = "",
-    public requestStatus: string = "New Request",
-    public responsibleDepartment: string = "",
-    public assignee: UserField | null = null,
-    public serviceNotes: string = ""
+    public issueType: string = "",
+    public location: string = "",
+    public equipmentId: string = "",
+    public severity: string = "",
+    public issueDescription: string = "",
+    public reportedBy: UserField = new UserField(),
+    public reportedDate: Date = new Date(),
+    public assignee: UserField = new UserField(),
+    public verificationDate: Date = new Date(),
+    public additionalComments: string = "",
+    public estimatedResolutionDate: Date = new Date(),
+    public resolutionDescription: string = "",
+    public resolutionDate: Date = new Date(),
+    public resolvedBy: UserField = new UserField(),
+    public inspectionDate: Date = new Date(),
+    public requestStatus: string = "Reported"    
   ) { }
 }

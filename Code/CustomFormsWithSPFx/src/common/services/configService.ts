@@ -18,16 +18,16 @@ import "@pnp/sp/views";
 
 
 import { body } from "@pnp/queryable";
-import { IFieldList, ListFields, Lists } from "../models/models";
+import { IFieldList, ListFields, Lists, LocationListFields } from "../models/models";
 import { CalendarType, DateTimeFieldFormatType, DateTimeFieldFriendlyFormatType, FieldUserSelectionMode, IFieldInfo, UrlFieldFormatType } from "@pnp/sp/fields";
-import { clientID, contentTypeDisplayName, contentTypeInternalName } from "../models/constants";
+import { clientID, locationContentTypeDisplayName, locationContentTypeName, requestContentTypeDisplayName, requestContentTypeName, sampleLocationData} from "../models/constants";
 import { IContentTypeInfo } from "@pnp/sp/content-types";
 import { IListEnsureResult } from "@pnp/sp/lists/types";
 
 export interface IConfigService {
   readonly ready: boolean;
   readonly error: string;
-  Init: (pageContext: any, aadTokenProviderFactory: any) => Promise<void>;
+  Init: (pageContext: any) => Promise<void>;
 }
 
 export default class ConfigService implements IConfigService {
@@ -101,12 +101,19 @@ export default class ConfigService implements IConfigService {
     try {
       if (this._clearConfig) {
         await this._deleteList(Lists.DEMOLISTTITLE);
-        await this._deleteContentType();
+        await this._deleteList(Lists.LOCATIONLISTTITLE);
+        await this._deleteContentType(locationContentTypeName);
+        await this._deleteContentType(requestContentTypeName);
         await this._deleteSiteColumns(ListFields);
+        await this._deleteSiteColumns(LocationListFields);
       } else {
+        await this._createSiteColumns(LocationListFields);
+        await this._createContentType(locationContentTypeName, locationContentTypeDisplayName, LocationListFields);
         await this._createSiteColumns(ListFields);
-        await this._createContentType(ListFields);
-        await this._createList(Lists.DEMOLISTNAME, Lists.DEMOLISTTITLE, Lists.DEMOLISTDESCRIPTION);
+        await this._createContentType(requestContentTypeName, requestContentTypeDisplayName, ListFields);
+        await this._createList(Lists.LOCATIONLISTNAME, Lists.LOCATIONLISTTITLE, Lists.LOCATIONLISTDESCRIPTION, locationContentTypeDisplayName);
+        await this._createList(Lists.DEMOLISTNAME, Lists.DEMOLISTTITLE, Lists.DEMOLISTDESCRIPTION, requestContentTypeDisplayName);
+        await this._addLocationData();
       }
       retVal = true;
     } catch (err) {
@@ -115,7 +122,7 @@ export default class ConfigService implements IConfigService {
     return retVal;
   }
   
-  private async _createList(listName: string, listTitle:string, listDescription: string): Promise<boolean> {
+  private async _createList(listName: string, listTitle:string, listDescription: string, contentTypeDisplayName: string): Promise<boolean> {
     let retVal = false;
     try {
       const listInfo: IListEnsureResult = await this._sp.web.lists.ensure(listName, listDescription, 100, true, { OnQuickLaunch: false });
@@ -123,8 +130,6 @@ export default class ConfigService implements IConfigService {
       await list.update({ Title: listTitle });
       const siteContentTypes: IContentTypeInfo[] = await this._sp.web.contentTypes();
       
-      
-
       //Check if content type exists
       for (let i = 0; i < siteContentTypes.length; i++) {
         if (siteContentTypes[i].Name === contentTypeDisplayName) {
@@ -269,6 +274,12 @@ export default class ConfigService implements IConfigService {
           if (fieldList[i].props.FieldTypeKind === 20) {
             await this._sp.web.fields.addUser(fieldList[i].internalName, { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: groupName });
           }
+          
+          //I am an Image field
+          if (fieldList[i].props.FieldTypeKind === 99) {
+            await this._sp.web.fields.addImageField(fieldList[i].internalName, { Group: groupName });
+          }
+          
           await this._sp.web.fields.getByInternalNameOrTitle(fieldList[i].internalName).update({Title:fieldList[i].displayName});
         }
         // const view: IView = await list.defaultView;
@@ -308,7 +319,7 @@ export default class ConfigService implements IConfigService {
     return retVal;
   }
   
-  private async _createContentType(fieldList: IFieldList[]): Promise<boolean> {
+  private async _createContentType(contentTypeName: string, contentTypeDisplayName: string,  fieldList: IFieldList[]): Promise<boolean> {
     let retVal = false;
     try {
       let ctExists = false;
@@ -317,7 +328,7 @@ export default class ConfigService implements IConfigService {
       const siteContentTypes = await site.contentTypes();
       //Check if content type exists
       for (let i = 0; i < siteContentTypes.length; i++) {
-        if(siteContentTypes[i].name === contentTypeInternalName) {
+        if(siteContentTypes[i].name === contentTypeName) {
           ctExists = true;
         }
       }
@@ -325,7 +336,7 @@ export default class ConfigService implements IConfigService {
       //If content type doesn't exist create it
       if (siteInfo.id && !ctExists) {
         let ct = await this._graph.sites.getById(siteInfo.id).contentTypes.add({
-          name: contentTypeInternalName,
+          name: contentTypeName,
           base: {
             name: "Item", 
             id: "0x01",
@@ -361,7 +372,21 @@ export default class ConfigService implements IConfigService {
     return retVal;
   }
   
-  private async _deleteContentType(): Promise<boolean> {
+  private async _addLocationData(): Promise<boolean> {
+    let retVal = false;
+    try {
+      const list = await this._sp.web.lists.getByTitle(Lists.LOCATIONLISTTITLE);
+      sampleLocationData.map(async (location) => {
+        await list.items.add({Title: location.roomNumber, Building: location.building, RoomNumber: location.roomNumber, RoomName: location.roomName});
+      });
+      retVal = true;
+    } catch (err) {
+      console.error(`${this.LOG_SOURCE}:(_addLocationData) - ${err}`);
+    }
+    return retVal;
+  }
+  
+  private async _deleteContentType(contentTypeDisplayName:string): Promise<boolean> {
     let retVal = false;
     try {
       const site = await this._graph.sites.getByUrl(this._tenantUrl, this._context.web.serverRelativeUrl);
@@ -374,6 +399,7 @@ export default class ConfigService implements IConfigService {
           }
         }
       }
+      retVal = true;
     } catch (err) {
       console.error(this.LOG_SOURCE, "(_deleteContentType)", err);
     }

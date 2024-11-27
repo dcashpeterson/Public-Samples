@@ -1,17 +1,42 @@
 declare interface IFacilitiesRequestFormCustomizerStrings {
+  issueTypeValues: string[];
+  severityValues: string[];
   statusValues: string[];
-  saveButton: string;
-  cancelButton: string;
-  errorHeader: string;
-  newRequestHeader: string;
+  
   newRequestIntro: string;
-  editRequestHeader: string;
-  requestorLabel: string;
-  requestDescriptionLabel: string;
-  responsibleDepartmentLabel: string;
+  issueTypeLabel: string;
+  locationLabel: string;
+  reportedDateLabel: string;
+  severityLabel: string;
+  issueDescriptionLabel: string;
+  imageLabel: string;
+  reportedByLabel: string;
+  equipmentIdLabel: string;
   assigneeLabel: string;
-  serviceNotesLabel: string;
-  closeRequestLabel: string;
+  verificationDateLabel: string;
+  requestStatusLabel: string;
+  additionalCommentsLabel: string;
+  estimatedResolutionDateLabel: string;
+  resolvedByLabel: string;
+  resolutionDateLabel: string;
+  resolutionDescriptionLabel: string;
+  reviewDateLabel: string;
+  reviewerLabel: string;
+  reviewNotesLabel: string;
+  inspectionDateLabel: string;
+  editRequestHeader: string;
+  errorHeader: string;
+  
+  reportIssueButton: string;
+  cancelButton: string;
+  invalidateReportButton: string;
+  validateReportButton: string;
+  unableToResolveButton: string;
+  completedButton: string;
+  
+  reportedIssueHeader: string;
+  reviewAssignHeader: string;
+  issueResolutionHeader: string;
 }
 
 declare module 'FacilitiesRequestFormCustomizerStrings' {

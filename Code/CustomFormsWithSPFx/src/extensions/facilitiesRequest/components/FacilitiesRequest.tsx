@@ -2,19 +2,23 @@ import * as React from 'react';
 import { Log } from '@microsoft/sp-core-library';
 import { FormCustomizerContext } from '@microsoft/sp-listview-extensibility';
 
-import styles from './FacilitiesRequest.module.scss';
-import { FacilitiesRequestItem, FormView, IFacilitiesRequestItem, SaveType } from '../../../common/models/models';
-import { IDynamicPerson, PeoplePicker } from '@microsoft/mgt-react';
+import { IUser, PeoplePicker } from '@microsoft/mgt-react';
+import { cloneDeep, isEqual } from '@microsoft/sp-lodash-subset';
 import HOOText from '@n8d/htwoo-react/HOOText';
-import HOODropDown from '@n8d/htwoo-react/HOODropDown';
-import { formsService } from '../../../common/services/formsService';
-import { cloneDeep } from '@microsoft/sp-lodash-subset';
 import HOOButton from '@n8d/htwoo-react/HOOButton';
-import * as strings from 'FacilitiesRequestFormCustomizerStrings';
 import HOOLabel from '@n8d/htwoo-react/HOOLabel';
-import HOOPersona from '@n8d/htwoo-react/HOOPersona';
-import HOOAvatarPres, { HOOAvatarSize, HOOPresenceStatus } from '@n8d/htwoo-react/HOOAvatarPres';
-import HOOCheckbox from '@n8d/htwoo-react/HOOCheckbox';
+import { HOOPresenceStatus } from '@n8d/htwoo-react/HOOAvatarPres';
+import HOODate from '@n8d/htwoo-react/HOODate';
+
+import * as strings from 'FacilitiesRequestFormCustomizerStrings';
+import { formsService } from '../../../common/services/formsService';
+import styles from './FacilitiesRequest.module.scss';
+import { FacilitiesRequestItem, FormView, IFacilitiesRequestItem, SaveType, UserField } from '../../../common/models/models';
+import HOOAccordion from '@n8d/htwoo-react/HOOAccordion';
+import Step1View from './Step1View';
+import Step2View from './Step2View';
+import Step3View from './Step3View';
+import Step1Edit from './Step1Edit';
 
 export interface IFacilitiesRequestProps {
   context: FormCustomizerContext;
@@ -25,14 +29,14 @@ export interface IFacilitiesRequestProps {
 
 export interface IFacilitiesRequestState {
   currentItem: IFacilitiesRequestItem;
-  selectedMenu: string;
+  formStep: string;
   error: string[];
 }
 
 export class FacilitiesRequestState implements IFacilitiesRequestState {
   constructor(
     public currentItem: IFacilitiesRequestItem = new FacilitiesRequestItem(),
-    public selectedMenu: string = "New Request",
+    public formStep: string = "New Request",
     public error: string[] = []
   ) { }
 }
@@ -41,25 +45,17 @@ const LOG_SOURCE: string = '🏳️‍🌈 FacilitiesRequest';
 
 
 export default class FacilitiesRequest extends React.Component<IFacilitiesRequestProps, IFacilitiesRequestState> {
-  private selectedRequestors: IDynamicPerson[] = [];
-  private selectedAssignee: IDynamicPerson[] = [];
 
   public constructor(props: IFacilitiesRequestProps) {
     super(props);
     try {
       const listItem: IFacilitiesRequestItem = (props.currentItem) ? cloneDeep(props.currentItem) : new FacilitiesRequestItem();
 
-      if (listItem.requestor) {
-        this.selectedRequestors = [{ displayName: listItem.requestor.displayName, mail: listItem.requestor.email, userPrincipalName: listItem.requestor.email }];
-      } else {
-        this.selectedRequestors = [{ displayName: props.context.pageContext.user.displayName, mail: props.context.pageContext.user.email, userPrincipalName: props.context.pageContext.user.email }];
-        listItem.requestor = { displayName: props.context.pageContext.user.displayName, email: props.context.pageContext.user.email, loginName: props.context.pageContext.user.email, id: 0, photoUrl: "", presence: HOOPresenceStatus.Invisible };
-      }
-      if (listItem.assignee) {
-        this.selectedAssignee = [{ displayName: listItem.assignee.displayName, mail: listItem.assignee.email, userPrincipalName: listItem.assignee.email }];
+      if (listItem.reportedBy.displayName.length <= 0) {
+        listItem.reportedBy = { displayName: props.context.pageContext.user.displayName, email: props.context.pageContext.user.email, loginName: props.context.pageContext.user.email, id: 0, photoUrl: "", presence: HOOPresenceStatus.Invisible };
       }
 
-      this.state = new FacilitiesRequestState(listItem, "New Request", []);
+      this.state = new FacilitiesRequestState(listItem, "Reported", []);
     } catch (err) {
       console.error(`${LOG_SOURCE} (constructor) - ${err}`);
     }
@@ -73,14 +69,24 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     Log.info(LOG_SOURCE, 'React Element: FacilitiesRequest unmounted');
   }
 
+  public shouldComponentUpdate(nextProps: Readonly<IFacilitiesRequestProps>, nextState: Readonly<IFacilitiesRequestState>): boolean {
+    try {
+      if ((isEqual(nextState, this.state) && isEqual(nextProps, this.props)))
+        return false;
+    } catch (err) {
+      console.error(`${LOG_SOURCE} (shouldComponentUpdate) - ${err}`);
+    }
+    return true;
+  }
+
   private _formValid = (currentItem: IFacilitiesRequestItem): string[] => {
     const retVal: string[] = [];
     try {
-      if (currentItem.requestor === null || currentItem.requestor?.displayName.length < 1) {
-        retVal.push("Requestor is a require field.");
+      if (currentItem.reportedBy === null || currentItem.reportedBy?.displayName.length < 1) {
+        retVal.push("Reported by is a require field.");
       }
-      if (currentItem.requestDescription === null || currentItem.requestDescription?.length < 1) {
-        retVal.push("Request Description is a require field.");
+      if (currentItem.issueDescription === null || currentItem.issueDescription?.length < 1) {
+        retVal.push("Issue Description is a require field.");
       }
     } catch (err) {
       console.error(`${LOG_SOURCE} (_formValid) - ${err}`);
@@ -88,17 +94,50 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     return retVal;
   }
 
+  private _onPeoplePickerChange(fieldName: string, value: any): void {
+    try {
+      const currentItem: any = cloneDeep(this.state.currentItem);
+      const user: IUser = value.detail[0] as IUser;
+      //This event was firing twice, so I had to add this check to make sure it only fires when it has changed.
+      if (user.displayName !== currentItem[fieldName].displayName) {
+        if (user) {
+          currentItem[fieldName] = { displayName: user.displayName, email: user.userPrincipalName, loginName: user.userPrincipalName, id: 0, photoUrl: "", presence: HOOPresenceStatus.Invisible };
+        } else {
+          currentItem[fieldName] = new UserField();
+        }
+
+        this.setState({ currentItem });
+      }
+    } catch (err) {
+      console.error(LOG_SOURCE, "(_onPeoplePickerChange)", err);
+    }
+  }
   private _onChangeString = (fieldName: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, subField?: string, fieldType?: string): void => {
     try {
-      const value = event.target.value;
+      let value = event.target.value;
+      if (fieldType === "Date") {
+        value = new Date(value).toISOString();
+      }
       const currentItem: any = cloneDeep(this.state.currentItem);
       if (subField) {
         currentItem[fieldName][subField] = value;
       } else {
         currentItem[fieldName] = value;
       }
-      const error = this._formValid(currentItem);
-      this.setState({ currentItem, error });
+
+      //const error = this._formValid(currentItem);
+      this.setState({ currentItem });
+    } catch (err) {
+      console.error(LOG_SOURCE, "(_onChangeString)", err);
+    }
+  }
+
+  private _onChangeDate = (fieldName: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    try {
+      const value = new Date(event.target.value);
+      const currentItem: any = cloneDeep(this.state.currentItem);
+      currentItem[fieldName] = value;
+      this.setState({ currentItem });
     } catch (err) {
       console.error(LOG_SOURCE, "(_onChangeString)", err);
     }
@@ -108,32 +147,33 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     try {
       const currentItem: any = cloneDeep(this.state.currentItem);
       currentItem[fieldName] = value;
-      const error = this._formValid(currentItem);
-      this.setState({ currentItem, error });
+      //const error = this._formValid(currentItem);
+      this.setState({ currentItem });
     } catch (err) {
       console.error(`${LOG_SOURCE} (_onChangeValue) - ${err}`);
     }
   }
 
-  private _onCompleteRequest = (fieldName: string, value: string | number | boolean): void => {
-    try {
-      const currentItem: any = cloneDeep(this.state.currentItem);
-      if (value) {
-        currentItem.requestStatus = strings.statusValues[5];
-      }
-      this.setState({ currentItem });
-    } catch (err) {
-      console.error(`${LOG_SOURCE} (_onCompleteRequest) - ${err}`);
-    }
-  }
-  private _onSave = async (saveType: SaveType): Promise<void> => {
+  private _onSave = async (saveType: SaveType, action: string): Promise<void> => {
     try {
       const currentItem: FacilitiesRequestItem = cloneDeep(this.state.currentItem);
       const valid = this._formValid(currentItem);
       if (valid.length <= 0) {
-        switch (this.state.currentItem.requestStatus) {
-          case strings.statusValues[0]:
+        switch (action) {
+          case "Reported":
             currentItem.requestStatus = strings.statusValues[1];
+            break;
+          case "Verified":
+            currentItem.requestStatus = strings.statusValues[2];
+            break;
+          case "Resolved":
+            currentItem.requestStatus = strings.statusValues[3];
+            break;
+          case "Unable to Resolve":
+            currentItem.requestStatus = strings.statusValues[5];
+            break;
+          case "Closed":
+            currentItem.requestStatus = strings.statusValues[4];
             break;
           default:
             break;
@@ -156,85 +196,191 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     try {
       const currentItem: FacilitiesRequestItem = new FacilitiesRequestItem();
       this.setState({ currentItem });
+      this.props.onClose();
     } catch (err) {
       console.error(`${LOG_SOURCE} (_onClose) - ${err}`);
     }
   }
 
-  private _renderNew(): React.ReactElement<IFacilitiesRequestProps> {
-    try {
-      return (
-        <div>
-          <h2>{strings.newRequestHeader}</h2>
-          <p>{strings.newRequestIntro}</p>
-          <HOOLabel label={strings.requestorLabel} for='requestor' required={true} />
-          <PeoplePicker id='requestor' type='person' aria-label='Requestor' ariaLabel='Requestor' showMax={4} selectionChanged={(e) => { this.selectedRequestors = e.detail; }} selectedPeople={this.selectedRequestors} />
-          <HOOLabel label={strings.requestDescriptionLabel} for='requestDescription' required={true} />
-          <HOOText
-            forId='requestDescription'
-            multiline={5}
-            value={this.state.currentItem.requestDescription}
-            onChange={(event) => { this._onChangeString("requestDescription", event); }}
-          />
-        </div>)
-    } catch (err) {
-      console.error(`${LOG_SOURCE} (_renderNew) - ${err}`);
-      return <div>Error occurred while rendering the form. {err}</div>;
-    }
-  }
-
   private _renderEdit(): React.ReactElement<IFacilitiesRequestProps> {
     try {
-      return (
-        <div>
-          <h2>{strings.editRequestHeader}</h2>
-          <HOOLabel label={strings.requestorLabel} for='requestor' />
-          <HOOPersona
-            avatarSize={HOOAvatarSize.Px48}
-            personaName={this.state.currentItem.requestor?.displayName}
-          >
-            <HOOAvatarPres
-              imageAlt={this.state.currentItem.requestor?.displayName || 'No display name'}
-              imageSource={this.state.currentItem.requestor?.photoUrl || ''}
-              status={this.state.currentItem.requestor?.presence || HOOPresenceStatus.Invisible} />
-          </HOOPersona>
-          <HOOLabel label={strings.requestDescriptionLabel} for='requestDescription' />
-          <div>{this.state.currentItem.requestDescription}</div>
-          <hr />
-          <h2>Assign To Department</h2>
-          <HOOLabel label={strings.responsibleDepartmentLabel} for='responsibleDepartment' />
-          <HOODropDown
-            forId='responsibleDepartment'
-            value={this.state.currentItem.responsibleDepartment}
-            options={formsService.ResponsibleDepartmentValues}
-            containsTypeAhead={false}
-            onChange={(value) => { this._onChangeValue("responsibleDepartment", value); }}
-          />
-          <hr />
-          <h2>Assign Worker</h2>
-          <HOOLabel label={strings.assigneeLabel} for='assignee' />
-          <PeoplePicker id='assignee' type='person' showMax={4} selectionChanged={(e) => { this.selectedAssignee = e.detail; }} selectedPeople={this.selectedAssignee} />
-          <hr />
-          <HOOLabel label={strings.serviceNotesLabel} for='serviceNotes' />
-          <HOOText
-            forId='serviceNotes'
-            multiline={5}
-            value={this.state.currentItem.serviceNotes}
-            onChange={(event) => { this._onChangeString("serviceNotes", event); }}
-          />
-          <HOOCheckbox
-            forId='closeRequest'
-            label={strings.closeRequestLabel}
-            checked={(this.state.currentItem.requestStatus === strings.statusValues[5]) ? true : false}
-            onChange={(event) => { this._onCompleteRequest("requestStatus", (event.target as HTMLInputElement).checked); }} />
-
-        </div>)
+      const step1: React.DetailedHTMLProps<React.AllHTMLAttributes<HTMLDetailsElement>, HTMLDetailsElement> = {
+        open: (this.state.currentItem.requestStatus !== strings.statusValues[2]) ? true : false,
+        name: "issue-tracking",
+      };
+      const step2: React.DetailedHTMLProps<React.AllHTMLAttributes<HTMLDetailsElement>, HTMLDetailsElement> = {
+        open: (this.state.currentItem.requestStatus === strings.statusValues[2]) ? true : false,
+        name: "issue-tracking",
+      };
+      return (<>
+        <section className="facility-form">
+          {(this.state.currentItem.requestStatus === strings.statusValues[0] && formsService.formView === FormView.NEW) &&
+            <Step1Edit
+              currentItem={this.state.currentItem}
+              onChangeValue={this._onChangeValue}
+              onChangeString={this._onChangeString}
+              onPeoplePickerChange={this._onPeoplePickerChange}
+              onChangeDate={this._onChangeDate}
+              onClose={this._onClose}
+              onSave={this._onSave} />
+          }
+          {(this.state.currentItem.requestStatus === strings.statusValues[1] && formsService.formView === FormView.EDIT) &&
+            <>
+              <HOOAccordion
+                header={strings.reportedIssueHeader}
+                iconName="hoo-icon-arrow-right"
+                rootElementAttributes={step1}>
+                <div>
+                  <Step1View currentItem={this.state.currentItem} />
+                </div>
+              </HOOAccordion>
+              <section className="review">
+                <h2>{strings.reviewAssignHeader}</h2>
+                <div>Please review and validate the request. Once validated please assign the task and provide and estimated resolution date.</div>
+                <fieldset id="issue-verification" className="hoo-fieldset no-outline">
+                  <div className="hoo-field" role="group">
+                    <HOOLabel label={strings.verificationDateLabel} for='verificationDate' />
+                    <HOODate
+                      forId='verificationDate'
+                      value={this.state.currentItem.verificationDate.toISOString().split('T')[0]}
+                      onChange={(event) => { this._onChangeDate("verificationDate", event); }} />
+                  </div>
+                  <div className="hoo-field" role="group">
+                    <HOOLabel label={strings.additionalCommentsLabel} for='additionalComments' />
+                    <HOOText
+                      forId='additionalComments'
+                      multiline={5}
+                      value={this.state.currentItem.additionalComments}
+                      onChange={(event) => { this._onChangeString("additionalComments", event); }}
+                    />
+                  </div>
+                  <div className="hoo-field" role="group">
+                    <HOOLabel label={strings.assigneeLabel} for='assignee' />
+                    <PeoplePicker id='assignee' type='person' aria-label='Assignee' ariaLabel='Assignee' showMax={4} selectionChanged={(e) => { this._onPeoplePickerChange('assignee', e); }} selectedPeople={(this.state.currentItem.assignee.displayName.length > 0) ? [{ displayName: this.state.currentItem.assignee.displayName, mail: this.state.currentItem.assignee.email, userPrincipalName: this.state.currentItem.assignee.email }] : []} />
+                  </div>
+                  <div className="hoo-field" role="group">
+                    <HOOLabel label={strings.estimatedResolutionDateLabel} for='estimatedResolutionDate' />
+                    <HOODate
+                      forId='estimatedResolutionDate'
+                      value={this.state.currentItem.estimatedResolutionDate.toISOString().split('T')[0]}
+                      onChange={(event) => { this._onChangeDate("estimatedResolutionDate", event); }} />
+                  </div>
+                  <div className="actions">
+                    <HOOButton
+                      label={strings.invalidateReportButton}
+                      onClick={() => this._onSave(SaveType.UPDATE, "Closed")}
+                      type={2}
+                    />
+                    <HOOButton
+                      label={strings.validateReportButton}
+                      onClick={() => this._onSave(SaveType.UPDATE, "Verified")}
+                      type={1}
+                    />
+                  </div>
+                </fieldset>
+              </section>
+            </>
+          }
+          {(this.state.currentItem.requestStatus === strings.statusValues[2] && formsService.formView === FormView.EDIT) &&
+            <>
+              <section>
+                <HOOAccordion
+                  header={strings.reportedIssueHeader}
+                  iconName="hoo-icon-arrow-right"
+                  rootElementAttributes={step1}>
+                  <div>
+                    <Step1View currentItem={this.state.currentItem} />
+                  </div>
+                </HOOAccordion>
+                <HOOAccordion
+                  header={strings.reviewAssignHeader}
+                  iconName="hoo-icon-arrow-right"
+                  rootElementAttributes={step2}>
+                  <div>
+                    <Step2View currentItem={this.state.currentItem} />
+                  </div>
+                </HOOAccordion>
+              </section>
+              <section className="review">
+                <h2>{strings.issueResolutionHeader}</h2>
+                <div>Please provide a description of the resolution and a next inspection date if necessary.</div>
+                <fieldset id="resolution" className="hoo-fieldset no-outline">
+                  <div className="hoo-field" role="group">
+                    <HOOLabel label={strings.resolutionDescriptionLabel} for='resolutionDescription' />
+                    <HOOText
+                      forId='resolutionDescription'
+                      multiline={5}
+                      value={this.state.currentItem.resolutionDescription}
+                      onChange={(event) => { this._onChangeString("resolutionDescription", event); }}
+                    />
+                  </div>
+                  <div className="hoo-field" role="group">
+                    <HOOLabel label={strings.resolutionDateLabel} for='resolutionDate' />
+                    <HOODate
+                      forId='resolutionDate'
+                      value={this.state.currentItem.resolutionDate.toISOString().split('T')[0]}
+                      onChange={(event) => { this._onChangeDate("resolutionDate", event); }} />
+                  </div>
+                  <div className="hoo-field" role="group">
+                    <HOOLabel label={strings.resolvedByLabel} for='resolvedBy' />
+                    <PeoplePicker id='resolvedBy' type='person' aria-label='Resolved By' ariaLabel='Resolved By' showMax={4} selectionChanged={(e) => { this._onPeoplePickerChange('resolvedBy', e); }} selectedPeople={(this.state.currentItem.resolvedBy.displayName.length > 0) ? [{ displayName: this.state.currentItem.resolvedBy.displayName, mail: this.state.currentItem.resolvedBy.email, userPrincipalName: this.state.currentItem.resolvedBy.email }] : []} />
+                  </div>
+                  <div className="hoo-field" role="group">
+                    <HOOLabel label={strings.inspectionDateLabel} for='inspectionDate' />
+                    <HOODate
+                      forId='inspectionDate'
+                      value={this.state.currentItem.inspectionDate.toISOString().split('T')[0]}
+                      onChange={(event) => { this._onChangeDate("inspectionDate", event); }} />
+                  </div>
+                  <div className="actions">
+                    <HOOButton
+                      label={strings.unableToResolveButton}
+                      onClick={() => this._onSave(SaveType.UPDATE, "Unable to Resolve")}
+                      type={2}
+                    />
+                    <HOOButton
+                      label={strings.completedButton}
+                      onClick={() => this._onSave(SaveType.UPDATE, "Resolved")}
+                      type={1}
+                    />
+                  </div>
+                </fieldset>
+              </section>
+            </>
+          }
+          {((this.state.currentItem.requestStatus === strings.statusValues[3] || this.state.currentItem.requestStatus === strings.statusValues[4] || this.state.currentItem.requestStatus === strings.statusValues[5]) && formsService.formView !== FormView.NEW) &&
+            <>
+              <section>
+                <HOOAccordion
+                  header={strings.reportedIssueHeader}
+                  iconName="hoo-icon-arrow-right"
+                  rootElementAttributes={step1}>
+                  <div>
+                    <Step1View currentItem={this.state.currentItem} />
+                  </div>
+                </HOOAccordion>
+                <HOOAccordion
+                  header={strings.reviewAssignHeader}
+                  iconName="hoo-icon-arrow-right"
+                  rootElementAttributes={step2}>
+                  <div>
+                    <Step2View currentItem={this.state.currentItem} />
+                  </div>
+                </HOOAccordion>
+              </section>
+              <section className="review">
+                <h2>{strings.issueResolutionHeader}</h2>
+                <Step3View currentItem={this.state.currentItem} />
+              </section>
+            </>
+          }
+        </section>
+      </>)
     } catch (err) {
       console.error(`${LOG_SOURCE} (_renderNew) - ${err}`);
-      return <div>Error occurred while rendering the form. {err}</div>;
+      return <div>Error occurred while rendering the edit form. {err}</div>;
     }
   }
-
 
   public render(): React.ReactElement<IFacilitiesRequestProps> {
     return <div className={styles.facilitiesRequest} >{formsService.formView}{strings.statusValues[1]}
@@ -249,23 +395,14 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
           </ul>
         </>
       )}
-      {formsService.formView === FormView.NEW &&
-        this._renderNew()
-      }
-      {formsService.formView === FormView.EDIT &&
-        this._renderEdit()
-      }
+      {this._renderEdit()}
+      {/* {formsService.formView !== FormView.VIEW &&
+       
+      }else{
+        this._renderView()
+      } */}
 
-      <HOOButton
-        label={strings.saveButton}
-        onClick={() => this._onSave((formsService.formView === FormView.NEW) ? SaveType.NEW : SaveType.UPDATE)}
-        type={1}
-      />
-      <HOOButton
-        label={strings.cancelButton}
-        onClick={this._onClose}
-        type={2}
-      />
+
 
 
 
