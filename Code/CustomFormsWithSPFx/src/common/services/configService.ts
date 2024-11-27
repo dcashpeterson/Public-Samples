@@ -305,7 +305,8 @@ export default class ConfigService implements IConfigService {
         let field: IFieldInfo | null = null;
         try {
           field = await this._sp.web.fields.getByInternalNameOrTitle(fieldList[i].internalName)() || null;
-        } catch (err) {
+        } catch {
+          console.error(`The field ${fieldList[i].internalName} does not exist so we need to create it.`);
         }
         //Field exists so we need to delete it
         if (field) {
@@ -335,7 +336,7 @@ export default class ConfigService implements IConfigService {
       
       //If content type doesn't exist create it
       if (siteInfo.id && !ctExists) {
-        let ct = await this._graph.sites.getById(siteInfo.id).contentTypes.add({
+        const ct = await this._graph.sites.getById(siteInfo.id).contentTypes.add({
           name: contentTypeName,
           base: {
             name: "Item", 
@@ -350,7 +351,9 @@ export default class ConfigService implements IConfigService {
             let field: IFieldInfo | null = null;
             try {
               field = await this._sp.web.fields.getByInternalNameOrTitle(fieldList[i].internalName)() || null;
-            } catch (err) { }
+            } catch {
+              console.error(`The field ${fieldList[i].internalName} doesn't exist.`);
+            }
             
             //If field exists add it to the content type using Graph
             if (field) {
@@ -376,7 +379,7 @@ export default class ConfigService implements IConfigService {
     let retVal = false;
     try {
       const list = await this._sp.web.lists.getByTitle(Lists.LOCATIONLISTTITLE);
-      sampleLocationData.map(async (location) => {
+      await sampleLocationData.map(async (location) => {
         await list.items.add({Title: location.roomNumber, Building: location.building, RoomNumber: location.roomNumber, RoomName: location.roomName});
       });
       retVal = true;

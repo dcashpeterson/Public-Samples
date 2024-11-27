@@ -2,23 +2,19 @@ import * as React from 'react';
 import { Log } from '@microsoft/sp-core-library';
 import { FormCustomizerContext } from '@microsoft/sp-listview-extensibility';
 
-import { IUser, PeoplePicker } from '@microsoft/mgt-react';
+import { IUser } from '@microsoft/mgt-react';
 import { cloneDeep, isEqual } from '@microsoft/sp-lodash-subset';
-import HOOText from '@n8d/htwoo-react/HOOText';
-import HOOButton from '@n8d/htwoo-react/HOOButton';
-import HOOLabel from '@n8d/htwoo-react/HOOLabel';
 import { HOOPresenceStatus } from '@n8d/htwoo-react/HOOAvatarPres';
-import HOODate from '@n8d/htwoo-react/HOODate';
 
 import * as strings from 'FacilitiesRequestFormCustomizerStrings';
 import { formsService } from '../../../common/services/formsService';
 import styles from './FacilitiesRequest.module.scss';
 import { FacilitiesRequestItem, FormView, IFacilitiesRequestItem, SaveType, UserField } from '../../../common/models/models';
 import HOOAccordion from '@n8d/htwoo-react/HOOAccordion';
-import Step1View from './Step1View';
-import Step2View from './Step2View';
-import Step3View from './Step3View';
-import Step1Edit from './Step1Edit';
+import Step1 from './Step1';
+import Step2 from './Step2';
+import Step3 from './Step3';
+import ProgressBar from './ProgressBar';
 
 export interface IFacilitiesRequestProps {
   context: FormCustomizerContext;
@@ -154,6 +150,24 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     }
   }
 
+  private _getProgress = (status: string): number => {
+    let retVal: number = 0;
+    try {
+      if (status === strings.statusValues[0]) {
+        retVal = 25;
+      } else if (status === strings.statusValues[1]) {
+        retVal = 50;
+      } else if (status === strings.statusValues[2]) {
+        retVal = 75;
+      } else if ((status === strings.statusValues[3]) || status === strings.statusValues[4]) {
+        retVal = 100;
+      }
+    } catch (err) {
+      console.error(`${LOG_SOURCE} (_getProgress) - ${err}`);
+    }
+    return retVal;
+  }
+
   private _onSave = async (saveType: SaveType, action: string): Promise<void> => {
     try {
       const currentItem: FacilitiesRequestItem = cloneDeep(this.state.currentItem);
@@ -202,7 +216,7 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     }
   }
 
-  private _renderEdit(): React.ReactElement<IFacilitiesRequestProps> {
+  private _renderForm(): React.ReactElement<IFacilitiesRequestProps> {
     try {
       const step1: React.DetailedHTMLProps<React.AllHTMLAttributes<HTMLDetailsElement>, HTMLDetailsElement> = {
         open: (this.state.currentItem.requestStatus !== strings.statusValues[2]) ? true : false,
@@ -213,16 +227,18 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
         name: "issue-tracking",
       };
       return (<>
+        <ProgressBar progress={this._getProgress(this.state.currentItem.requestStatus)} />
         <section className="facility-form">
           {(this.state.currentItem.requestStatus === strings.statusValues[0] && formsService.formView === FormView.NEW) &&
-            <Step1Edit
+            <Step1
               currentItem={this.state.currentItem}
               onChangeValue={this._onChangeValue}
               onChangeString={this._onChangeString}
               onPeoplePickerChange={this._onPeoplePickerChange}
               onChangeDate={this._onChangeDate}
               onClose={this._onClose}
-              onSave={this._onSave} />
+              onSave={this._onSave}
+              editMode={true} />
           }
           {(this.state.currentItem.requestStatus === strings.statusValues[1] && formsService.formView === FormView.EDIT) &&
             <>
@@ -231,53 +247,29 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                 iconName="hoo-icon-arrow-right"
                 rootElementAttributes={step1}>
                 <div>
-                  <Step1View currentItem={this.state.currentItem} />
+                  <Step1
+                    currentItem={this.state.currentItem}
+                    onChangeValue={this._onChangeValue}
+                    onChangeString={this._onChangeString}
+                    onPeoplePickerChange={this._onPeoplePickerChange}
+                    onChangeDate={this._onChangeDate}
+                    onClose={this._onClose}
+                    onSave={this._onSave}
+                    editMode={false} />
                 </div>
               </HOOAccordion>
               <section className="review">
                 <h2>{strings.reviewAssignHeader}</h2>
                 <div>Please review and validate the request. Once validated please assign the task and provide and estimated resolution date.</div>
-                <fieldset id="issue-verification" className="hoo-fieldset no-outline">
-                  <div className="hoo-field" role="group">
-                    <HOOLabel label={strings.verificationDateLabel} for='verificationDate' />
-                    <HOODate
-                      forId='verificationDate'
-                      value={this.state.currentItem.verificationDate.toISOString().split('T')[0]}
-                      onChange={(event) => { this._onChangeDate("verificationDate", event); }} />
-                  </div>
-                  <div className="hoo-field" role="group">
-                    <HOOLabel label={strings.additionalCommentsLabel} for='additionalComments' />
-                    <HOOText
-                      forId='additionalComments'
-                      multiline={5}
-                      value={this.state.currentItem.additionalComments}
-                      onChange={(event) => { this._onChangeString("additionalComments", event); }}
-                    />
-                  </div>
-                  <div className="hoo-field" role="group">
-                    <HOOLabel label={strings.assigneeLabel} for='assignee' />
-                    <PeoplePicker id='assignee' type='person' aria-label='Assignee' ariaLabel='Assignee' showMax={4} selectionChanged={(e) => { this._onPeoplePickerChange('assignee', e); }} selectedPeople={(this.state.currentItem.assignee.displayName.length > 0) ? [{ displayName: this.state.currentItem.assignee.displayName, mail: this.state.currentItem.assignee.email, userPrincipalName: this.state.currentItem.assignee.email }] : []} />
-                  </div>
-                  <div className="hoo-field" role="group">
-                    <HOOLabel label={strings.estimatedResolutionDateLabel} for='estimatedResolutionDate' />
-                    <HOODate
-                      forId='estimatedResolutionDate'
-                      value={this.state.currentItem.estimatedResolutionDate.toISOString().split('T')[0]}
-                      onChange={(event) => { this._onChangeDate("estimatedResolutionDate", event); }} />
-                  </div>
-                  <div className="actions">
-                    <HOOButton
-                      label={strings.invalidateReportButton}
-                      onClick={() => this._onSave(SaveType.UPDATE, "Closed")}
-                      type={2}
-                    />
-                    <HOOButton
-                      label={strings.validateReportButton}
-                      onClick={() => this._onSave(SaveType.UPDATE, "Verified")}
-                      type={1}
-                    />
-                  </div>
-                </fieldset>
+                <Step2
+                  currentItem={this.state.currentItem}
+                  onChangeValue={this._onChangeValue}
+                  onChangeString={this._onChangeString}
+                  onPeoplePickerChange={this._onPeoplePickerChange}
+                  onChangeDate={this._onChangeDate}
+                  onClose={this._onClose}
+                  onSave={this._onSave}
+                  editMode={true} />
               </section>
             </>
           }
@@ -289,7 +281,15 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                   iconName="hoo-icon-arrow-right"
                   rootElementAttributes={step1}>
                   <div>
-                    <Step1View currentItem={this.state.currentItem} />
+                    <Step1
+                      currentItem={this.state.currentItem}
+                      onChangeValue={this._onChangeValue}
+                      onChangeString={this._onChangeString}
+                      onPeoplePickerChange={this._onPeoplePickerChange}
+                      onChangeDate={this._onChangeDate}
+                      onClose={this._onClose}
+                      onSave={this._onSave}
+                      editMode={false} />
                   </div>
                 </HOOAccordion>
                 <HOOAccordion
@@ -297,54 +297,30 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                   iconName="hoo-icon-arrow-right"
                   rootElementAttributes={step2}>
                   <div>
-                    <Step2View currentItem={this.state.currentItem} />
+                    <Step2
+                      currentItem={this.state.currentItem}
+                      onChangeValue={this._onChangeValue}
+                      onChangeString={this._onChangeString}
+                      onPeoplePickerChange={this._onPeoplePickerChange}
+                      onChangeDate={this._onChangeDate}
+                      onClose={this._onClose}
+                      onSave={this._onSave}
+                      editMode={false} />
                   </div>
                 </HOOAccordion>
               </section>
               <section className="review">
                 <h2>{strings.issueResolutionHeader}</h2>
                 <div>Please provide a description of the resolution and a next inspection date if necessary.</div>
-                <fieldset id="resolution" className="hoo-fieldset no-outline">
-                  <div className="hoo-field" role="group">
-                    <HOOLabel label={strings.resolutionDescriptionLabel} for='resolutionDescription' />
-                    <HOOText
-                      forId='resolutionDescription'
-                      multiline={5}
-                      value={this.state.currentItem.resolutionDescription}
-                      onChange={(event) => { this._onChangeString("resolutionDescription", event); }}
-                    />
-                  </div>
-                  <div className="hoo-field" role="group">
-                    <HOOLabel label={strings.resolutionDateLabel} for='resolutionDate' />
-                    <HOODate
-                      forId='resolutionDate'
-                      value={this.state.currentItem.resolutionDate.toISOString().split('T')[0]}
-                      onChange={(event) => { this._onChangeDate("resolutionDate", event); }} />
-                  </div>
-                  <div className="hoo-field" role="group">
-                    <HOOLabel label={strings.resolvedByLabel} for='resolvedBy' />
-                    <PeoplePicker id='resolvedBy' type='person' aria-label='Resolved By' ariaLabel='Resolved By' showMax={4} selectionChanged={(e) => { this._onPeoplePickerChange('resolvedBy', e); }} selectedPeople={(this.state.currentItem.resolvedBy.displayName.length > 0) ? [{ displayName: this.state.currentItem.resolvedBy.displayName, mail: this.state.currentItem.resolvedBy.email, userPrincipalName: this.state.currentItem.resolvedBy.email }] : []} />
-                  </div>
-                  <div className="hoo-field" role="group">
-                    <HOOLabel label={strings.inspectionDateLabel} for='inspectionDate' />
-                    <HOODate
-                      forId='inspectionDate'
-                      value={this.state.currentItem.inspectionDate.toISOString().split('T')[0]}
-                      onChange={(event) => { this._onChangeDate("inspectionDate", event); }} />
-                  </div>
-                  <div className="actions">
-                    <HOOButton
-                      label={strings.unableToResolveButton}
-                      onClick={() => this._onSave(SaveType.UPDATE, "Unable to Resolve")}
-                      type={2}
-                    />
-                    <HOOButton
-                      label={strings.completedButton}
-                      onClick={() => this._onSave(SaveType.UPDATE, "Resolved")}
-                      type={1}
-                    />
-                  </div>
-                </fieldset>
+                <Step3
+                  currentItem={this.state.currentItem}
+                  onChangeValue={this._onChangeValue}
+                  onChangeString={this._onChangeString}
+                  onPeoplePickerChange={this._onPeoplePickerChange}
+                  onChangeDate={this._onChangeDate}
+                  onClose={this._onClose}
+                  onSave={this._onSave}
+                  editMode={true} />
               </section>
             </>
           }
@@ -356,7 +332,15 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                   iconName="hoo-icon-arrow-right"
                   rootElementAttributes={step1}>
                   <div>
-                    <Step1View currentItem={this.state.currentItem} />
+                    <Step1
+                      currentItem={this.state.currentItem}
+                      onChangeValue={this._onChangeValue}
+                      onChangeString={this._onChangeString}
+                      onPeoplePickerChange={this._onPeoplePickerChange}
+                      onChangeDate={this._onChangeDate}
+                      onClose={this._onClose}
+                      onSave={this._onSave}
+                      editMode={false} />
                   </div>
                 </HOOAccordion>
                 <HOOAccordion
@@ -364,13 +348,29 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                   iconName="hoo-icon-arrow-right"
                   rootElementAttributes={step2}>
                   <div>
-                    <Step2View currentItem={this.state.currentItem} />
+                    <Step2
+                      currentItem={this.state.currentItem}
+                      onChangeValue={this._onChangeValue}
+                      onChangeString={this._onChangeString}
+                      onPeoplePickerChange={this._onPeoplePickerChange}
+                      onChangeDate={this._onChangeDate}
+                      onClose={this._onClose}
+                      onSave={this._onSave}
+                      editMode={false} />
                   </div>
                 </HOOAccordion>
               </section>
               <section className="review">
                 <h2>{strings.issueResolutionHeader}</h2>
-                <Step3View currentItem={this.state.currentItem} />
+                <Step3
+                  currentItem={this.state.currentItem}
+                  onChangeValue={this._onChangeValue}
+                  onChangeString={this._onChangeString}
+                  onPeoplePickerChange={this._onPeoplePickerChange}
+                  onChangeDate={this._onChangeDate}
+                  onClose={this._onClose}
+                  onSave={this._onSave}
+                  editMode={false} />
               </section>
             </>
           }
@@ -395,7 +395,7 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
           </ul>
         </>
       )}
-      {this._renderEdit()}
+      {this._renderForm()}
       {/* {formsService.formView !== FormView.VIEW &&
        
       }else{
