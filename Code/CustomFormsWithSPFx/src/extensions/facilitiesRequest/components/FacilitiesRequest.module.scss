@@ -1,43 +1,51 @@
 @use 'sass:meta';
 
 .facilitiesRequest {
-:global {
+  :global {
     @include meta.load-css('node_modules/@n8d/htwoo-core/lib/sass/htwoo-core');
 
-.facility-form-overview {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: start;
-    justify-items: start;
-    font-size: .875rem;
-    margin: 2rem auto;
-  }
-
-  .facility-form {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    align-items: start;
-    justify-items: start;
-    font-size: .875rem;
-    margin: 2rem auto;
-    max-width: 1024px;
-
-    .actions {
-      display: flex;
-      flex-direction: row;
-      gap: 1rem;
-      margin-top: 1rem;
+    .facility-form-overview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: start;
+      justify-items: start;
+      font-size: .875rem;
+      margin: 2rem auto;
     }
-  }
 
-  .hoo-field {
-    &.stretched {
-      .hoo-select {
-        width: 100%;
+    .facility-form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: start;
+      justify-items: start;
+      font-size: .875rem;
+      margin: 2rem auto;
+      max-width: 1024px;
+
+      .actions {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        margin-top: 1rem;
       }
     }
-  }
-  }
+
+    .hoo-field {
+      &.stretched {
+        .hoo-select {
+          width: 100%;
+        }
+      }
+    }
+  
+    .hoo-progress-stepbar{
+      z-index: 100;
+      .hoo-progress-step{
+        z-index: 99;
+      }
+    }
+}
+
   background-color: "[theme:white, default:#ffffff]";
   color: "[theme:themePrimary, default:#0078d4]";
   padding: 0.5rem;

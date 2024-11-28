@@ -6,7 +6,7 @@ import HOOLabel from '@n8d/htwoo-react/HOOLabel';
 import HOODate from '@n8d/htwoo-react/HOODate';
 
 import * as strings from 'FacilitiesRequestFormCustomizerStrings';
-import { FacilitiesRequestItem, SaveType } from '../../../common/models/models';
+import { FacilitiesRequestItem, ReportStep, SaveType } from '../../../common/models/models';
 
 export interface IStep2Props {
   editMode: boolean;
@@ -17,6 +17,7 @@ export interface IStep2Props {
   onChangeDate: (fieldName: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onClose: () => void;
   onSave: (saveType: SaveType, action: string) => Promise<void>;
+  onStepChange(step: ReportStep): void;
 }
 
 export interface IStep2State {
@@ -57,12 +58,19 @@ export default class Step2 extends React.PureComponent<IStep2Props, IStep2State>
                 <HOOLabel label={strings.estimatedResolutionDateLabel} />
                 {this.props.currentItem.estimatedResolutionDate.toLocaleDateString()}
               </div>
+              <div className="actions">
+                <HOOButton
+                  label={strings.editReviewButton}
+                  onClick={() => this.props.onStepChange(ReportStep.STEP2)}
+                  type={2}
+                />
+              </div>
             </fieldset>
           }
           {(this.props.editMode) &&
             <fieldset id="issue-verification" className="hoo-fieldset no-outline" data-component={this.LOG_SOURCE}>
               <div className="hoo-field" role="group">
-                <HOOLabel label={strings.verificationDateLabel} for='verificationDate' />
+                <HOOLabel label={strings.verificationDateLabel} for='verificationDate' required={true} />
                 <HOODate
                   forId='verificationDate'
                   value={this.props.currentItem.verificationDate.toISOString().split('T')[0]}
@@ -78,7 +86,7 @@ export default class Step2 extends React.PureComponent<IStep2Props, IStep2State>
                 />
               </div>
               <div className="hoo-field" role="group">
-                <HOOLabel label={strings.assigneeLabel} for='assignee' />
+                <HOOLabel label={strings.assigneeLabel} for='assignee' required={true} />
                 <PeoplePicker id='assignee' type='person' aria-label='Assignee' ariaLabel='Assignee' showMax={4} selectionChanged={(e) => { this.props.onPeoplePickerChange('assignee', e); }} selectedPeople={(this.props.currentItem.assignee.displayName.length > 0) ? [{ displayName: this.props.currentItem.assignee.displayName, mail: this.props.currentItem.assignee.email, userPrincipalName: this.props.currentItem.assignee.email }] : []} />
               </div>
               <div className="hoo-field" role="group">
@@ -88,6 +96,7 @@ export default class Step2 extends React.PureComponent<IStep2Props, IStep2State>
                   value={this.props.currentItem.estimatedResolutionDate.toISOString().split('T')[0]}
                   onChange={(event) => { this.props.onChangeDate("estimatedResolutionDate", event); }} />
               </div>
+
               <div className="actions">
                 <HOOButton
                   label={strings.invalidateReportButton}
@@ -100,6 +109,7 @@ export default class Step2 extends React.PureComponent<IStep2Props, IStep2State>
                   type={1}
                 />
               </div>
+
             </fieldset>
           }
         </>

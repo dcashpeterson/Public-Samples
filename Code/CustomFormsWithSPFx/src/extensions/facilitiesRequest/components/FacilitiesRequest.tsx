@@ -9,12 +9,13 @@ import { HOOPresenceStatus } from '@n8d/htwoo-react/HOOAvatarPres';
 import * as strings from 'FacilitiesRequestFormCustomizerStrings';
 import { formsService } from '../../../common/services/formsService';
 import styles from './FacilitiesRequest.module.scss';
-import { FacilitiesRequestItem, FormView, IFacilitiesRequestItem, SaveType, UserField } from '../../../common/models/models';
+import { FacilitiesRequestItem, IFacilitiesRequestItem, ReportStep, SaveType, UserField } from '../../../common/models/models';
 import HOOAccordion from '@n8d/htwoo-react/HOOAccordion';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
 import ProgressBar from './ProgressBar';
+import HOOButton from '@n8d/htwoo-react/HOOButton';
 
 export interface IFacilitiesRequestProps {
   context: FormCustomizerContext;
@@ -52,6 +53,7 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
       }
 
       this.state = new FacilitiesRequestState(listItem, "Reported", []);
+      this._onPeoplePickerChange = this._onPeoplePickerChange.bind(this);
     } catch (err) {
       console.error(`${LOG_SOURCE} (constructor) - ${err}`);
     }
@@ -75,14 +77,52 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     return true;
   }
 
-  private _formValid = (currentItem: IFacilitiesRequestItem): string[] => {
-    const retVal: string[] = [];
+  private _formValid = (currentItem: IFacilitiesRequestItem): boolean => {
+    let retVal = false;
+    const errors: string[] = [];
     try {
-      if (currentItem.reportedBy === null || currentItem.reportedBy?.displayName.length < 1) {
-        retVal.push("Reported by is a require field.");
+      if (currentItem.reportStep === ReportStep.STEP1) {
+        if (currentItem.issueType === "") {
+          errors.push("Issue Type is a require field.");
+        }
+        if (currentItem.location === "") {
+          errors.push("Location is a require field.");
+        }
+        if (currentItem.severity === "") {
+          errors.push("Severity is a require field.");
+        }
+        if (currentItem.issueDescription === "" || currentItem.issueDescription?.length < 1) {
+          errors.push("Issue Description is a require field.");
+        }
+        if (currentItem.reportedBy === null || currentItem.reportedBy?.displayName.length < 1) {
+          errors.push("Reported By is a require field. Please select a valid user.");
+        }
+        if (currentItem.reportedDate === null) {
+          errors.push("Reported Date is a require field.");
+        }
       }
-      if (currentItem.issueDescription === null || currentItem.issueDescription?.length < 1) {
-        retVal.push("Issue Description is a require field.");
+      if (currentItem.reportStep === ReportStep.STEP2) {
+        if (currentItem.verificationDate === null) {
+          errors.push("Verification Date is a require field.");
+        }
+        if (currentItem.assignee === null || currentItem.assignee?.displayName.length < 1) {
+          errors.push("Assigned To is a require field. Please select a valid user.");
+        }
+      }
+      if (currentItem.reportStep === ReportStep.STEP3) {
+        if (currentItem.resolutionDescription === null || currentItem.resolutionDescription?.length < 1) {
+          errors.push("Resolution Description is a require field.");
+        }
+        if (currentItem.resolutionDate === null) {
+          errors.push("Verification Date is a require field. Please select a valid resolution date.");
+        }
+        if (currentItem.resolvedBy === null || currentItem.resolvedBy?.displayName.length < 1) {
+          errors.push("Resolved By is a require field. Please select a valid user.");
+        }
+      }
+      this.setState({ error: errors });
+      if (errors.length === 0) {
+        retVal = true;
       }
     } catch (err) {
       console.error(`${LOG_SOURCE} (_formValid) - ${err}`);
@@ -95,13 +135,13 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
       const currentItem: any = cloneDeep(this.state.currentItem);
       const user: IUser = value.detail[0] as IUser;
       //This event was firing twice, so I had to add this check to make sure it only fires when it has changed.
-      if (user.displayName !== currentItem[fieldName].displayName) {
-        if (user) {
+      if (user) {
+        if (user.displayName !== currentItem[fieldName].displayName) {
           currentItem[fieldName] = { displayName: user.displayName, email: user.userPrincipalName, loginName: user.userPrincipalName, id: 0, photoUrl: "", presence: HOOPresenceStatus.Invisible };
-        } else {
-          currentItem[fieldName] = new UserField();
+          this.setState({ currentItem });
         }
-
+      } else {
+        currentItem[fieldName] = new UserField();
         this.setState({ currentItem });
       }
     } catch (err) {
@@ -111,17 +151,12 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
   private _onChangeString = (fieldName: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, subField?: string, fieldType?: string): void => {
     try {
       let value = event.target.value;
-      if (fieldType === "Date") {
-        value = new Date(value).toISOString();
-      }
       const currentItem: any = cloneDeep(this.state.currentItem);
       if (subField) {
         currentItem[fieldName][subField] = value;
       } else {
         currentItem[fieldName] = value;
       }
-
-      //const error = this._formValid(currentItem);
       this.setState({ currentItem });
     } catch (err) {
       console.error(LOG_SOURCE, "(_onChangeString)", err);
@@ -143,7 +178,6 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     try {
       const currentItem: any = cloneDeep(this.state.currentItem);
       currentItem[fieldName] = value;
-      //const error = this._formValid(currentItem);
       this.setState({ currentItem });
     } catch (err) {
       console.error(`${LOG_SOURCE} (_onChangeValue) - ${err}`);
@@ -168,11 +202,21 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     return retVal;
   }
 
+  private _changeStep = (step: ReportStep): void => {
+    try {
+      const currentItem: FacilitiesRequestItem = cloneDeep(this.state.currentItem);
+      currentItem.reportStep = step;
+      this.setState({ currentItem });
+    } catch (err) {
+      console.error(`${LOG_SOURCE} (_changeStep) - ${err}`);
+    }
+  }
+
   private _onSave = async (saveType: SaveType, action: string): Promise<void> => {
     try {
       const currentItem: FacilitiesRequestItem = cloneDeep(this.state.currentItem);
       const valid = this._formValid(currentItem);
-      if (valid.length <= 0) {
+      if (valid) {
         switch (action) {
           case "Reported":
             currentItem.requestStatus = strings.statusValues[1];
@@ -198,7 +242,7 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
           this.props.onSave(currentItem);
         }
       } else {
-        this.setState({ error: valid });
+        //this.setState({ error: valid });
       }
 
     } catch (err) {
@@ -219,17 +263,19 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
   private _renderForm(): React.ReactElement<IFacilitiesRequestProps> {
     try {
       const step1: React.DetailedHTMLProps<React.AllHTMLAttributes<HTMLDetailsElement>, HTMLDetailsElement> = {
-        open: (this.state.currentItem.requestStatus !== strings.statusValues[2]) ? true : false,
+        open: (this.state.currentItem.reportStep === ReportStep.STEP2) ? true : false,
         name: "issue-tracking",
       };
       const step2: React.DetailedHTMLProps<React.AllHTMLAttributes<HTMLDetailsElement>, HTMLDetailsElement> = {
-        open: (this.state.currentItem.requestStatus === strings.statusValues[2]) ? true : false,
+        open: (this.state.currentItem.reportStep !== ReportStep.STEP2) ? true : false,
         name: "issue-tracking",
       };
       return (<>
+        <HOOButton iconName='hoo-icon-close' onClick={this._onClose} type={0} />
+
         <ProgressBar progress={this._getProgress(this.state.currentItem.requestStatus)} />
         <section className="facility-form">
-          {(this.state.currentItem.requestStatus === strings.statusValues[0] && formsService.formView === FormView.NEW) &&
+          {(this.state.currentItem.reportStep === ReportStep.STEP1) &&
             <Step1
               currentItem={this.state.currentItem}
               onChangeValue={this._onChangeValue}
@@ -238,9 +284,12 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
               onChangeDate={this._onChangeDate}
               onClose={this._onClose}
               onSave={this._onSave}
-              editMode={true} />
+              editMode={true}
+              onStepChange={this._changeStep}
+              validateForm={this._formValid}
+            />
           }
-          {(this.state.currentItem.requestStatus === strings.statusValues[1] && formsService.formView === FormView.EDIT) &&
+          {(this.state.currentItem.reportStep === ReportStep.STEP2) &&
             <>
               <HOOAccordion
                 header={strings.reportedIssueHeader}
@@ -255,7 +304,9 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                     onChangeDate={this._onChangeDate}
                     onClose={this._onClose}
                     onSave={this._onSave}
-                    editMode={false} />
+                    editMode={false}
+                    onStepChange={this._changeStep}
+                    validateForm={this._formValid} />
                 </div>
               </HOOAccordion>
               <section className="review">
@@ -269,11 +320,12 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                   onChangeDate={this._onChangeDate}
                   onClose={this._onClose}
                   onSave={this._onSave}
-                  editMode={true} />
+                  editMode={true}
+                  onStepChange={this._changeStep} />
               </section>
             </>
           }
-          {(this.state.currentItem.requestStatus === strings.statusValues[2] && formsService.formView === FormView.EDIT) &&
+          {(this.state.currentItem.reportStep === ReportStep.STEP3) &&
             <>
               <section>
                 <HOOAccordion
@@ -289,7 +341,9 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                       onChangeDate={this._onChangeDate}
                       onClose={this._onClose}
                       onSave={this._onSave}
-                      editMode={false} />
+                      editMode={false}
+                      onStepChange={this._changeStep}
+                      validateForm={this._formValid} />
                   </div>
                 </HOOAccordion>
                 <HOOAccordion
@@ -305,7 +359,8 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                       onChangeDate={this._onChangeDate}
                       onClose={this._onClose}
                       onSave={this._onSave}
-                      editMode={false} />
+                      editMode={false}
+                      onStepChange={this._changeStep} />
                   </div>
                 </HOOAccordion>
               </section>
@@ -320,11 +375,12 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                   onChangeDate={this._onChangeDate}
                   onClose={this._onClose}
                   onSave={this._onSave}
-                  editMode={true} />
+                  editMode={true}
+                  onStepChange={this._changeStep} />
               </section>
             </>
           }
-          {((this.state.currentItem.requestStatus === strings.statusValues[3] || this.state.currentItem.requestStatus === strings.statusValues[4] || this.state.currentItem.requestStatus === strings.statusValues[5]) && formsService.formView !== FormView.NEW) &&
+          {(this.state.currentItem.reportStep === ReportStep.STEP4) &&
             <>
               <section>
                 <HOOAccordion
@@ -340,7 +396,9 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                       onChangeDate={this._onChangeDate}
                       onClose={this._onClose}
                       onSave={this._onSave}
-                      editMode={false} />
+                      editMode={false}
+                      onStepChange={this._changeStep}
+                      validateForm={this._formValid} />
                   </div>
                 </HOOAccordion>
                 <HOOAccordion
@@ -356,7 +414,8 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                       onChangeDate={this._onChangeDate}
                       onClose={this._onClose}
                       onSave={this._onSave}
-                      editMode={false} />
+                      editMode={false}
+                      onStepChange={this._changeStep} />
                   </div>
                 </HOOAccordion>
               </section>
@@ -370,7 +429,8 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
                   onChangeDate={this._onChangeDate}
                   onClose={this._onClose}
                   onSave={this._onSave}
-                  editMode={false} />
+                  editMode={false}
+                  onStepChange={this._changeStep} />
               </section>
             </>
           }

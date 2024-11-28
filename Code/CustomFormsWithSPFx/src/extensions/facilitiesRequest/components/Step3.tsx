@@ -6,7 +6,7 @@ import HOOLabel from '@n8d/htwoo-react/HOOLabel';
 import HOODate from '@n8d/htwoo-react/HOODate';
 
 import * as strings from 'FacilitiesRequestFormCustomizerStrings';
-import { FacilitiesRequestItem, SaveType } from '../../../common/models/models';
+import { FacilitiesRequestItem, ReportStep, SaveType } from '../../../common/models/models';
 
 export interface IStep3Props {
   editMode: boolean;
@@ -17,6 +17,7 @@ export interface IStep3Props {
   onChangeDate: (fieldName: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onClose: () => void;
   onSave: (saveType: SaveType, action: string) => Promise<void>;
+  onStepChange(step: ReportStep): void;
 }
 
 export interface IStep3State {
@@ -57,12 +58,19 @@ export default class Step3 extends React.PureComponent<IStep3Props, IStep3State>
                 <HOOLabel label={strings.requestStatusLabel} />
                 {this.props.currentItem.requestStatus}
               </div>
+              <div className="actions">
+                <HOOButton
+                  label={strings.editResolutionButton}
+                  onClick={() => this.props.onStepChange(ReportStep.STEP3)}
+                  type={2}
+                />
+              </div>
             </fieldset>
           }
           {(this.props.editMode) &&
             <fieldset id="resolution" className="hoo-fieldset no-outline" data-component={this.LOG_SOURCE}>
               <div className="hoo-field" role="group">
-                <HOOLabel label={strings.resolutionDescriptionLabel} for='resolutionDescription' />
+                <HOOLabel label={strings.resolutionDescriptionLabel} for='resolutionDescription' required={true} />
                 <HOOText
                   forId='resolutionDescription'
                   multiline={5}
@@ -71,14 +79,14 @@ export default class Step3 extends React.PureComponent<IStep3Props, IStep3State>
                 />
               </div>
               <div className="hoo-field" role="group">
-                <HOOLabel label={strings.resolutionDateLabel} for='resolutionDate' />
+                <HOOLabel label={strings.resolutionDateLabel} for='resolutionDate' required={true} />
                 <HOODate
                   forId='resolutionDate'
                   value={this.props.currentItem.resolutionDate.toISOString().split('T')[0]}
                   onChange={(event) => { this.props.onChangeDate("resolutionDate", event); }} />
               </div>
               <div className="hoo-field" role="group">
-                <HOOLabel label={strings.resolvedByLabel} for='resolvedBy' />
+                <HOOLabel label={strings.resolvedByLabel} for='resolvedBy' required={true} />
                 <PeoplePicker id='resolvedBy' type='person' aria-label='Resolved By' ariaLabel='Resolved By' showMax={4} selectionChanged={(e) => { this.props.onPeoplePickerChange('resolvedBy', e); }} selectedPeople={(this.props.currentItem.resolvedBy.displayName.length > 0) ? [{ displayName: this.props.currentItem.resolvedBy.displayName, mail: this.props.currentItem.resolvedBy.email, userPrincipalName: this.props.currentItem.resolvedBy.email }] : []} />
               </div>
               <div className="hoo-field" role="group">

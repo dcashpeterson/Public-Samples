@@ -19,7 +19,7 @@ import "@pnp/sp/batching";
 import "@pnp/graph/users";
 import "@pnp/graph/photos";
 import { configService } from "./configService";
-import { FacilitiesRequestItem, FormView, Lists, SaveType, UserField } from "../models/models";
+import { FacilitiesRequestItem, FormView, Lists, ReportStep, SaveType, UserField } from "../models/models";
 import { HOOPresenceStatus, IHOODropDownGroup, IHOODropDownItem, IHOOListOption } from "@n8d/htwoo-react";
 import { AddChoiceProps } from "@pnp/sp/fields/types";
 import { IPhoto } from "@pnp/graph/photos";
@@ -34,6 +34,7 @@ export interface IFormsService {
   currentItem: FacilitiesRequestItem;
   Init: (pageContext: any, displayMode: number) => Promise<void>;
   GetFormView(displayMode: number): FormView;
+  GetReportStep(requestStatus: string): ReportStep;
   SaveItem: (item: FacilitiesRequestItem, saveType: SaveType) => Promise<boolean>;
   DeleteItem: (id: number) => Promise<void>;
 }
@@ -166,7 +167,8 @@ private async _getCurrentItem(itemID: number): Promise<FacilitiesRequestItem> {
             (item.ResolutionDate) ? new Date(item.ResolutionDate) : new Date(),
             (item.ResolvedBy) ? { id: item.ResolvedBy.ID, email: item.ResolvedBy.EMail, displayName: item.ResolvedBy.FirstName + " " + item.ResolvedBy.LastName, loginName: item.ResolvedBy.EMail, photoUrl: "", presence: HOOPresenceStatus.Invisible } : new UserField(),
             (item.InspectionDate) ? new Date(item.InspectionDate) : new Date(),
-            item.RequestStatus
+            item.RequestStatus,
+            this.GetReportStep(item.RequestStatus)
           ))
       });
       
@@ -290,6 +292,29 @@ private async _getCurrentItem(itemID: number): Promise<FacilitiesRequestItem> {
       });
     } catch (err) {
       console.error(`${this.LOG_SOURCE}:(_getListOptions) - ${err.message}`);
+    }
+    return retVal;
+  }
+  
+  public GetReportStep(requestStatus: string): ReportStep {
+    let retVal: ReportStep = ReportStep.STEP1;
+    try {
+      switch (requestStatus) {
+        case "Reported":
+          retVal = ReportStep.STEP1;
+          break;
+        case "Pending Verification":
+          retVal = ReportStep.STEP2;
+          break;
+        case "Verified":
+          retVal = ReportStep.STEP3;
+          break;  
+        default:
+          retVal = ReportStep.STEP4;
+          break;          
+      }
+    } catch (err) {
+      console.error(`${this.LOG_SOURCE}:(DeleteItem) - ${err.message}`);
     }
     return retVal;
   }

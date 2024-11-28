@@ -30,10 +30,14 @@ define([], function() {
     
     "reportIssueButton": "Report Issue",
     "cancelButton": "Cancel",
+    "editReportButton": "Edit Report",
+    "updateReportButton": "Update Report",
+    "editReviewButton"  : "Edit Review",
     "invalidateReportButton": "Invalidate Report",
     "validateReportButton": "Validate Report",
     "unableToResolveButton": "Unable to Resolve",
     "completedButton": "Completed",
+    "editResolutionButton": "Edit Resolution",
     
     "reportedIssueHeader": "Reported Issue",
     "reviewAssignHeader": "Review and Assign",

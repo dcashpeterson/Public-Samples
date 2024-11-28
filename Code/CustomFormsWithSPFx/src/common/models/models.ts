@@ -22,6 +22,13 @@ export enum SaveType {
   UPDATE
 }
 
+export enum ReportStep {
+  STEP1,
+  STEP2,
+  STEP3,
+  STEP4
+}
+
 export interface IChoice {
   choice: string;
   value: string;
@@ -119,6 +126,7 @@ export interface IFacilitiesRequestItem {
   resolvedBy: UserField;
   inspectionDate: Date;   
   requestStatus: string;
+  reportStep: ReportStep;
 }
 
 export class FacilitiesRequestItem implements IFacilitiesRequestItem {
@@ -140,6 +148,7 @@ export class FacilitiesRequestItem implements IFacilitiesRequestItem {
     public resolutionDate: Date = new Date(),
     public resolvedBy: UserField = new UserField(),
     public inspectionDate: Date = new Date(),
-    public requestStatus: string = "Reported"    
+    public requestStatus: string = "Reported",
+    public reportStep: ReportStep = ReportStep.STEP1    
   ) { }
 }

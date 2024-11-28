@@ -29,10 +29,14 @@ declare interface IFacilitiesRequestFormCustomizerStrings {
   
   reportIssueButton: string;
   cancelButton: string;
+  editReportButton: string;
+  updateReportButton: string;
+  editReviewButton: string;
   invalidateReportButton: string;
   validateReportButton: string;
   unableToResolveButton: string;
   completedButton: string;
+  editResolutionButton: string;
   
   reportedIssueHeader: string;
   reviewAssignHeader: string;

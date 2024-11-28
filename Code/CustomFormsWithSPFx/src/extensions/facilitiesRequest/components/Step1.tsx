@@ -7,7 +7,7 @@ import HOODate from '@n8d/htwoo-react/HOODate';
 
 import * as strings from 'FacilitiesRequestFormCustomizerStrings';
 import { formsService } from '../../../common/services/formsService';
-import { FacilitiesRequestItem, SaveType } from '../../../common/models/models';
+import { FacilitiesRequestItem, FormView, IFacilitiesRequestItem, ReportStep, SaveType } from '../../../common/models/models';
 import HOOOptionList from '@n8d/htwoo-react/HOOOptionList';
 import HOODropDown from '@n8d/htwoo-react/HOODropDown';
 
@@ -20,21 +20,34 @@ export interface IStep1Props {
   onChangeDate: (fieldName: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onClose: () => void;
   onSave: (saveType: SaveType, action: string) => Promise<void>;
+  onStepChange(step: ReportStep): void;
+  validateForm: (currentItem: IFacilitiesRequestItem) => boolean;
 }
 
 export interface IStep1State {
+  showThankYou: boolean;
 }
 
 export class Step1State implements IStep1State {
-  public constructor() { }
+  public constructor(
+    public showThankYou: boolean = false
+  ) { }
 }
 
 export default class Step1 extends React.PureComponent<IStep1Props, IStep1State> {
   private LOG_SOURCE = "🟢Step1";
+  private turnItOffAndOnAgain = require('../../../common/assets/turnitoff.gif');
+  private severe = require('../../../common/assets/severe.gif');
 
   public constructor(props: IStep1Props) {
     super(props);
     this.state = new Step1State();
+  }
+
+  private _onSave() {
+    if (this.props.validateForm(this.props.currentItem)) {
+      this.setState({ showThankYou: true });
+    }
   }
 
   public render(): React.ReactElement<IStep1Props> {
@@ -71,9 +84,16 @@ export default class Step1 extends React.PureComponent<IStep1Props, IStep1State>
                 <HOOLabel label={strings.reportedDateLabel} />
                 {this.props.currentItem.reportedDate.toLocaleDateString()}
               </div>
+              <div className="actions">
+                <HOOButton
+                  label={strings.editReportButton}
+                  onClick={() => this.props.onStepChange(ReportStep.STEP1)}
+                  type={2}
+                />
+              </div>
             </fieldset>
           }
-          {(this.props.editMode) &&
+          {((this.props.editMode) && (!this.state.showThankYou)) &&
             <fieldset id="new-item-form" className="hoo-fieldset no-outline" data-component={this.LOG_SOURCE}>
               <div className="hoo-field" role="group">
                 <HOOLabel label={strings.issueTypeLabel} for='issueType' required={true} />
@@ -91,6 +111,7 @@ export default class Step1 extends React.PureComponent<IStep1Props, IStep1State>
                   onChange={(value) => { this.props.onChangeValue("location", value); }}
                   options={formsService.LocationFieldValues}
                   value={this.props.currentItem.location}
+                  containsTypeAhead={true}
                 />
               </div>
               <div className="hoo-field" role="group">
@@ -121,7 +142,7 @@ export default class Step1 extends React.PureComponent<IStep1Props, IStep1State>
               </div>
               <div className="hoo-field" role="group">
                 <HOOLabel label={strings.reportedDateLabel} for='reportedBy' required={true} />
-                <PeoplePicker id='reportedBy' type='person' aria-label='Reported By' ariaLabel='Reported By' showMax={4} onBlur={(e) => { this.props.onPeoplePickerChange('reportedBy', e); }} selectedPeople={(this.props.currentItem.reportedBy.displayName.length > 0) ? [{ displayName: this.props.currentItem.reportedBy.displayName, mail: this.props.currentItem.reportedBy.email, userPrincipalName: this.props.currentItem.reportedBy.email }] : []} />
+                <PeoplePicker id='reportedBy' type='person' aria-label='Reported By' ariaLabel='Reported By' showMax={4} selectionChanged={(e) => this.props.onPeoplePickerChange('reportedBy', e)} selectedPeople={(this.props.currentItem.reportedBy.displayName.length > 0) ? [{ displayName: this.props.currentItem.reportedBy.displayName, mail: this.props.currentItem.reportedBy.email, userPrincipalName: this.props.currentItem.reportedBy.email }] : []} />
               </div>
               <div className="hoo-field" role="group">
                 <HOOLabel label={strings.reportedDateLabel} for='reportedDate' required={true} />
@@ -130,6 +151,36 @@ export default class Step1 extends React.PureComponent<IStep1Props, IStep1State>
                   value={this.props.currentItem.reportedDate.toISOString().split('T')[0]}
                   onChange={(event) => { this.props.onChangeDate("reportedDate", event); }} />
               </div>
+              {(formsService.formView === FormView.NEW) &&
+                <div className="actions">
+                  <HOOButton
+                    label={strings.cancelButton}
+                    onClick={this.props.onClose}
+                    type={2}
+                  />
+                  <HOOButton
+                    label={strings.reportIssueButton}
+                    onClick={() => this._onSave()}
+                    type={1}
+                  />
+                </div>
+              }
+              {(formsService.formView !== FormView.NEW) &&
+                <div className="actions">
+                  <HOOButton
+                    label={strings.updateReportButton}
+                    onClick={() => this.props.onSave(SaveType.UPDATE, "")}
+                    type={1}
+                  />
+                </div>
+              }
+
+            </fieldset>
+          }
+
+          {((this.props.editMode) && (this.state.showThankYou)) &&
+            <fieldset id="new-item-form" className="hoo-fieldset no-outline" data-component={this.LOG_SOURCE}>
+              <div><img src={(this.props.currentItem.severity === "Urgent") ? this.severe : this.turnItOffAndOnAgain} alt='Have you tried turing it on and back on?' /></div>
               <div className="actions">
                 <HOOButton
                   label={strings.cancelButton}

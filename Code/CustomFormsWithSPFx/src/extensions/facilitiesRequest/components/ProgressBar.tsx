@@ -27,7 +27,7 @@ export default class ProgressBar extends React.PureComponent<IProgressBarProps, 
           <progress className="hoo-progress-bar" value={this.props.progress} max="100">
             {this.props.progress}%
           </progress>
-          <div className="hoo-progress-step" style={{ '--step-offset': '25%' }}>
+          <div className="hoo-progress-step" style={{ '--step-offset': '25%' } as React.CSSProperties}>
             <div className="inner">
               <div className="hoo-progress-step-indicator">
               </div>
@@ -36,7 +36,7 @@ export default class ProgressBar extends React.PureComponent<IProgressBarProps, 
               </div>
             </div>
           </div>
-          <div className="hoo-progress-step" style={{ '--step-offset': '50%' }}>
+          <div className="hoo-progress-step" style={{ '--step-offset': '50%' } as React.CSSProperties}>
             <div className="inner">
               <div className="hoo-progress-step-indicator">
               </div>
@@ -45,7 +45,7 @@ export default class ProgressBar extends React.PureComponent<IProgressBarProps, 
               </div>
             </div>
           </div>
-          <div className="hoo-progress-step" style={{ '--step-offset': '25%' }}>
+          <div className="hoo-progress-step" style={{ '--step-offset': '75%' } as React.CSSProperties}>
             <div className="inner">
               <div className="hoo-progress-step-indicator">
               </div>
