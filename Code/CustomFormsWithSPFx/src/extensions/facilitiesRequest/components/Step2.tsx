@@ -78,6 +78,7 @@ export default class Step2 extends React.PureComponent<IStep2Props, IStep2State>
               </div>
               <div className="hoo-field" role="group">
                 <HOOLabel label={strings.additionalCommentsLabel} for='additionalComments' />
+                {strings.additionalCommentsDescription}
                 <HOOText
                   forId='additionalComments'
                   multiline={5}
@@ -88,6 +89,7 @@ export default class Step2 extends React.PureComponent<IStep2Props, IStep2State>
               <div className="hoo-field" role="group">
                 <HOOLabel label={strings.assigneeLabel} for='assignee' required={true} />
                 <PeoplePicker id='assignee' type='person' aria-label='Assignee' ariaLabel='Assignee' showMax={4} selectionChanged={(e) => { this.props.onPeoplePickerChange('assignee', e); }} selectedPeople={(this.props.currentItem.assignee.displayName.length > 0) ? [{ displayName: this.props.currentItem.assignee.displayName, mail: this.props.currentItem.assignee.email, userPrincipalName: this.props.currentItem.assignee.email }] : []} />
+                {strings.assigneeDescription}
               </div>
               <div className="hoo-field" role="group">
                 <HOOLabel label={strings.estimatedResolutionDateLabel} for='estimatedResolutionDate' />
@@ -95,6 +97,7 @@ export default class Step2 extends React.PureComponent<IStep2Props, IStep2State>
                   forId='estimatedResolutionDate'
                   value={this.props.currentItem.estimatedResolutionDate.toISOString().split('T')[0]}
                   onChange={(event) => { this.props.onChangeDate("estimatedResolutionDate", event); }} />
+                {strings.estimatedResolutionDateDescription}
               </div>
 
               <div className="actions">

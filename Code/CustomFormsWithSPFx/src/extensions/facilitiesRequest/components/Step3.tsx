@@ -71,6 +71,7 @@ export default class Step3 extends React.PureComponent<IStep3Props, IStep3State>
             <fieldset id="resolution" className="hoo-fieldset no-outline" data-component={this.LOG_SOURCE}>
               <div className="hoo-field" role="group">
                 <HOOLabel label={strings.resolutionDescriptionLabel} for='resolutionDescription' required={true} />
+                {strings.resolutionDescriptionDescription}
                 <HOOText
                   forId='resolutionDescription'
                   multiline={5}
@@ -84,6 +85,7 @@ export default class Step3 extends React.PureComponent<IStep3Props, IStep3State>
                   forId='resolutionDate'
                   value={this.props.currentItem.resolutionDate.toISOString().split('T')[0]}
                   onChange={(event) => { this.props.onChangeDate("resolutionDate", event); }} />
+                {strings.resolutionDateDescription}
               </div>
               <div className="hoo-field" role="group">
                 <HOOLabel label={strings.resolvedByLabel} for='resolvedBy' required={true} />
@@ -95,6 +97,7 @@ export default class Step3 extends React.PureComponent<IStep3Props, IStep3State>
                   forId='inspectionDate'
                   value={this.props.currentItem.inspectionDate.toISOString().split('T')[0]}
                   onChange={(event) => { this.props.onChangeDate("inspectionDate", event); }} />
+                {strings.inspectionDateDescription}
               </div>
               <div className="actions">
                 <HOOButton

@@ -121,6 +121,7 @@ export default class Step1 extends React.PureComponent<IStep1Props, IStep1State>
                   value={this.props.currentItem.equipmentId}
                   onChange={(event) => { this.props.onChangeString("equipmentId", event); }}
                 />
+                {strings.equipmentIdDescription}
               </div>
               <div className="hoo-field" role="group">
                 <HOOLabel label={strings.severityLabel} for='severity' required={true} />
@@ -133,6 +134,7 @@ export default class Step1 extends React.PureComponent<IStep1Props, IStep1State>
               </div>
               <div className="hoo-field" role="group">
                 <HOOLabel label={strings.issueDescriptionLabel} for='issueDescription' required={true} />
+                {strings.issueDescriptionDescription}
                 <HOOText
                   forId='issueDescription'
                   multiline={5}
