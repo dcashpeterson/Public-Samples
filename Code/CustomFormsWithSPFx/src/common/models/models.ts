@@ -127,6 +127,8 @@ export interface IFacilitiesRequestItem {
   inspectionDate: Date;   
   requestStatus: string;
   reportStep: ReportStep;
+  modifiedDate: Date;
+  modifiedBy: UserField;
 }
 
 export class FacilitiesRequestItem implements IFacilitiesRequestItem {
@@ -149,6 +151,8 @@ export class FacilitiesRequestItem implements IFacilitiesRequestItem {
     public resolvedBy: UserField = new UserField(),
     public inspectionDate: Date = new Date(),
     public requestStatus: string = "Reported",
-    public reportStep: ReportStep = ReportStep.STEP1    
+    public reportStep: ReportStep = ReportStep.STEP1,
+    public modifiedDate: Date = new Date(),
+    public modifiedBy: UserField = new UserField()    
   ) { }
 }

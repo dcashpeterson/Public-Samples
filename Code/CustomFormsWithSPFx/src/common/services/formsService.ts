@@ -23,6 +23,8 @@ import { FacilitiesRequestItem, FormView, Lists, ReportStep, SaveType, UserField
 import { HOOPresenceStatus, IHOODropDownGroup, IHOODropDownItem, IHOOListOption } from "@n8d/htwoo-react";
 import { AddChoiceProps } from "@pnp/sp/fields/types";
 import { IPhoto } from "@pnp/graph/photos";
+import { ISiteUserInfo } from "@pnp/sp/site-users/types";
+import { requestContentTypeDisplayName } from "../models/constants";
 
 export interface IFormsService {
   readonly ready: boolean;
@@ -31,7 +33,13 @@ export interface IFormsService {
   LocationFieldValues: IHOODropDownGroup[];
   IssueTypeValues: IHOOListOption[];
   SeverityValues: IHOOListOption[];
+  ListID: string;
+  SiteURL: string;
+  ContentTypeID: string;
   currentItem: FacilitiesRequestItem;
+  ItemsReportedByMe: FacilitiesRequestItem[];
+  ItemsWaitingVerification: FacilitiesRequestItem[];
+  ItemsAssignedToMe: FacilitiesRequestItem[];
   Init: (pageContext: any, displayMode: number) => Promise<void>;
   GetFormView(displayMode: number): FormView;
   GetReportStep(requestStatus: string): ReportStep;
@@ -46,7 +54,14 @@ export default class FormsService implements IFormsService {
   private _graph: GraphFI;
   private _ready: boolean = false;
   private _error: string = "";
+  private _currentUser: ISiteUserInfo;
   private _currentItem: FacilitiesRequestItem = new FacilitiesRequestItem();
+  private _ListID: string;
+  private _siteURL: string = "";
+  private _contentTypeID: string = "";
+  private _itemsReportedByMe: FacilitiesRequestItem[] = [];
+  private _itemsWaitingVerification: FacilitiesRequestItem[] = [];
+  private _itemsAssignedToMe: FacilitiesRequestItem[] = [];
   private _formView: FormView = FormView.NEW;
   private _statusFieldOptions: IHOODropDownItem[] = [];
   private _locationFieldOptions: IHOODropDownGroup[] = [];
@@ -69,6 +84,17 @@ export default class FormsService implements IFormsService {
     return this._currentItem;
   }
   
+  public get ItemsReportedByMe(): FacilitiesRequestItem[] {
+    return this._itemsReportedByMe;
+  }
+  
+  public get ItemsWaitingVerification(): FacilitiesRequestItem[] {
+    return this._itemsWaitingVerification;
+  }
+  public get ItemsAssignedToMe(): FacilitiesRequestItem[] {
+    return this._itemsAssignedToMe;
+  }
+  
   public get formView(): FormView {
     return this._formView;
   }
@@ -88,6 +114,18 @@ export default class FormsService implements IFormsService {
   public get IssueTypeValues(): IHOOListOption[] {
     return this._issueTypeOptions;
   }
+  
+  public get ListID(): string {
+    return this._ListID;
+  }
+  
+  public get SiteURL(): string {
+    return this._siteURL;
+  }
+  
+  public get ContentTypeID(): string {
+    return this._contentTypeID;
+  }
 
   public async Init(context: any, displayMode: number): Promise<void> {
     try {
@@ -95,14 +133,21 @@ export default class FormsService implements IFormsService {
       this._sp = spfi().using(spSPFx({ pageContext: context.pageContext }));
       this._graph = graphfi().using(graphSPFx(context));
       await configService.Init(context);
+      this._currentUser = await this._getCurrentUser();
       this._statusFieldOptions = await this._getChoiceFieldValues("RequestStatus");
       this._locationFieldOptions = await this._getLocationFieldValues();
       this._issueTypeOptions = await this._getListOptions("IssueType");
       this._severityOptions = await this._getListOptions("Severity");
       this._formView = this.GetFormView(displayMode);
+      this._itemsReportedByMe = await this._getItems(this._currentUser.Email, "ReportedBy");
+      this._itemsAssignedToMe = await this._getItems(this._currentUser.Email, "Assignee");
+      this._itemsWaitingVerification = await this._getItems("", "RequestStatus eq 'Pending Verification'");
+      this._ListID = await this._getListID();
+      this._siteURL = context.pageContext.web.absoluteUrl;
+      this._contentTypeID = await this._getListContentType();
       
       if (context.itemId) {
-      this._currentItem = await this._getCurrentItem(context.itemId);
+        this._currentItem = await this._getCurrentItem(context.itemId);
       }
       this._ready = true;
     } catch (err) {
@@ -145,7 +190,7 @@ private async _getCurrentItem(itemID: number): Promise<FacilitiesRequestItem> {
       }
       
       //Get the items from the list.
-      const items = await this._sp.web.lists.getByTitle(Lists.DEMOLISTTITLE).items.select('Id', 'Title', 'IssueType', 'Location', 'EquipmentId', 'IssueSeverity', 'IssueDescription', 'ReportedBy/FirstName', 'ReportedBy/LastName', 'ReportedBy/ID', 'ReportedBy/EMail', 'ReportedDate', 'Assignee/FirstName', 'Assignee/LastName', 'Assignee/ID', 'Assignee/EMail', 'VerificationDate', 'AdditionalComments', 'EstimatedResolutionDate', 'ResolutionDescription', 'ResolutionDate', 'ResolvedBy/FirstName', 'ResolvedBy/LastName', 'ResolvedBy/ID', 'ResolvedBy/EMail', 'InspectionDate', 'RequestStatus').expand('ResolvedBy','Assignee','ReportedBy').filter(filter)();
+      const items = await this._sp.web.lists.getByTitle(Lists.DEMOLISTTITLE).items.select('Id', 'Title', 'IssueType', 'Location', 'EquipmentId', 'IssueSeverity', 'IssueDescription', 'ReportedBy/FirstName', 'ReportedBy/LastName', 'ReportedBy/ID', 'ReportedBy/EMail', 'ReportedDate', 'Assignee/FirstName', 'Assignee/LastName', 'Assignee/ID', 'Assignee/EMail', 'VerificationDate', 'AdditionalComments', 'EstimatedResolutionDate', 'ResolutionDescription', 'ResolutionDate', 'ResolvedBy/FirstName', 'ResolvedBy/LastName', 'ResolvedBy/ID', 'ResolvedBy/EMail', 'InspectionDate', 'RequestStatus','Modified','Editor/FirstName', 'Editor/LastName', 'Editor/ID', 'Editor/EMail').expand('ResolvedBy','Assignee','ReportedBy','Editor').filter(filter)();
       //Iterate through the items from the list and create object
       items.map((item) => {
         return (
@@ -168,7 +213,9 @@ private async _getCurrentItem(itemID: number): Promise<FacilitiesRequestItem> {
             (item.ResolvedBy) ? { id: item.ResolvedBy.ID, email: item.ResolvedBy.EMail, displayName: item.ResolvedBy.FirstName + " " + item.ResolvedBy.LastName, loginName: item.ResolvedBy.EMail, photoUrl: "", presence: HOOPresenceStatus.Invisible } : new UserField(),
             (item.InspectionDate) ? new Date(item.InspectionDate) : new Date(),
             item.RequestStatus,
-            this.GetReportStep(item.RequestStatus)
+            this.GetReportStep(item.RequestStatus),
+            (item.Modified) ? new Date(item.Modified) : new Date(),
+            (item.Editor) ? { id: item.Editor.ID, email: item.Editor.EMail, displayName: item.Editor.FirstName + " " + item.Editor.LastName, loginName: item.Editor.EMail, photoUrl: "", presence: HOOPresenceStatus.Invisible } : new UserField(),
           ))
       });
       
@@ -189,6 +236,52 @@ private async _getCurrentItem(itemID: number): Promise<FacilitiesRequestItem> {
     }
     return retVal;
 }
+  
+  private async _getItems(userId?: string, field?: string): Promise<FacilitiesRequestItem[]> {
+    const retVal: FacilitiesRequestItem[] = [];
+    try {
+      //If userId exists filter by user. If not return everything
+      let filter = "";
+      if (userId && field) {
+        filter = `${field}/EMail eq '${userId}'`
+      } else if (field) {
+        filter = field;
+      }
+      
+      //Get the items from the list.
+      const items = await this._sp.web.lists.getByTitle(Lists.DEMOLISTTITLE).items.select('Id', 'Title', 'IssueType', 'Location', 'EquipmentId', 'IssueSeverity', 'IssueDescription', 'ReportedBy/FirstName', 'ReportedBy/LastName', 'ReportedBy/ID', 'ReportedBy/EMail', 'ReportedDate', 'Assignee/FirstName', 'Assignee/LastName', 'Assignee/ID', 'Assignee/EMail', 'VerificationDate', 'AdditionalComments', 'EstimatedResolutionDate', 'ResolutionDescription', 'ResolutionDate', 'ResolvedBy/FirstName', 'ResolvedBy/LastName', 'ResolvedBy/ID', 'ResolvedBy/EMail', 'InspectionDate', 'RequestStatus','Modified','Editor/FirstName', 'Editor/LastName', 'Editor/ID', 'Editor/EMail').expand('ResolvedBy','Assignee','ReportedBy','Editor').filter(filter)();
+      //Iterate through the items from the list and create object
+      items.map((item) => {
+        return (
+          retVal.push(new FacilitiesRequestItem(
+            item.Id,
+            item.Title,
+            item.IssueType,
+            item.Location,
+            item.EquipmentId,
+            item.IssueSeverity,
+            item.IssueDescription,
+            (item.ReportedBy) ? { id: item.ReportedBy.ID, email: item.ReportedBy.EMail, displayName: item.ReportedBy.FirstName + " " + item.ReportedBy.LastName, loginName: item.ReportedBy.EMail, photoUrl: "", presence: HOOPresenceStatus.Invisible } : new UserField(),
+            (item.ReportedDate) ? new Date(item.ReportedDate) : new Date(),
+            (item.Assignee) ? { id: item.Assignee.ID, email: item.Assignee.EMail, displayName: item.Assignee.FirstName + " " + item.Assignee.LastName, loginName: item.Assignee.EMail, photoUrl: "", presence: HOOPresenceStatus.Invisible } : new UserField(),
+            (item.VerificationDate) ? new Date(item.VerificationDate) : new Date(),
+            item.AdditionalComments,
+            (item.EstimatedResolutionDate) ? new Date(item.EstimatedResolutionDate) : new Date(),
+            item.ResolutionDescription,
+            (item.ResolutionDate) ? new Date(item.ResolutionDate) : new Date(),
+            (item.ResolvedBy) ? { id: item.ResolvedBy.ID, email: item.ResolvedBy.EMail, displayName: item.ResolvedBy.FirstName + " " + item.ResolvedBy.LastName, loginName: item.ResolvedBy.EMail, photoUrl: "", presence: HOOPresenceStatus.Invisible } : new UserField(),
+            (item.InspectionDate) ? new Date(item.InspectionDate) : new Date(),
+            item.RequestStatus,
+            this.GetReportStep(item.RequestStatus),
+            (item.Modified) ? new Date(item.Modified) : new Date(),
+            (item.Editor) ? { id: item.Editor.ID, email: item.Editor.EMail, displayName: item.Editor.FirstName + " " + item.Editor.LastName, loginName: item.Editor.EMail, photoUrl: "", presence: HOOPresenceStatus.Invisible } : new UserField(),
+          )));
+      });
+    } catch (err) {
+      console.error(`${this.LOG_SOURCE}:(_getItems) - ${err.message}`);
+    }
+    return retVal;
+  }
   
   private async _getUserPhotoUrl(email: string): Promise<string> {
     let retVal: string = this._noProfile;
@@ -383,6 +476,43 @@ private async _getCurrentItem(itemID: number): Promise<FacilitiesRequestItem> {
     } catch (err) {
       console.error(`${this.LOG_SOURCE}:(DeleteItem) - ${err.message}`);
     }
+  }
+  
+  private async _getCurrentUser(): Promise<ISiteUserInfo> {
+    let retVal: ISiteUserInfo = {} as ISiteUserInfo;
+    try {
+      retVal = await this._sp.web.currentUser();
+    } catch (err) {
+      console.error(`${this.LOG_SOURCE}:(_getCurrentUser) - ${err.message}`);
+    }
+    return retVal;
+  }
+  
+  private async _getListContentType(): Promise<string> {
+    let retVal = "";
+    try {
+      const cts = await this._sp.web.lists.getByTitle(Lists.DEMOLISTTITLE).contentTypes();
+      cts.map((ct) => {
+        if (ct.Name === requestContentTypeDisplayName) {
+          retVal = ct.StringId;
+        }
+      });
+    } catch (err) {
+      console.error(`${this.LOG_SOURCE}:(_getListContentType) - ${err.message}`);
+    }
+    return retVal;
+  }
+  
+  private async _getListID(): Promise<string> {
+    let retVal = "";
+    try {
+      const list = await this._sp.web.lists.getByTitle(Lists.DEMOLISTTITLE);
+      const ID = await list.select("Id")();
+      retVal = ID.Id;
+    } catch (err) {
+      console.error(`${this.LOG_SOURCE}:(_getList) - ${err.message}`);
+    }
+    return retVal;
   }
 }
 

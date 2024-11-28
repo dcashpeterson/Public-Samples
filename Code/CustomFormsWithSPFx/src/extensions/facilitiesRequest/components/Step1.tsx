@@ -44,7 +44,7 @@ export default class Step1 extends React.PureComponent<IStep1Props, IStep1State>
     this.state = new Step1State();
   }
 
-  private _onSave() {
+  private _onSave(): void {
     if (this.props.validateForm(this.props.currentItem)) {
       this.setState({ showThankYou: true });
     }

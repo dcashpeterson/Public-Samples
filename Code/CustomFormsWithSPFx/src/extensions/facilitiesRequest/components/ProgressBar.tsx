@@ -29,8 +29,7 @@ export default class ProgressBar extends React.PureComponent<IProgressBarProps, 
           </progress>
           <div className="hoo-progress-step" style={{ '--step-offset': '25%' } as React.CSSProperties}>
             <div className="inner">
-              <div className="hoo-progress-step-indicator">
-              </div>
+              <div className="hoo-progress-step-indicator" />
               <div className="hoo-progress-step-label">
                 {strings.reportedIssueHeader}
               </div>
@@ -38,8 +37,7 @@ export default class ProgressBar extends React.PureComponent<IProgressBarProps, 
           </div>
           <div className="hoo-progress-step" style={{ '--step-offset': '50%' } as React.CSSProperties}>
             <div className="inner">
-              <div className="hoo-progress-step-indicator">
-              </div>
+              <div className="hoo-progress-step-indicator" />
               <div className="hoo-progress-step-label">
                 {strings.reviewAssignHeader}
               </div>
@@ -47,10 +45,17 @@ export default class ProgressBar extends React.PureComponent<IProgressBarProps, 
           </div>
           <div className="hoo-progress-step" style={{ '--step-offset': '75%' } as React.CSSProperties}>
             <div className="inner">
-              <div className="hoo-progress-step-indicator">
-              </div>
+              <div className="hoo-progress-step-indicator" />
               <div className="hoo-progress-step-label">
                 {strings.issueResolutionHeader}
+              </div>
+            </div>
+          </div>
+          <div className="hoo-progress-step" style={{ '--step-offset': '100%' } as React.CSSProperties}>
+            <div className="inner">
+              <div className="hoo-progress-step-indicator" />
+              <div className="hoo-progress-step-label">
+                Completed
               </div>
             </div>
           </div>

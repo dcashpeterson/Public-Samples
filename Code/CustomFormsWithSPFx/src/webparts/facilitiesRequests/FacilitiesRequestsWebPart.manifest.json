@@ -30,9 +30,7 @@
         "default": "Facilities Request visualization"
       },
       "officeFabricIconFontName": "Page",
-      "properties": {
-        "description": "Facilities Request visualization"
-      }
+      "properties": {}
     }
   ]
 }

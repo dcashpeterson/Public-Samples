@@ -151,7 +151,7 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
   }
   private _onChangeString = (fieldName: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, subField?: string, fieldType?: string): void => {
     try {
-      let value = event.target.value;
+      const value = event.target.value;
       const currentItem: any = cloneDeep(this.state.currentItem);
       if (subField) {
         currentItem[fieldName][subField] = value;
@@ -242,10 +242,7 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
           this.setState({ currentItem: currentItem, error: [] });
           this.props.onSave(currentItem);
         }
-      } else {
-        //this.setState({ error: valid });
       }
-
     } catch (err) {
       console.error(`${LOG_SOURCE} (_onSave) - ${err}`);
     }
@@ -444,8 +441,7 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
   }
 
   public render(): React.ReactElement<IFacilitiesRequestProps> {
-    return <div className={styles.facilitiesRequest} >{formsService.formView}{strings.statusValues[1]}
-      <div>Put control here to show where item is in process</div>
+    return <div className={styles.facilitiesRequest} data-component={LOG_SOURCE}>
       {this.state.error.length > 0 && (
         <>
           <h2>{strings.errorHeader}</h2>
@@ -457,16 +453,6 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
         </>
       )}
       {this._renderForm()}
-      {/* {formsService.formView !== FormView.VIEW &&
-       
-      }else{
-        this._renderView()
-      } */}
-
-
-
-
-
     </div>;
   }
 }
