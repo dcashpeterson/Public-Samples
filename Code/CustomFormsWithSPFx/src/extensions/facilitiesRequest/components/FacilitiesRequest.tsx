@@ -81,6 +81,7 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     let retVal = false;
     const errors: string[] = [];
     try {
+      //By checking to see what step the form is in we can conditionally have required fields
       if (currentItem.reportStep === ReportStep.STEP1) {
         if (currentItem.issueType === "") {
           errors.push("Issue Type is a require field.");
@@ -184,16 +185,16 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
     }
   }
 
-  private _getProgress = (status: string): number => {
+  private _getProgress = (reportStep: ReportStep): number => {
     let retVal: number = 0;
     try {
-      if (status === strings.statusValues[0]) {
+      if (reportStep === ReportStep.STEP1) {
         retVal = 25;
-      } else if (status === strings.statusValues[1]) {
+      } else if (reportStep === ReportStep.STEP2) {
         retVal = 50;
-      } else if (status === strings.statusValues[2]) {
+      } else if (reportStep === ReportStep.STEP3) {
         retVal = 75;
-      } else if ((status === strings.statusValues[3]) || status === strings.statusValues[4]) {
+      } else if (reportStep === ReportStep.STEP4) {
         retVal = 100;
       }
     } catch (err) {
@@ -273,7 +274,7 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
       return (<>
         <HOOButton iconName='hoo-icon-close' onClick={this._onClose} type={0} />
 
-        <ProgressBar progress={this._getProgress(this.state.currentItem.requestStatus)} />
+        <ProgressBar progress={this._getProgress(this.state.currentItem.reportStep)} />
         <section className="facility-form">
           {(this.state.currentItem.reportStep === ReportStep.STEP1) &&
             <Step1
