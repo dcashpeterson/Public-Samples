@@ -10,7 +10,7 @@ define([], function() {
     "reportedDateLabel": "Reported Date",
     "severityLabel": "Severity",
     "issueDescriptionLabel": "Issue Description",
-    "issueDescriptionDescription": "lease provide a detailed explanation of the issue that help the team understand the situation.<br>Minimum of 20 characters and a maximum of 500 characters.",
+    "issueDescriptionDescription": "lease provide a detailed explanation of the issue that help the team understand the situation. Minimum of 20 characters and a maximum of 500 characters.",
     "imageLabel": "Image",
     "reportedByLabel": "Reported By",
     "equipmentIdLabel": "Equipment ID or Asset ID",

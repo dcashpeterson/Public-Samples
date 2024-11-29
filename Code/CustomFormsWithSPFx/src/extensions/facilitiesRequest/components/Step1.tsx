@@ -1,15 +1,15 @@
-import * as React from 'react';
 import { PeoplePicker } from '@microsoft/mgt-react';
-import HOOText from '@n8d/htwoo-react/HOOText';
 import HOOButton from '@n8d/htwoo-react/HOOButton';
-import HOOLabel from '@n8d/htwoo-react/HOOLabel';
 import HOODate from '@n8d/htwoo-react/HOODate';
+import HOOLabel from '@n8d/htwoo-react/HOOLabel';
+import HOOText from '@n8d/htwoo-react/HOOText';
+import * as React from 'react';
 
-import * as strings from 'FacilitiesRequestFormCustomizerStrings';
-import { formsService } from '../../../common/services/formsService';
-import { FacilitiesRequestItem, FormView, IFacilitiesRequestItem, ReportStep, SaveType } from '../../../common/models/models';
-import HOOOptionList from '@n8d/htwoo-react/HOOOptionList';
 import HOODropDown from '@n8d/htwoo-react/HOODropDown';
+import HOOOptionList from '@n8d/htwoo-react/HOOOptionList';
+import * as strings from 'FacilitiesRequestFormCustomizerStrings';
+import { FacilitiesRequestItem, FormView, IFacilitiesRequestItem, ReportStep, SaveType } from '../../../common/models/models';
+import { formsService } from '../../../common/services/formsService';
 
 export interface IStep1Props {
   editMode: boolean;
@@ -120,6 +120,7 @@ export default class Step1 extends React.PureComponent<IStep1Props, IStep1State>
                   forId='equipmentId'
                   value={this.props.currentItem.equipmentId}
                   onChange={(event) => { this.props.onChangeString("equipmentId", event); }}
+                  inputElementAttributes={{ maxLength: 14, placeholder: 'e.g. ACME-1234-5678', autoComplete: 'off' }}
                 />
                 {strings.equipmentIdDescription}
               </div>
