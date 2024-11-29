@@ -1,8 +1,18 @@
 @use 'sass:meta';
 
 .facilitiesRequest {
+
+  position: relative;
+  padding-top: 2rem;
+
   :global {
     @include meta.load-css('node_modules/@n8d/htwoo-core/lib/sass/htwoo-core');
+
+    .btn-close{
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
 
     .facility-form-overview {
       display: grid;
@@ -21,6 +31,12 @@
       font-size: .875rem;
       margin: 2rem auto;
       max-width: 1024px;
+      gap: 1rem;
+
+      @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr;
+        padding-inline: 1rem;
+      }
 
       .actions {
         display: flex;
@@ -37,20 +53,47 @@
         }
       }
     }
-  
-    .hoo-progress-stepbar{
+
+    .hoo-fieldset{
+      padding-inline: 0;
+    }
+
+    textarea.hoo-input-text{
+      max-width: 65ch;
+      width: 100%;
+      height: 5lh;
+    }
+
+    .hoo-progress-stepbar {
+      grid-column: 1 / -1;
+      box-sizing: border-box;
+      width: calc(100% - 5rem);
+      margin: auto;
+      height: 4rem;
       z-index: 100;
-      .hoo-progress-step{
+      
+      @media screen and (max-width: 480px) {
+        width: 100%;
+        margin-right: 3rem;
+      }
+
+      .hoo-progress-step {
         z-index: 99;
+        @media screen and (max-width: 480px) {
+          display: none;
+        }
       }
     }
-}
+  }
+  .hoo-accordion{
+     width: 100%;
+  }
 
-  background-color: "[theme:white, default:#ffffff]";
-  color: "[theme:themePrimary, default:#0078d4]";
-  padding: 0.5rem;
+  .hoo-dlgcontent{
+    height: 100%;
+  }
 
-  label{
+  label {
     display: block;
   }
 

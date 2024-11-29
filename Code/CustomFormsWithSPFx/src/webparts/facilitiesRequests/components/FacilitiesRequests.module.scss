@@ -1,7 +1,12 @@
 @use 'sass:meta';
 
 .facilitiesRequests {
+  color: var(--primaryText);
   :global {
       @include meta.load-css('node_modules/@n8d/htwoo-core/lib/sass/htwoo-core');
   }
+}
+
+.facilitiesRequest {
+  color: var(--primaryText);
 }

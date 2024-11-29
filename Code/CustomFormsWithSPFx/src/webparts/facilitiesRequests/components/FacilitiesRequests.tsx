@@ -1,15 +1,15 @@
-import * as React from 'react';
-import type { IFacilitiesRequestsProps } from './IFacilitiesRequestsProps';
-import HOOPivotBar, { IHOOPivotItem } from '@n8d/htwoo-react/HOOPivotBar';
-import * as strings from 'FacilitiesRequestsWebPartStrings';
-import HOOTable from '@n8d/htwoo-react/HOOTable';
-import styles from './FacilitiesRequests.module.scss';
 import HOOButton from '@n8d/htwoo-react/HOOButton';
-import { formsService } from '../../../common/services/formsService';
-import { IFacilitiesRequestItem } from '../../../common/models/models';
 import HOODialog from '@n8d/htwoo-react/HOODialog';
-import HOODialogHeader from '@n8d/htwoo-react/HOODialogHeader';
 import HOODialogContent from '@n8d/htwoo-react/HOODialogContent';
+import HOODialogHeader from '@n8d/htwoo-react/HOODialogHeader';
+import HOOPivotBar, { IHOOPivotItem } from '@n8d/htwoo-react/HOOPivotBar';
+import HOOTable from '@n8d/htwoo-react/HOOTable';
+import * as strings from 'FacilitiesRequestsWebPartStrings';
+import * as React from 'react';
+import { IFacilitiesRequestItem } from '../../../common/models/models';
+import { formsService } from '../../../common/services/formsService';
+import styles from './FacilitiesRequests.module.scss';
+import type { IFacilitiesRequestsProps } from './IFacilitiesRequestsProps';
 
 export interface IVacationRequestProps {
 
@@ -212,7 +212,7 @@ export default class FacilitiesRequests extends React.Component<IFacilitiesReque
             closeOnClick={(e) => { this._toggleDialog(e) }}
             title="Facilities Request" closeDisabled={false} />
           <HOODialogContent>
-            <iframe id='formViewer' src={`${formsService.SiteURL}/_layouts/15/SPListForm.aspx?PageType=${this.state.modeId}&List=${formsService.ListID}${(this.state.modeId !== 8) ? '&ID=' + this.state.selectedItemId : ''}&ContentTypeId=${formsService.ContentTypeID}`} width="100vh" onLoad={this._setFrameHeight} />
+            <iframe id='formViewer' className='hoo-dlg-iframe' src={`${formsService.SiteURL}/_layouts/15/SPListForm.aspx?PageType=${this.state.modeId}&List=${formsService.ListID}${(this.state.modeId !== 8) ? '&ID=' + this.state.selectedItemId : ''}&ContentTypeId=${formsService.ContentTypeID}`} onLoad={this._setFrameHeight} />
 
           </HOODialogContent>
         </HOODialog>

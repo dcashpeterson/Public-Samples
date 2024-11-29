@@ -1,21 +1,21 @@
-import * as React from 'react';
 import { Log } from '@microsoft/sp-core-library';
 import { FormCustomizerContext } from '@microsoft/sp-listview-extensibility';
+import * as React from 'react';
 
 import { IUser } from '@microsoft/mgt-react';
 import { cloneDeep, isEqual } from '@microsoft/sp-lodash-subset';
 import { HOOPresenceStatus } from '@n8d/htwoo-react/HOOAvatarPres';
 
+import HOOAccordion from '@n8d/htwoo-react/HOOAccordion';
+import HOOButton from '@n8d/htwoo-react/HOOButton';
 import * as strings from 'FacilitiesRequestFormCustomizerStrings';
+import { FacilitiesRequestItem, IFacilitiesRequestItem, ReportStep, SaveType, UserField } from '../../../common/models/models';
 import { formsService } from '../../../common/services/formsService';
 import styles from './FacilitiesRequest.module.scss';
-import { FacilitiesRequestItem, IFacilitiesRequestItem, ReportStep, SaveType, UserField } from '../../../common/models/models';
-import HOOAccordion from '@n8d/htwoo-react/HOOAccordion';
+import ProgressBar from './ProgressBar';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
-import ProgressBar from './ProgressBar';
-import HOOButton from '@n8d/htwoo-react/HOOButton';
 
 export interface IFacilitiesRequestProps {
   context: FormCustomizerContext;
@@ -269,10 +269,13 @@ export default class FacilitiesRequest extends React.Component<IFacilitiesReques
         name: "issue-tracking",
       };
       return (<>
-        <HOOButton iconName='hoo-icon-close' onClick={this._onClose} type={0} />
-
-        <ProgressBar progress={this._getProgress(this.state.currentItem.reportStep)} />
+        {window.location.href === window.top?.location.href ?
+          <HOOButton iconName='hoo-icon-close' onClick={this._onClose} type={0} rootElementAttributes={{
+            className: "btn-close",
+          }} /> : null
+        }
         <section className="facility-form">
+          <ProgressBar progress={this._getProgress(this.state.currentItem.reportStep)} />
           {(this.state.currentItem.reportStep === ReportStep.STEP1) &&
             <Step1
               currentItem={this.state.currentItem}
