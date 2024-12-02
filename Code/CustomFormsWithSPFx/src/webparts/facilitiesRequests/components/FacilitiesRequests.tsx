@@ -93,6 +93,12 @@ export default class FacilitiesRequests extends React.Component<IFacilitiesReque
 
     return (
       <div data-component={this.LOG_SOURCE} className={styles.facilitiesRequests}>
+        <HOOButton
+          label="New Request"
+          onClick={(e) => { this._toggleDialog(e, 8) }}
+          type={1}
+          rootElementAttributes={{ 'className': 'newRequestButton' }}
+        />
         <HOOPivotBar
           onClick={this._toggleMenuState}
           pivotItems={this._getPivotItems()}
@@ -106,7 +112,7 @@ export default class FacilitiesRequests extends React.Component<IFacilitiesReque
                   Issue Type
                 </th>
                 <th>
-                  Severify
+                  Severity
                 </th>
                 <th>
                   Issue Status
@@ -204,9 +210,9 @@ export default class FacilitiesRequests extends React.Component<IFacilitiesReque
         }
         <HOODialog
           changeVisibility={function noRefCheck() { }}
-          height="75vh"
+          height="85vh"
           type={9}
-          width="75vw" visible={this.state.dialogVisible}>
+          width="85vw" visible={this.state.dialogVisible}>
           <HOODialogHeader
             closeIconName="hoo-icon-close"
             closeOnClick={(e) => { this._toggleDialog(e) }}

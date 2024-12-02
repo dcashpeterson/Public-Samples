@@ -2,14 +2,26 @@
 
 .facilitiesRequests {
   color: var(--primaryText);
+
+
+
   :global {
       @include meta.load-css('node_modules/@n8d/htwoo-core/lib/sass/htwoo-core');
 
-.hoo-dlgcontent{
-overflow: hidden;}
+.newRequestButton {
+    button {
+      float: right;
+      padding-bottom: 1rem;
+    }
   }
+
+.hoo-dlgcontent{
+overflow-x: hidden;
+overflow-y: visible;
 }
 
-.facilitiesRequest {
-  color: var(--primaryText);
+.no-outline{
+  padding: 1rem;
+}
+  }
 }

@@ -363,7 +363,13 @@ export default class ConfigService implements IConfigService {
               await graphPost(graphQueryable, body(props));
             }
           }
-          await this._sp.web.contentTypes.getById(ct.data.id).update({ Name: contentTypeDisplayName, EditFormClientSideComponentId: clientID, NewFormClientSideComponentId: clientID, DisplayFormClientSideComponentId: clientID });
+          await this._sp.web.contentTypes.getById(ct.data.id).update(
+            {
+              Name: contentTypeDisplayName,
+              EditFormClientSideComponentId: clientID,
+              NewFormClientSideComponentId: clientID,
+              DisplayFormClientSideComponentId: clientID
+            });
           retVal = true;
         }
       } else {

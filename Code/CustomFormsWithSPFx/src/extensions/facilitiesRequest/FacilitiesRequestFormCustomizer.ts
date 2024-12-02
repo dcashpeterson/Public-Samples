@@ -1,10 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {
-  BaseFormCustomizer
-} from '@microsoft/sp-listview-extensibility';
+import {BaseFormCustomizer} from '@microsoft/sp-listview-extensibility';
 import { ThemeProvider } from '@microsoft/sp-component-base';
-
 import { IFacilitiesRequestProps } from './components/FacilitiesRequest';
 import { ISPFxThemes, SPFxThemes, symset } from '@n8d/htwoo-react';
 import symbolSetFile from '../../common/assets/icons.svg';
@@ -25,8 +22,6 @@ const MgtComponent = React.lazy(
  * You can define an interface to describe it.
  */
 export interface IFacilitiesRequestFormCustomizerProperties {
-  // This is an example; replace with your own property
-  sampleText?: string;
 }
 
 const LOG_SOURCE: string = '🏳️‍🌈 FacilitiesRequestFormCustomizer';
@@ -41,9 +36,9 @@ export default class FacilitiesRequestFormCustomizer
     await symset.initSymbols(symbolSetFile);
     
     if (!Providers.globalProvider) {
-    Providers.globalProvider = new SharePointProvider(this.context);
-  }
-  customElementHelper.withDisambiguation('spfx-forms-solution');
+      Providers.globalProvider = new SharePointProvider(this.context);
+    }
+    customElementHelper.withDisambiguation('spfx-forms-solution');
     
     // Consume the new ThemeProvider service
     const themeProvider = this.context.serviceScope.consume(ThemeProvider.serviceKey);

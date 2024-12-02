@@ -144,7 +144,7 @@ export default class Step1 extends React.PureComponent<IStep1Props, IStep1State>
                 />
               </div>
               <div className="hoo-field" role="group">
-                <HOOLabel label={strings.reportedDateLabel} for='reportedBy' required={true} />
+                <HOOLabel label={strings.reportedByLabel} for='reportedBy' required={true} />
                 <PeoplePicker id='reportedBy' type='person' aria-label='Reported By' ariaLabel='Reported By' showMax={4} selectionChanged={(e) => this.props.onPeoplePickerChange('reportedBy', e)} selectedPeople={(this.props.currentItem.reportedBy.displayName.length > 0) ? [{ displayName: this.props.currentItem.reportedBy.displayName, mail: this.props.currentItem.reportedBy.email, userPrincipalName: this.props.currentItem.reportedBy.email }] : []} />
               </div>
               <div className="hoo-field" role="group">
