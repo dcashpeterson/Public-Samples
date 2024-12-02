@@ -204,9 +204,9 @@ export default class FacilitiesRequests extends React.Component<IFacilitiesReque
         }
         <HOODialog
           changeVisibility={function noRefCheck() { }}
-          height="60vh"
+          height="75vh"
           type={9}
-          width="60vw" visible={this.state.dialogVisible}>
+          width="75vw" visible={this.state.dialogVisible}>
           <HOODialogHeader
             closeIconName="hoo-icon-close"
             closeOnClick={(e) => { this._toggleDialog(e) }}
