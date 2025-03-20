@@ -28,7 +28,7 @@
     "@types/react-dom": "16.8.0",
     "@types/webpack-env": "1.13.1",
     "@uifabric/react-cards": "^0.107.7",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "office-ui-fabric-react": "^6.182.0",
     "react": "16.7.0",
     "react-dom": "16.7.0"
