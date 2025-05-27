@@ -4,12 +4,11 @@ Thank you for coming to my session. I hope you enjoyed the session. Here is a li
 
 ## Source Code
 
-- [Demo Source Code](https://symp.info/CustomListForms)
+- [Demo Source Code](https://symp.info/CustomListFormsSPFx)
 
 ## Community Resources
 
 - [PnP Community Demo](https://www.youtube.com/watch?v=ihDjrIdfPNA)
-- [What’s a Dev Tenant](https://symp.info/DevTenant)
 - [hTWOo](https://lab.n8d.studio/htwoo/)
 
 ## Development Resources
@@ -19,5 +18,5 @@ Thank you for coming to my session. I hope you enjoyed the session. Here is a li
 
 ## Contact Information
 
-- [Twitter - @spdcp](https://www.twitter.com/spdcp)
+- [BlueSky - @derekcp.com](https://bsky.app/profile/derekcp.com)
 - [LinkedIn - @dcashpeterson](https://www.linkedin.com/in/dcashpeterson/)
