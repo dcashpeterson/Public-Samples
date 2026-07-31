@@ -49,7 +49,7 @@ jobs:
       - run: |
           cd dist
           zip -r ../function-app.zip .
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: function-app
           path: Code/LPAnalytics/function-app.zip
@@ -72,8 +72,8 @@ jobs:
         with:
           scope: resourcegroup
           resourceGroupName: ${{ vars.RESOURCE_GROUP }}
-          template: _infra/main.bicep
-          parameters: _infra/params-${{ needs.set-environment.outputs.env_name }}.bicepparam
+          template: Code/LPAnalytics/_infra/main.bicep
+          parameters: Code/LPAnalytics/_infra/params-${{ needs.set-environment.outputs.env_name }}.bicepparam
           deploymentName: gh-${{ needs.set-environment.outputs.env_name }}-${{ github.run_number }}
           failOnStdErr: false
 
