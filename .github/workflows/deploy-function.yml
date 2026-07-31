@@ -1,0 +1,94 @@
+name: Deploy Learning Pathways Azure Function
+
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        type: choice
+        options: [dev, prod]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  set-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      env_name: ${{ steps.resolve.outputs.env_name }}
+    steps:
+      - id: resolve
+        run: |
+          if [ -n "${{ inputs.environment }}" ]; then
+            echo "env_name=${{ inputs.environment }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "env_name=prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "env_name=dev" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+      - run: |
+          npm ci
+          npm run build --if-present
+      - run: |
+          cd dist
+          zip -r ../function-app.zip .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: function-app
+          path: function-app.zip
+
+  deploy-infra:
+    needs: [set-environment, build]
+    runs-on: ubuntu-latest
+    environment: ${{ needs.set-environment.outputs.env_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy Bicep
+        uses: azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+          template: _infra/main.bicep
+          parameters: _infra/params-${{ needs.set-environment.outputs.env_name }}.bicepparam
+          deploymentName: gh-${{ needs.set-environment.outputs.env_name }}-${{ github.run_number }}
+          failOnStdErr: false
+
+  deploy-code:
+    needs: [set-environment, deploy-infra]
+    runs-on: ubuntu-latest
+    environment: ${{ needs.set-environment.outputs.env_name }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: function-app
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy function code
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ vars.FUNCTION_APP_NAME }}
+          package: function-app.zip
