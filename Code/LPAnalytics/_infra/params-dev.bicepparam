@@ -6,7 +6,7 @@ param _storageAccountName = 'lpanalyticsdev'
 param _logAnaltyicsWorkspaceName = 'log-lpanalytics-dev'
 param _appInsightsName = 'appi-lpanalytics-dev'
 param _appServiceName = 'asp-lpanalytics-dev'
-param _azureFunctionName = 'func-lpanalytics-dev'
+param _azureFunctionName = 'func-lp-analytics-dev'
 param _ruleLogAlertName = 'rule-lpanalytics-dev'
 param _actionGroupsName = 'ag-lpanalytics-dev'
 // Dev's Action Group doesn't pre-exist in Azure, so have this deployment create it.
