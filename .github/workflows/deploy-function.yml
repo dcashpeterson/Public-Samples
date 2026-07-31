@@ -46,9 +46,8 @@ jobs:
       - run: |
           npm ci
           npm run build --if-present
-      - run: |
-          cd dist
-          zip -r ../function-app.zip .
+      - run: npm prune --omit=dev
+      - run: zip -r function-app.zip host.json package.json package-lock.json dist node_modules
       - uses: actions/upload-artifact@v6
         with:
           name: function-app
@@ -86,7 +85,7 @@ jobs:
         with:
           name: function-app
 
-      - uses: azure/login@v2
+      - uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
