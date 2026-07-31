@@ -9,6 +9,9 @@ param _appServiceName = 'asp-kecampsprov-prod-cus'
 param _azureFunctionName = 'func-kecampsprov-prod-cus'
 param _ruleLogAlertName = 'rule-kecampsprov-prod-cus'
 param _actionGroupsName = 'KECamps Notification Group'
+// This Action Group already exists in Azure with real notification receivers configured;
+// keep _createActionGroup false so it's only referenced (existing), never upserted.
+param _createActionGroup = false
 param _nodeVersion = '24'
 
 // Storage Type

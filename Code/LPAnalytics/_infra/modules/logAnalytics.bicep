@@ -1,8 +1,9 @@
 param _location string
 param _logAnaltyicsWorkspaceName string
 param _appInsightsName string
-param _actionGroupsName string 
+param _actionGroupsName string
 param _ruleLogAlertName string
+param _createActionGroup bool = false
 
 resource _logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: _logAnaltyicsWorkspaceName
@@ -41,35 +42,40 @@ resource _appInsightsResource 'microsoft.insights/components@2020-02-02' = {
   }
 }
 
-resource _actionGroupsResource 'microsoft.insights/actionGroups@2024-10-01-preview' existing = {
+// Created only when _createActionGroup is true (e.g. dev, where the group doesn't pre-exist).
+// Environments with a real, pre-existing Action Group (e.g. prod) leave _createActionGroup
+// false so their group is looked up via 'existing' instead of being upserted here.
+resource _actionGroupsResourceNew 'microsoft.insights/actionGroups@2024-10-01-preview' = if (_createActionGroup) {
+  name: _actionGroupsName
+  location: 'Global'
+  properties: {
+    groupShortName: take(_actionGroupsName, 12)
+    enabled: true
+    emailReceivers: [
+      {
+        name: 'SympraxisNotification_-EmailAction-'
+        emailAddress: 'julie.turner@sympraxisconsulting.com'
+        useCommonAlertSchema: false
+      }
+    ]
+    smsReceivers: []
+    webhookReceivers: []
+    eventHubReceivers: []
+    itsmReceivers: []
+    azureAppPushReceivers: []
+    automationRunbookReceivers: []
+    voiceReceivers: []
+    logicAppReceivers: []
+    azureFunctionReceivers: []
+    armRoleReceivers: []
+  }
+}
+
+resource _actionGroupsResourceExisting 'microsoft.insights/actionGroups@2024-10-01-preview' existing = if (!_createActionGroup) {
   name: _actionGroupsName
 }
 
-// resource _actionGroupsResource 'microsoft.insights/actionGroups@2024-10-01-preview' = {
-//   name: _actionGroupsName
-//   location: 'Global'
-//   properties: {
-//     groupShortName: _actionGroupsName
-//     enabled: true
-//     emailReceivers: [
-//       {
-//         name: 'SympraxisNotification_-EmailAction-'
-//         emailAddress: 'julie.turner@sympraxisconsulting.com'
-//         useCommonAlertSchema: false
-//       }
-//     ]
-//     smsReceivers: []
-//     webhookReceivers: []
-//     eventHubReceivers: []
-//     itsmReceivers: []
-//     azureAppPushReceivers: []
-//     automationRunbookReceivers: []
-//     voiceReceivers: []
-//     logicAppReceivers: []
-//     azureFunctionReceivers: []
-//     armRoleReceivers: []
-//   }
-// }
+var _actionGroupsResourceId = _createActionGroup ? _actionGroupsResourceNew.id : _actionGroupsResourceExisting.id
 
 resource _ruleLogAlertResource 'microsoft.insights/scheduledqueryrules@2025-01-01-preview' = {
   name: _ruleLogAlertName
@@ -105,7 +111,7 @@ resource _ruleLogAlertResource 'microsoft.insights/scheduledqueryrules@2025-01-0
     autoMitigate: false
     actions: {
       actionGroups: [
-        _actionGroupsResource.id
+        _actionGroupsResourceId
       ]
       customProperties: {}
       actionProperties: {}

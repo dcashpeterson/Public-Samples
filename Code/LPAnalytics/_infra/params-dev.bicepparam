@@ -9,6 +9,8 @@ param _appServiceName = 'asp-lpanalytics-dev'
 param _azureFunctionName = 'func-lpanalytics-dev'
 param _ruleLogAlertName = 'rule-lpanalytics-dev'
 param _actionGroupsName = 'ag-lpanalytics-dev'
+// Dev's Action Group doesn't pre-exist in Azure, so have this deployment create it.
+param _createActionGroup = true
 param _nodeVersion = '24'
 
 // Storage Type

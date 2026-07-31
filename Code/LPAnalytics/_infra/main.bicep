@@ -9,6 +9,7 @@ param _appServiceName string
 param _azureFunctionName string
 param _ruleLogAlertName string
 param _actionGroupsName string
+param _createActionGroup bool = false
 param _nodeVersion string
 param _alwaysOn bool
 param _sku object
@@ -38,6 +39,7 @@ module analtyicsResource 'modules/logAnalytics.bicep' = {
     _appInsightsName: _appInsightsName
     _ruleLogAlertName: _ruleLogAlertName
     _actionGroupsName: _actionGroupsName
+    _createActionGroup: _createActionGroup
   }
 }
 
