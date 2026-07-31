@@ -9,7 +9,7 @@ param _appServiceName = 'asp-kecampsprov-prod-cus'
 param _azureFunctionName = 'func-kecampsprov-prod-cus'
 param _ruleLogAlertName = 'rule-kecampsprov-prod-cus'
 param _actionGroupsName = 'KECamps Notification Group'
-param _nodeVersion = '22'
+param _nodeVersion = '24'
 
 // Storage Type
 //   Standard_RAGRS - Read Access Globally Redundant Storage
