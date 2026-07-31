@@ -22,8 +22,8 @@ interface ValidationEvent {
     validationUrl: string;
 }
 
-export async function handleListChange(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-  const LOG_SOURCE = "handleListChange";
+export async function helloWorld(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  const LOG_SOURCE = "helloWorld";
   const _apu = new AppInsightUtil();
   _apu.Init(context.invocationId);
 
@@ -58,16 +58,16 @@ export async function handleListChange(request: HttpRequest, context: Invocation
       exception: err,
       severity: SeverityLevel.Critical,
       properties: {
-        method: "handleListChange"
+        method: "helloWorld"
       }
     });
   }
 };
 
-app.http('handleListChange', {
+app.http('helloWorld', {
   methods: ['POST'],
   authLevel: 'anonymous',
   extraOutputs: [queueOutput],
-  handler: handleListChange
+  handler: helloWorld
 });
 
