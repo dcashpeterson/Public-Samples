@@ -67,8 +67,8 @@ jobs:
         with:
           scope: resourcegroup
           resourceGroupName: ${{ vars.RESOURCE_GROUP }}
-          template: infra/main.bicep
-          parameters: infra/main.${{ needs.set-environment.outputs.env_name }}.bicepparam
+          template: _infra/main.bicep
+          parameters: _infra/params-${{ needs.set-environment.outputs.env_name }}.bicepparam
           deploymentName: gh-${{ needs.set-environment.outputs.env_name }}-${{ github.run_number }}
           failOnStdErr: false
 
