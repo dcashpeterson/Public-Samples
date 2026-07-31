@@ -33,12 +33,16 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Code/LPAnalytics
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '24.x'
           cache: 'npm'
+          cache-dependency-path: Code/LPAnalytics/package-lock.json
       - run: |
           npm ci
           npm run build --if-present
@@ -48,7 +52,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: function-app
-          path: function-app.zip
+          path: Code/LPAnalytics/function-app.zip
 
   deploy-infra:
     needs: [set-environment, build]

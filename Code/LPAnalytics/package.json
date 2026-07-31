@@ -1,0 +1,11 @@
+{
+  "name": "lp-analytics-function",
+  "version": "1.0.0",
+  "description": "Learning Pathways Azure Function",
+  "main": "dist/src/index.js",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0"
+  }
+}
