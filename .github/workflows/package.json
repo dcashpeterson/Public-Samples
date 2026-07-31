@@ -1,5 +1,5 @@
 {
-  "name": "Deploy Learning Pathways Analytics Azure Function",
+  "name": "deploy-lp-alalytics-af",
   "version": "1.0.0",
   "description": "Script to deploy azure function",
   "main": "deploy-function.yml",
