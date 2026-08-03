@@ -54,7 +54,7 @@ resource _actionGroupsResourceNew 'microsoft.insights/actionGroups@2024-10-01-pr
     emailReceivers: [
       {
         name: 'SympraxisNotification_-EmailAction-'
-        emailAddress: 'julie.turner@sympraxisconsulting.com'
+        emailAddress: 'derekcp@sympraxisconsulting.com'
         useCommonAlertSchema: false
       }
     ]

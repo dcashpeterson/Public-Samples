@@ -51,8 +51,8 @@ param _appSettings = {
     MailAccountId: 'be54dfb7-6095-49d4-8679-b8872a8bfdaa'
     AnalyticsSite: 'https://sympdcp.sharepoint.com/sites/M365LP'
     ListName: 'Analytics Tracking'
-    NotificationFromEmailAddress: 'derekcp@sympdcp.onmicrosoft.com'
-    NotificationToEmailAddress: 'derekcp@sympdcp.onmicrosoft.com'
+    NotificationFromEmailAddress: 'derekcp@sympraxisconsulting.com'
+    NotificationToEmailAddress: 'derekcp@sympraxisconsulting.com'
   }
   dev: {}
 }
