@@ -1,9 +1,29 @@
-import "@pnp/sp/sites/index.js";
-import "@pnp/sp/webs/index.js";
-import "@pnp/sp/lists/index.js";
+import "@pnp/graph/content-types/index.js";
+import "@pnp/graph/files/index.js";
+import "@pnp/graph/groups/index.js";
+import "@pnp/graph/index.js";
+import "@pnp/graph/lists/drive.js";
+import "@pnp/graph/lists/index.js";
+import "@pnp/graph/members/index.js";
+import "@pnp/graph/sites/index.js";
+import "@pnp/graph/teams/index.js";
+import "@pnp/graph/users/index.js";
+import "@pnp/graph/workbooks/index.js";
+import "@pnp/sp-admin/index.js";
+import "@pnp/sp/attachments/index.js";
+import "@pnp/sp/batching.js";
+import "@pnp/sp/clientside-pages/index.js";
+import "@pnp/sp/files/index.js";
+import "@pnp/sp/folders/index.js";
+import "@pnp/sp/hubsites/index.js";
 import "@pnp/sp/items/index.js";
+import "@pnp/sp/lists/index.js";
+import "@pnp/sp/sites/index.js";
+import "@pnp/sp/subscriptions/index.js";
+import "@pnp/sp/views/index.js";
+import "@pnp/sp/webs/index.js";
 import { AssignFrom } from "@pnp/core/index.js";
-import { createChangeToken, IChangeQuery, spfi } from "@pnp/sp/index.js";
+import { spfi } from "@pnp/sp/index.js";
 import { IAppInsightUtil, MessageType, SeverityLevel } from '../common/appinsightutil.js';
 import { IAuthService } from '../common/auth.js';
 import { ILPAnalyticsEvent } from "../models/analyticsModels";
@@ -31,8 +51,7 @@ export class ListService implements IListService {
       var list = await _web.lists.getByTitle(process.env.ListName)();
       const analyticsSite = spfi("https://sympdcp.sharepoint.com/sites/LearningPathwaysAnalytics").using(AssignFrom(this._auth.sp.web));
       const analyticsWeb = analyticsSite.web;
-      const analyticsList = await analyticsWeb.lists.getByTitle(process.env.ListName)();
-      await analyticsList.items.add({
+      await analyticsWeb.lists.getByTitle(process.env.ListName).items.add({
         Title: queueItem.user + Date().toString(),
         User1: queueItem.user,
         Tenant: queueItem.tenant._guid,
