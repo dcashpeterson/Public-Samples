@@ -29,7 +29,7 @@ export class AuthService implements IAuthService {
     let retVal = false;
     try {
       const credential = new DefaultAzureCredential();
-      this._sp = spfi(process.env.ProjectSite).using(SPDefault(),
+      this._sp = spfi(process.env.AnalyticsSite).using(SPDefault(),
         AzureIdentity(credential, [`https://${process.env.Tenant}.sharepoint.com/.default`], null));
       this._graph = graphfi().using(GraphDefault(), AzureIdentity(credential, [`https://graph.microsoft.com/.default`], null));
       const tenantUrl = `https://${process.env.Tenant}-admin.sharepoint.com`;
