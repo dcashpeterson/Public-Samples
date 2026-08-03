@@ -25,7 +25,7 @@ export class ListService implements IListService {
     try {
       var retVal = false;
 
-      this._auth.sp.web.lists.getByTitle(process.env.ListName).items.add({
+      await this._auth.sp.web.lists.getByTitle(process.env.ListName).items.add({
         Title: queueItem.user + Date().toString(),
         User: queueItem.user,
         Tenant: queueItem.tenant._guid,

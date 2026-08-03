@@ -49,7 +49,7 @@ param _appSettings = {
     CompleteQueuePath: 'lpanalytics-complete'
     Tenant: 'sympdcp'
     MailAccountId: 'be54dfb7-6095-49d4-8679-b8872a8bfdaa'
-    AnalyticsSite: 'https://sympdcp.sharepoint.com/sites/M365LP'
+    AnalyticsSite: 'https://sympdcp.sharepoint.com/sites/LearningPathwaysAnalytics'
     ListName: 'Analytics Tracking'
     NotificationFromEmailAddress: 'derekcp@sympraxisconsulting.com'
     NotificationToEmailAddress: 'derekcp@sympraxisconsulting.com'

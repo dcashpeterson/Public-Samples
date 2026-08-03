@@ -67,7 +67,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Deploy Bicep
-        uses: azure/arm-deploy@v2
+        uses: azure/arm-deploy@v3
         with:
           scope: resourcegroup
           resourceGroupName: ${{ vars.RESOURCE_GROUP }}
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ needs.set-environment.outputs.env_name }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: function-app
 
