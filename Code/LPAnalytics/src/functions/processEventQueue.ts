@@ -2,6 +2,7 @@ import { app, InvocationContext, input, output } from "@azure/functions";
 import { AppInsightUtil, MessageType, SeverityLevel } from "../common/appinsightutil.js";
 import { AuthService } from "../common/auth.js";
 import { ILPAnalyticsEvent } from "../models/analyticsModels.js";
+import { ListService } from "../services/listService.js";
 
 export async function processEventQueue(queueItem: ILPAnalyticsEvent, context: InvocationContext): Promise<void> {
   const LOG_SOURCE = "processEventQueue";
@@ -21,8 +22,8 @@ export async function processEventQueue(queueItem: ILPAnalyticsEvent, context: I
     const initialized = await auth.Init();
     let result = false;
     if (initialized) {
-      //const lns = new ListNotificationService(_apu, auth);
-      //result = await lns.ProvisionComplete(queueItem);
+      const ls = new ListService(_apu, auth);
+      result = await ls.Process(queueItem);
     }
     _apu.Log(MessageType.Trace, {
       message: `Completed: Initialized ${initialized} - Processed Provisioning ${result}`,

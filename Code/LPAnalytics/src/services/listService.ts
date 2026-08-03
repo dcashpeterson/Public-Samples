@@ -7,12 +7,12 @@ import { IAuthService } from '../common/auth.js';
 import { ILPAnalyticsEvent } from "../models/analyticsModels";
 
 
-export interface IListNotificationService {
+export interface IListService {
   Process(queueITem: ILPAnalyticsEvent): Promise<boolean>;
 }
 
-export class ListNotificationService implements IListNotificationService {
-  private LOG_SOURCE = "ListNotificationService";
+export class ListService implements IListService {
+  private LOG_SOURCE = "ListService";
   private _apu: IAppInsightUtil;
   private _auth: IAuthService;
 
@@ -25,7 +25,7 @@ export class ListNotificationService implements IListNotificationService {
     try {
       var retVal = false;
 
-      this._auth.sp.web.lists.getByTitle(process.env.AnalyticsSite).items.add({
+      this._auth.sp.web.lists.getByTitle(process.env.ListName).items.add({
         Title: queueItem.user + Date().toString(),
         User: queueItem.user,
         Tenant: queueItem.tenant._guid,
