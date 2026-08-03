@@ -48,17 +48,16 @@ export class ListService implements IListService {
       var retVal = false;
       const spSite = spfi("https://sympdcp.sharepoint.com/sites/LearningPathwaysAnalytics").using(AssignFrom(this._auth.sp.web));
       var _web = spSite.web;
-      var list = await _web.lists.getByTitle(process.env.ListName)();
       const analyticsSite = spfi("https://sympdcp.sharepoint.com/sites/LearningPathwaysAnalytics").using(AssignFrom(this._auth.sp.web));
       const analyticsWeb = analyticsSite.web;
       await analyticsWeb.lists.getByTitle(process.env.ListName).items.add({
-        Title: queueItem.user + Date().toString(),
+        Title: queueItem.user + new Date().toISOString(),
         User1: queueItem.user,
         Tenant: queueItem.tenant._guid,
         WebPartVersion: queueItem.webpart_ver,
         LearningPathwaysLanguage: queueItem.language,
         EventType1: queueItem.eventType,
-        EventTime: Date().toString(),
+        EventTime: new Date().toISOString(),
         PageUrl: queueItem.pageUrl,
         PlaylistId: queueItem.playlistId,
         PlaylistName: queueItem.playlistName,
