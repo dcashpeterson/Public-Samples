@@ -1,4 +1,5 @@
 import { DefaultAzureCredential } from "@azure/identity";
+import { TableClient } from "@azure/data-tables";
 import { AzureIdentity } from "@pnp/azidjsclient";
 import { GraphDefault, SPDefault } from "@pnp/nodejs";
 import { spfi, SPFI } from "@pnp/sp";
@@ -10,6 +11,8 @@ export interface IAuthService {
   readonly sp: SPFI;
   readonly graph: GraphFI;
   readonly spAdmin: SPFI;
+  readonly assetTableClient: TableClient;
+  readonly analyticsTableClient: TableClient;
   Init: () => Promise<boolean>;
 }
 
@@ -19,7 +22,10 @@ export class AuthService implements IAuthService {
   private _sp: SPFI = null;
   private _graph: GraphFI = null;
   private _spAdmin: SPFI = null;
+  private _assetTableClient: TableClient = null;
+  private _analyticsTableClient: TableClient = null;
   private _apu: IAppInsightUtil = null;
+  private _credential: DefaultAzureCredential = null;
 
   public constructor(apu: IAppInsightUtil) { 
     this._apu = apu;
@@ -29,12 +35,15 @@ export class AuthService implements IAuthService {
     let retVal = false;
     try {
       const credential = new DefaultAzureCredential();
+      this._credential = credential;
       this._sp = spfi(process.env.AnalyticsSite).using(SPDefault(),
         AzureIdentity(credential, [`https://${process.env.Tenant}.sharepoint.com/.default`], null));
       this._graph = graphfi().using(GraphDefault(), AzureIdentity(credential, [`https://graph.microsoft.com/.default`], null));
       const tenantUrl = `https://${process.env.Tenant}-admin.sharepoint.com`;
       this._spAdmin = spfi(tenantUrl).using(SPDefault(),
       AzureIdentity(credential, [`https://${process.env.Tenant}-admin.sharepoint.com/.default`], null));
+      this._assetTableClient = new TableClient(`https://${process.env.AZURE_STORAGE_ACCOUNT_NAME}.table.core.windows.net`, process.env.AssetTableName, this._credential);
+      this._analyticsTableClient = new TableClient(`https://${process.env.AZURE_STORAGE_ACCOUNT_NAME}.table.core.windows.net`, process.env.AnalyticsTableName, this._credential);
       this._ready = true;
       this._apu.Log(MessageType.Trace, {
         message: "Init success",
@@ -70,5 +79,13 @@ export class AuthService implements IAuthService {
 
   public get spAdmin(): SPFI {
     return this._spAdmin
+  }
+
+  public get assetTableClient(): TableClient {
+    return this._assetTableClient
+  }
+
+  public get analyticsTableClient(): TableClient {
+    return this._analyticsTableClient
   }
 }

@@ -1,4 +1,3 @@
-
 {
   "name": "lp-analytics-function",
   "version": "1.0.0",
@@ -13,8 +12,10 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
+    "@azure/data-tables": "^13.3.2",
     "@azure/eventgrid": "^5.12.0",
     "@azure/functions": "4.9.0",
+    "@azure/identity": "^4.13.1",
     "@pnp/azidjsclient": "4.17.0",
     "@pnp/graph": "4.17.0",
     "@pnp/nodejs": "4.17.0",

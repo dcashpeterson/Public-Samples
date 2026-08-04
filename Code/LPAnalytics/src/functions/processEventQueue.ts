@@ -3,6 +3,7 @@ import { AppInsightUtil, MessageType, SeverityLevel } from "../common/appinsight
 import { AuthService } from "../common/auth.js";
 import { ILPAnalyticsEvent } from "../models/analyticsModels.js";
 import { ListService } from "../services/listService.js";
+import { TableService } from "../services/tableService.js";
 
 export async function processEventQueue(queueItem: ILPAnalyticsEvent, context: InvocationContext): Promise<void> {
   const LOG_SOURCE = "processEventQueue";
@@ -23,7 +24,10 @@ export async function processEventQueue(queueItem: ILPAnalyticsEvent, context: I
     let result = false;
     if (initialized) {
       const ls = new ListService(_apu, auth);
-      result = await ls.Process(queueItem);
+      const ts = new TableService(_apu, auth);
+      const listResult = await ls.Process(queueItem);
+      const tableResult = await ts.Process(queueItem);
+      result = listResult && tableResult;
     }
     _apu.Log(MessageType.Trace, {
       message: `Completed: Initialized ${initialized} - Processed Provisioning ${result}`,
