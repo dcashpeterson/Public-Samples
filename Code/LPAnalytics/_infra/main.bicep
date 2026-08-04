@@ -17,6 +17,7 @@ param _appSettings object
 param _appSettingNames array
 param _queues array
 param _storagePath array
+param _tables array
 param _currentVersion string
 param _additionalOrigins array = []
 
@@ -83,6 +84,7 @@ module clientSettings '_client.bicep' = {
     _appSettingNames: _appSettingNames
     _queues: _queues
     _storagePath: _storagePath
+    _tables: _tables
     _currentVersion: _currentVersion
     _consumption: _consumption
   }

@@ -34,6 +34,8 @@ param _currentVersion = '1.0.0'
 param _queues = ['tasksubscription','provisioning-notifications', 'provisioning-complete']
 // Names of Storage Paths to create in storage account
 param _storagePath = ['provisioning-notifications', 'app-package-${_azureFunctionName}']
+// Names of Tables to create in storage account
+param _tables = ['lpanalyticstracking', 'lpassets']
 
 // To include CORS origins for Azure Function web
 param _additionalOrigins = []
