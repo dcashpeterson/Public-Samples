@@ -1,0 +1,32 @@
+{
+  "name": "lp-analytics-function",
+  "version": "1.0.0",
+  "description": "Learning Pathways Azure Function",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@azure/data-tables": "^13.3.2",
+    "@azure/eventgrid": "^5.12.0",
+    "@azure/functions": "4.9.0",
+    "@azure/identity": "^4.13.1",
+    "@pnp/azidjsclient": "4.17.0",
+    "@pnp/graph": "4.17.0",
+    "@pnp/nodejs": "4.17.0",
+    "@pnp/sp": "4.17.0",
+    "@pnp/sp-admin": "4.17.0",
+    "applicationinsights": "2.x"
+  },
+  "devDependencies": {
+    "@types/node": "22.x",
+    "rimraf": "6.x",
+    "typescript": "5.x"
+  },
+  "main": "dist/src/functions/*.js"
+}

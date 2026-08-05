@@ -9,6 +9,7 @@ param _appServiceName string
 param _azureFunctionName string
 param _ruleLogAlertName string
 param _actionGroupsName string
+param _createActionGroup bool = false
 param _nodeVersion string
 param _alwaysOn bool
 param _sku object
@@ -16,6 +17,7 @@ param _appSettings object
 param _appSettingNames array
 param _queues array
 param _storagePath array
+param _tables array
 param _currentVersion string
 param _additionalOrigins array = []
 
@@ -38,6 +40,7 @@ module analtyicsResource 'modules/logAnalytics.bicep' = {
     _appInsightsName: _appInsightsName
     _ruleLogAlertName: _ruleLogAlertName
     _actionGroupsName: _actionGroupsName
+    _createActionGroup: _createActionGroup
   }
 }
 
@@ -81,6 +84,7 @@ module clientSettings '_client.bicep' = {
     _appSettingNames: _appSettingNames
     _queues: _queues
     _storagePath: _storagePath
+    _tables: _tables
     _currentVersion: _currentVersion
     _consumption: _consumption
   }

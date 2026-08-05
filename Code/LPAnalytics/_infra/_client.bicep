@@ -10,6 +10,7 @@ param _appSettingNames array
 param _appSettings object
 param _queues array
 param _storagePath array
+param _tables array
 param _currentVersion string
 param _consumption bool
 // Create Blob Containers
@@ -47,6 +48,19 @@ resource _storageAccountResource_queue 'Microsoft.Storage/storageAccounts/queueS
 
 resource _storageAccount_queueProd 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-05-01' = [for name in _queues: {
   parent: _storageAccountResource_queue
+  name: '${name}'
+}]
+
+// Create Tables
+
+@description('Create Tables')
+resource _storageAccountResource_table 'Microsoft.Storage/storageAccounts/tableServices@2023-05-01' existing = {
+  parent: _storageAccountResource
+  name: 'default'
+}
+
+resource _storageAccount_tableProd 'Microsoft.Storage/storageAccounts/tableServices/tables@2023-05-01' = [for name in _tables: {
+  parent: _storageAccountResource_table
   name: '${name}'
 }]
 
@@ -114,6 +128,23 @@ module storageRoleAssignDev 'modules/roleAssignment.bicep' = if (_devSlot) {
   params: {
     _principalId: _azureFunctionDevManagedIdentity
     _roleDefId: StorageBlobDataContributor
+  }
+}
+
+var StorageTableDataContributor = '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3'
+module storageTableRoleAssignProd 'modules/roleAssignment.bicep' = {
+  name: 'storageTableRoleAssignProd'
+  params: {
+    _principalId: _azureFunctionProdManagedIdentity
+    _roleDefId: StorageTableDataContributor
+  }
+}
+
+module storageTableRoleAssignDev 'modules/roleAssignment.bicep' = if (_devSlot) {
+  name: 'storageTableRoleAssignDev'
+  params: {
+    _principalId: _azureFunctionDevManagedIdentity
+    _roleDefId: StorageTableDataContributor
   }
 }
 

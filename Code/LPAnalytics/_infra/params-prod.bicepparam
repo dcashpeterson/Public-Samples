@@ -9,7 +9,10 @@ param _appServiceName = 'asp-kecampsprov-prod-cus'
 param _azureFunctionName = 'func-kecampsprov-prod-cus'
 param _ruleLogAlertName = 'rule-kecampsprov-prod-cus'
 param _actionGroupsName = 'KECamps Notification Group'
-param _nodeVersion = '22'
+// This Action Group already exists in Azure with real notification receivers configured;
+// keep _createActionGroup false so it's only referenced (existing), never upserted.
+param _createActionGroup = false
+param _nodeVersion = '24'
 
 // Storage Type
 //   Standard_RAGRS - Read Access Globally Redundant Storage
@@ -31,6 +34,8 @@ param _currentVersion = '1.0.0'
 param _queues = ['tasksubscription','provisioning-notifications', 'provisioning-complete']
 // Names of Storage Paths to create in storage account
 param _storagePath = ['provisioning-notifications', 'app-package-${_azureFunctionName}']
+// Names of Tables to create in storage account
+param _tables = ['lpanalyticstracking', 'lpassets']
 
 // To include CORS origins for Azure Function web
 param _additionalOrigins = []

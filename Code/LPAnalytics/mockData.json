@@ -1,0 +1,23 @@
+{
+        "user": "Hashed User ID",
+        "tenant": {
+            "_guid": "1234567"
+        },
+        "webpart_ver": "v4",
+        "language": "en-us",
+        "eventType": "AssetViewed",
+        "pageUrl": "https://YOURTENANT.sharepoint.com/sites/M365LP/SitePages/Get-started-with-Microsoft-365.aspx",
+        "playlistId": "037adb49-b480-4a70-8389-5caeaec1a640",
+        "playlistName": "Creating a Champion Program",
+        "asset": {
+            "Id": "dbf90b66-4789-40d0-a383-0beb3773a333",
+            "Title": "Get started building a Champion program",
+            "Description": "",
+            "Url": "https://support.office.com/en-us/f1/article/8ac0c945-ee18-477b-86dd-bf43357a5c2a?embed=true",
+            "TechnologyId": "0ae04ffb-5e69-461d-919d-a2215109bf49",
+            "SubjectId": "",
+            "Source": "Microsoft",
+            "StatusTagId": "",
+            "StatusNote": ""
+        }
+    }

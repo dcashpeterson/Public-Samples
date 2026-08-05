@@ -6,9 +6,11 @@ param _storageAccountName = 'lpanalyticsdev'
 param _logAnaltyicsWorkspaceName = 'log-lpanalytics-dev'
 param _appInsightsName = 'appi-lpanalytics-dev'
 param _appServiceName = 'asp-lpanalytics-dev'
-param _azureFunctionName = 'func-lpanalytics-dev'
+param _azureFunctionName = 'func-lp-analytics-dev'
 param _ruleLogAlertName = 'rule-lpanalytics-dev'
 param _actionGroupsName = 'ag-lpanalytics-dev'
+// Dev's Action Group doesn't pre-exist in Azure, so have this deployment create it.
+param _createActionGroup = true
 param _nodeVersion = '24'
 
 // Storage Type
@@ -31,6 +33,8 @@ param _currentVersion = '1.0.0'
 param _queues = ['lpanalytics','lpanalytics-notifications','lpanalytics-complete']
 // Names of Storage Paths to create in storage account
 param _storagePath = ['lpanalytics-notifications-dev', 'app-package-${_azureFunctionName}']
+// Names of Tables to create in storage account
+param _tables = ['lpanalyticstracking', 'lpassets']
 
 // To include CORS origins for Azure Function web
 param _additionalOrigins = []
@@ -47,19 +51,12 @@ param _appSettings = {
     CompleteQueuePath: 'lpanalytics-complete'
     Tenant: 'sympdcp'
     MailAccountId: 'be54dfb7-6095-49d4-8679-b8872a8bfdaa'
-    OrchestryApiEndpoint: 'https://api.orchestry.com/v1/'
-    ExampleSite: 'https://sympdcp.sharepoint.com/sites/ExampleTeamSite'
-    HQSite: 'https://sympdcp.sharepoint.com/sites/KECampsHQ'
-    SubscriptionTrackingListName: 'SubscriptionTracking'
-    PWNArchiveListName: 'Paperwork We Need'
-    SubscriptionName: 'PWN-dev'
-    ListName: 'Weekly To Do List'
-    SubscriptionId: 'c170a686-ad98-4d53-af5a-4db1f1da6a23'
-    ResourceGroupName: 'AutomationRG'
-    PartnerTopicName: 'PWNList'
-    PartnerTopicRegion: 'centralus'
-    NotificationFromEmailAddress: 'derekcp@sympdcp.onmicrosoft.com'
-    NotificationToEmailAddress: 'derekcp@sympdcp.onmicrosoft.com'
+    AnalyticsSite: 'https://sympdcp.sharepoint.com/sites/LearningPathwaysAnalytics'
+    ListName: 'Analytics Tracking'
+    AssetTableName: 'lpassets'
+    AnalyticsTableName: 'lpanalyticstracking'
+    NotificationFromEmailAddress: 'derekcp@sympraxisconsulting.com'
+    NotificationToEmailAddress: 'derekcp@sympraxisconsulting.com'
   }
   dev: {}
 }

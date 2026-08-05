@@ -1,4 +1,4 @@
-name: Deploy Azure Function
+name: Deploy Learning Pathways Azure Function
 
 on:
   push:
@@ -33,30 +33,34 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Code/LPAnalytics
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: '24.x'
+          cache: 'npm'
+          cache-dependency-path: Code/LPAnalytics/package-lock.json
       - run: |
           npm ci
           npm run build --if-present
-      - run: |
-          cd dist
-          zip -r ../function-app.zip .
-      - uses: actions/upload-artifact@v4
+      - run: npm prune --omit=dev
+      - run: zip -r function-app.zip host.json package.json package-lock.json dist node_modules
+      - uses: actions/upload-artifact@v6
         with:
           name: function-app
-          path: function-app.zip
+          path: Code/LPAnalytics/function-app.zip
 
   deploy-infra:
     needs: [set-environment, build]
     runs-on: ubuntu-latest
     environment: ${{ needs.set-environment.outputs.env_name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: azure/login@v2
+      - uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -67,8 +71,8 @@ jobs:
         with:
           scope: resourcegroup
           resourceGroupName: ${{ vars.RESOURCE_GROUP }}
-          template: _infra/main.bicep
-          parameters: _infra/params-${{ needs.set-environment.outputs.env_name }}.bicepparam
+          template: Code/LPAnalytics/_infra/main.bicep
+          parameters: Code/LPAnalytics/_infra/params-${{ needs.set-environment.outputs.env_name }}.bicepparam
           deploymentName: gh-${{ needs.set-environment.outputs.env_name }}-${{ github.run_number }}
           failOnStdErr: false
 
@@ -77,11 +81,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ needs.set-environment.outputs.env_name }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: function-app
 
-      - uses: azure/login@v2
+      - uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
