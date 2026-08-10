@@ -12,6 +12,7 @@ Thank you for coming to my session on getting started with the SharePoint Framew
 - [Sample Gallery](https://adoption.microsoft.com/en-us/sample-solution-gallery/)
 - [M365 Community Site](https://pnp.github.io)
 - [SPFx CLI](https://github.com/SharePoint/spfx)
+- [Presentation Slides](Introduction-To-SharePoint-Framework.pdf)
 
 ## Contact Information
 
