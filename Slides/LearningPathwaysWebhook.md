@@ -9,6 +9,7 @@ Thank you for attending my session on how to configure the Microsoft 365 Learnin
 - [Import Logic App as an API](https://learn.microsoft.com/en-us/azure/api-management/import-logic-app-as-api)
 - [M365 and Power Platform Community Site](https://pnp.github.io/)
 - [Source Code](https://github.com/dcashpeterson/Public-Samples/tree/main/Code/LPAnalytics)
+- [Presentation Slides](Unlocking-Training-Insights-Learning-Pathways-Webhook.pdf)
 
 ## Contact Information
 
